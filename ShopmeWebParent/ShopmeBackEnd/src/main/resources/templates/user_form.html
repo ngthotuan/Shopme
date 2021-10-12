@@ -60,38 +60,82 @@
             </div>
         </div>
     </nav>
-    <h2>Manager Users</h2>
-    <a th:href="@{/users/new}">Create user</a>
-    <div th:if="${message}" class="text-center alert alert-success">
-        <span th:text="${message}"></span>
-    </div>
-    <table class="table table-responsive-xl table-hover table-bordered table-striped">
-        <thead class="table-dark ">
-            <th>User ID</th>
-            <th>Photos</th>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Roles</th>
-            <th>Enabled</th>
-            <th></th>
-        </thead>
-        <tbody>
-            <tr th:each="user:${users}">
-                <td>[[${user.id}]]</td>
-                <td>[[${user.photos}]]</td>
-                <td>[[${user.email}]]</td>
-                <td>[[${user.firstName}]]</td>
-                <td>[[${user.lastName}]]</td>
-                <td>[[${user.Roles}]]</td>
-                <td>[[${user.enabled}]]</td>
-                <td>Update &nbsp Delete</td>
-            </tr>
-        </tbody>
-    </table>
+    <h2>Manager Users | Create New User</h2>
+
+    <form th:action="@{/users/save}" th:object="${user}" method="post" style="max-width: 750px" class="m-auto">
+        <div class="border border-success rounded p-3">
+            <div class="mb-3 row">
+                <div class="col-sm-4 col-form-label">Email:</div>
+                <div class="col-sm-8">
+                    <input class="form-control" type="email" required
+                           th:field="*{email}" minlength="8" maxlength="128">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-4 col-form-label">First Name:</div>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" required
+                           th:field="*{firstName}" minlength="2" maxlength="45">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-4 col-form-label">Last Name:</div>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" required
+                           th:field="*{lastName}" minlength="2" maxlength="45">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-4 col-form-label">Password:</div>
+                <div class="col-sm-8">
+                    <input class="form-control" type="password" required
+                           th:field="*{password}" minlength="8" maxlength="20">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-4 col-form-label">Roles:</div>
+                <div class="col-sm-8">
+                    <th:block th:each="role:${roles}">
+                        <label>
+                            <input class="m-2" type="checkbox" th:field="*{roles}"
+                                   th:text="${role.name}" th:value="${role.id}"/>
+                            - <small>[[${role.description}]]</small>
+                        </label>
+
+                        <br>
+                    </th:block>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <div class="col-sm-4 col-form-label">Enabled:</div>
+                <div class="col-sm-8">
+                    <input class="form-check" type="checkbox" th:field="*{enabled}"/>
+                </div>
+            </div>
+
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary m-3">Save</button>
+                <button id="btnCancel" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </form>
+
     <footer class="text-center">
         <p>&copy; 2021 <strong>Shopme</strong>. All Rights Reserved</p>
     </footer>
+    <script>
+        $(function(){
+            $('#btnCancel').click(function () {
+                window.location = '[[@{/users}]]';
+            })
+        })
+    </script>
 </div>
 </body>
 </html>
