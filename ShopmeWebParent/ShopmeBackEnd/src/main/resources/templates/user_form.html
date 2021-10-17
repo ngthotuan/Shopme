@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Shopme Admin</title>
+    <title th:text="${pageTitle}">Create new user</title>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.1/css/bootstrap.min.css}">
     <script th:src="@{/webjars/bootstrap/5.1.1/js/bootstrap.min.js}"></script>
     <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
@@ -60,10 +60,11 @@
             </div>
         </div>
     </nav>
-    <h2>Manager Users | Create New User</h2>
+    <h2>Manager Users | <span th:text="${pageTitle}">Create new user</span></h2>
 
     <form id="formUser" th:action="@{/users/save}" th:object="${user}" method="post" style="max-width: 750px"
           class="m-auto">
+        <input th:field="*{id}" type="hidden">
         <div class="border border-success rounded p-3">
             <div class="mb-3 row">
                 <div class="col-sm-4 col-form-label">Email:</div>
@@ -92,8 +93,11 @@
             <div class="mb-3 row">
                 <div class="col-sm-4 col-form-label">Password:</div>
                 <div class="col-sm-8">
-                    <input class="form-control" type="password" required
+                    <input class="form-control" placeholder="Place empty if you don't want to change password"
+                           th:if="${user.id}" type="password"
                            th:field="*{password}" minlength="8" maxlength="20">
+                    <input class="form-control" maxlength="20" minlength="8" required
+                           th:field="*{password}" th:unless="${user.id}" type="password">
                 </div>
             </div>
 
@@ -150,9 +154,11 @@
             $('#btnCancel').click(function () {
                 window.location = '[[@{/users}]]';
             })
+
             $('#btnSubmit').click(function (e) {
                 e.preventDefault();
                 const params = {
+                    id: $('#id').val(),
                     email: $('#email').val()
                 }
 
@@ -161,7 +167,7 @@
                         if (data) {
                             $('#formUser').submit();
                         } else {
-                            showModal('Error', 'Email already in use');
+                            showModal('Warning', 'There are another user with email ' + $('#email').val());
                         }
                     })
                     .fail(function (e) {

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,6 +31,7 @@ public class UserController {
         User user = new User();
         user.setEnabled(true);
         List<Role> roles = roleService.getAll();
+        model.addAttribute("pageTitle", "Create New User");
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
         return "user_form";
@@ -40,5 +42,21 @@ public class UserController {
         userService.save(user);
         redirectAttributes.addFlashAttribute("message", "The user has been created successfully");
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/edit/{id}")
+    public String updateUser(Model model, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            User user = userService.findById(id);
+            List<Role> roles = roleService.getAll();
+            model.addAttribute("pageTitle", String.format("Edit User ID (%s)", user.getId()));
+            model.addAttribute("user", user);
+            model.addAttribute("roles", roles);
+            return "user_form";
+
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("message", ex.getMessage());
+            return "redirect:/users";
+        }
     }
 }

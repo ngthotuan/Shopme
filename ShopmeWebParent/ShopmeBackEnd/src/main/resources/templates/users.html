@@ -96,9 +96,9 @@
                 </div>
             </td>
             <td class="text-center">
-                <div class="btn btn-success text-center">
+                <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}" title="Edit this user">
                     <i class="fa fa-edit"></i>
-                </div>
+                </a>
                 <div class="btn btn-danger text-center">
                     <i class="fa fa-trash"></i>
                 </div>
