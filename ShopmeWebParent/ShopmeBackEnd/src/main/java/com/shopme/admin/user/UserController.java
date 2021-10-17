@@ -4,6 +4,7 @@ import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -29,7 +30,25 @@ public class UserController {
 
     @GetMapping("users")
     public String listAll(Model model) {
-        List<User> users = userService.listAll();
+        return listByPage(model, 1);
+    }
+
+    @GetMapping("users/page/{pageNum}")
+    public String listByPage(Model model, @PathVariable Integer pageNum) {
+        Page<User> userPage = userService.listByPage(pageNum);
+        List<User> users = userPage.getContent();
+
+        long startCount = (long) (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
+        long endCount = pageNum * UserService.USERS_PER_PAGE;
+        if (endCount > userPage.getTotalElements()) {
+            endCount = userPage.getTotalElements();
+        }
+
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalItems", userPage.getTotalElements());
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("users", users);
         return "users";
     }

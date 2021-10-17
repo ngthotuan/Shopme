@@ -2,6 +2,8 @@ package com.shopme.admin.user;
 
 import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    public static final int USERS_PER_PAGE = 4;
+
     public List<User> listAll() {
         return userRepository.findAll();
     }
+
+    public Page<User> listByPage(int pageNum) {
+        PageRequest pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE);
+        return userRepository.findAll(pageable);
+    }
+
 
     public User save(User user) {
         boolean isUpdatingUser = user.getId() != null;
