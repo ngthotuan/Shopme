@@ -63,7 +63,7 @@
     <h2>Manager Users | <span th:text="${pageTitle}">Create new user</span></h2>
 
     <form id="formUser" th:action="@{/users/save}" th:object="${user}" method="post" style="max-width: 750px"
-          class="m-auto">
+          class="m-auto" enctype="multipart/form-data">
         <input th:field="*{id}" type="hidden">
         <div class="border border-success rounded p-3">
             <div class="mb-3 row">
@@ -123,6 +123,15 @@
                 </div>
             </div>
 
+            <div class="mb-3 row">
+                <div class="col-sm-4 col-form-label">Photos:</div>
+                <div class="col-sm-8">
+                    <input th:field="*{photos}" type="hidden">
+                    <input accept="image/png, image/jpg" class="form-file" id="fileImage" name="image" type="file"/>
+                    <img alt="Photos preview" class="img-fluid" id="thumbnail" th:src="@{${user.photosImagePath}}"/>
+                </div>
+            </div>
+
 
             <div class="text-center mt-4">
                 <button id="btnSubmit" type="submit" class="btn btn-primary m-3">Save</button>
@@ -150,10 +159,25 @@
         <p>&copy; 2021 <strong>Shopme</strong>. All Rights Reserved</p>
     </footer>
     <script>
+
+
         $(function () {
             $('#btnCancel').click(function () {
                 window.location = '[[@{/users}]]';
             })
+
+            $('#fileImage').change(function () {
+                const fileSize = this.files[0].size;
+                if (fileSize > 1048576) {
+                    this.setCustomValidity("You must choose an image less than 1MB!");
+                    this.reportValidity();
+                } else {
+                    this.setCustomValidity("");
+                    showImageThumbnail(this);
+                }
+
+            })
+
 
             $('#btnSubmit').click(function (e) {
                 e.preventDefault();
@@ -183,6 +207,15 @@
                 $('#modalDialog').modal('show');
             }
         })
+
+        function showImageThumbnail(fileInput) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                $('#thumbnail').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
+        }
     </script>
 </div>
 </body>

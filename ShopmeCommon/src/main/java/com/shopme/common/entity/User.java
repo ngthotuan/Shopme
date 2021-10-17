@@ -49,4 +49,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (id == null || photos == null) {
+            return "/images/default-user.png";
+        }
+        return String.format("/user-photos/%d/%s", id, photos);
+    }
 }
