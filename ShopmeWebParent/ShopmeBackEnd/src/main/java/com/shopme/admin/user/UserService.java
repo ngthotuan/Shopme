@@ -50,4 +50,12 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("Could not found user with ID " + id));
     }
 
+    public void delete(Long id) {
+        Long countById = userRepository.countById(id);
+        if (countById == null || countById == 0) {
+            throw new UserNotFoundException("Could not found user with ID " + id);
+        }
+        userRepository.deleteById(id);
+    }
+
 }

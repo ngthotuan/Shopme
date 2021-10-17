@@ -99,9 +99,13 @@
                 <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}" title="Edit this user">
                     <i class="fa fa-edit"></i>
                 </a>
-                <div class="btn btn-danger text-center">
+                <a class="btn btn-danger text-center link-delete"
+                   th:href="@{/users/delete/} + ${user.id}"
+                   th:userId="${user.id}"
+                   th:userName="${user.firstName} + ' ' + ${user.lastName}"
+                   title="Delete this user">
                     <i class="fa fa-trash"></i>
-                </div>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -109,6 +113,36 @@
     <footer class="text-center">
         <p>&copy; 2021 <strong>Shopme</strong>. All Rights Reserved</p>
     </footer>
+    <div class="modal fade text-center" id="deleteConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm delete</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmText">Do you want to delete user ID</p>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-success" href="#" id="confirmYes" type="button">Yes</a>
+                    <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+    $(function () {
+        $('.link-delete').click(function (e) {
+            e.preventDefault();
+            const link = $(this);
+            const userId = link.attr('userId');
+            const userName = link.attr('userName');
+            $('#confirmText').html(`Do you want to delete user <br>ID: <b>${userId}</b>, name: <b>${userName}</b>`);
+            $('#confirmYes').attr('href', link.attr('href'));
+            $('#deleteConfirmation').modal('show');
+        })
+    })
+</script>
 </body>
 </html>
