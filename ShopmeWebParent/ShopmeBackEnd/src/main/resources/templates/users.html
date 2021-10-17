@@ -88,12 +88,18 @@
             <td>[[${user.lastName}]]</td>
             <td>[[${user.roles}]]</td>
             <td class="text-center">
-                <div class="btn btn-primary text-center" th:if="${user.enabled}">
+                <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+                   th:if="${user.enabled}"
+                   title="Disable this user"
+                >
                     <i class="fa fa-check-circle"></i>
-                </div>
-                <div class="btn btn-secondary text-center" th:unless="${user.enabled}">
-                    <i class="fa fa-check-circle"></i>
-                </div>
+                </a>
+                <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+                   th:unless="${user.enabled}"
+                   title="Enable this user"
+                >
+                    <i class="fa fa-circle"></i>
+                </a>
             </td>
             <td class="text-center">
                 <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}" title="Edit this user">

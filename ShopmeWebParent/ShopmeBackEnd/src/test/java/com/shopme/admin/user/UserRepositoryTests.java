@@ -99,5 +99,16 @@ public class UserRepositoryTests {
         Assertions.assertThat(countById).isGreaterThan(0);
     }
 
+    @Test
+    public void testDisabledUser() {
+        Long id = 2L;
+        userRepository.updateEnabledStatus(id, false);
+    }
+
+    @Test
+    public void testEnabledUser() {
+        Long id = 2L;
+        userRepository.updateEnabledStatus(id, true);
+    }
 
 }

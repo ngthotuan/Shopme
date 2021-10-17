@@ -4,6 +4,7 @@ import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Transactional
 public class UserController {
 
     private final UserService userService;
@@ -61,13 +63,23 @@ public class UserController {
     }
 
     @GetMapping("/users/delete/{id}")
-    public String deleteUser(Model model, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             userService.delete(id);
             redirectAttributes.addFlashAttribute("message", String.format("The user with ID %d has been delete successfully", id));
         } catch (UserNotFoundException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
         }
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users/{id}/enabled/{enabled}")
+    public String updateUserStatus(@PathVariable Long id,
+                                   @PathVariable boolean enabled,
+                                   RedirectAttributes redirectAttributes) {
+        String status = enabled ? "enabled" : "disabled";
+        userService.updateUserEnabledStatus(id, enabled);
+        redirectAttributes.addFlashAttribute("message", String.format("The user with ID %d has been %s", id, status));
         return "redirect:/users";
     }
 }
