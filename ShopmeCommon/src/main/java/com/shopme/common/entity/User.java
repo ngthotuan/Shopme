@@ -22,6 +22,7 @@ public class User {
     @Column(length = 128, nullable = false,unique = true)
     private String email;
     @Column(length = 64, nullable = false)
+    @ToString.Exclude
     private String password;
     @Column(name = "first_name", length = 45, nullable = false)
     private String firstName;
