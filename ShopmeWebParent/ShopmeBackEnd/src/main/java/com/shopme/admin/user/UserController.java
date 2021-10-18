@@ -87,8 +87,9 @@ public class UserController {
             }
             userService.save(user);
         }
-        redirectAttributes.addFlashAttribute("message", "The user has been created successfully");
-        return "redirect:/users";
+        redirectAttributes.addFlashAttribute("message", "The user has been saved successfully");
+
+        return redirectAfterUserModified(user);
     }
 
     @GetMapping("/users/edit/{id}")
@@ -126,5 +127,10 @@ public class UserController {
         userService.updateUserEnabledStatus(id, enabled);
         redirectAttributes.addFlashAttribute("message", String.format("The user with ID %d has been %s", id, status));
         return "redirect:/users";
+    }
+
+    private String redirectAfterUserModified(User user) {
+        String firstPartOfEmail = user.getEmail().split("@")[0];
+        return "redirect:/users/page/1/?sortField=id&sortType=asc&keyword=" + firstPartOfEmail;
     }
 }
