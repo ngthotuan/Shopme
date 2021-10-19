@@ -145,6 +145,14 @@ public class UserController {
         excelExporter.export(users, response);
     }
 
+    @GetMapping("/users/export/pdf")
+    public void exportUserToPDF(HttpServletResponse response) throws IOException {
+        List<User> users = userService.listAll();
+        UserPDFExporter excelExporter = new UserPDFExporter();
+        excelExporter.export(users, response);
+    }
+
+
     private String redirectAfterUserModified(User user) {
         String firstPartOfEmail = user.getEmail().split("@")[0];
         return "redirect:/users/page/1/?sortField=id&sortType=asc&keyword=" + firstPartOfEmail;
