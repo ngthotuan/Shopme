@@ -62,7 +62,9 @@
         </div>
     </nav>
     <h2>Manager Users</h2>
-    <a th:href="@{/users/new}">Create user</a>
+    <a th:href="@{/users/new}">Create New User</a>
+    &nbsp; | &nbsp;
+    <a th:href="@{/users/export/csv}">Export To CSV</a>
     <div class="text-center alert alert-success alert-dismissible fade show" th:if="${message}">
         <span th:text="${message}"></span>
         <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>

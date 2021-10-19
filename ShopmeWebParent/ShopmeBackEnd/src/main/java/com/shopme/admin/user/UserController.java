@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -127,6 +128,13 @@ public class UserController {
         userService.updateUserEnabledStatus(id, enabled);
         redirectAttributes.addFlashAttribute("message", String.format("The user with ID %d has been %s", id, status));
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/export/csv")
+    public void exportUserToCSV(HttpServletResponse response) throws IOException {
+        List<User> users = userService.listAll();
+        UserCSVExporter csvExporter = new UserCSVExporter();
+        csvExporter.export(users, response);
     }
 
     private String redirectAfterUserModified(User user) {

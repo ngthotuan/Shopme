@@ -20,7 +20,7 @@ public class UserService {
     public static final int USERS_PER_PAGE = 4;
 
     public List<User> listAll() {
-        return userRepository.findAll();
+        return userRepository.findAll(Sort.by("firstName").ascending());
     }
 
     public Page<User> listByPage(int pageNum, String sortField, String sortType, String keyword) {
