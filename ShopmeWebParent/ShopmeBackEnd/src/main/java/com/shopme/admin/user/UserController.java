@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("users")
     public String listAll(Model model) {
-        return listByPage(model, 1, "id", "asc", null);
+        return listByPage(model, 1, "firstName", "asc", null);
     }
 
     @GetMapping("users/page/{pageNum}")

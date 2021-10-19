@@ -1,0 +1,36 @@
+@media screen and (max-width: 768px) {
+    /*small screen */
+    .full-details {
+        display: none;
+    }
+
+    .less-details {
+        display: block;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    /*medium screen */
+    .full-details {
+        display: block;
+    }
+
+    .less-details {
+        display: none;
+    }
+
+    .hideable-column {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    /*large screen */
+    .less-details {
+        display: none;
+    }
+
+    .hideable-column {
+        display: table-cell;
+    }
+}

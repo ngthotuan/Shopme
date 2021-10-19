@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <body>
-<th th:fragment="column_link(fieldName, fieldLabel)">
+<th th:class="${hiddenMedium ? 'hideable-column' : ''}" th:fragment="column_link(fieldName, fieldLabel, hiddenMedium)">
     <a class="text-white text-decoration-none"
        th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortType=' + ${sortField != fieldName ? sortType : sortTypeReverse} + ${keyword != null ? '&keyword=' + keyword : ''} }"
        title="Sort this column">

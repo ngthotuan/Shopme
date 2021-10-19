@@ -58,4 +58,9 @@ public class User {
         }
         return String.format("/user-photos/%d/%s", id, photos);
     }
+
+    @Transient
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }
