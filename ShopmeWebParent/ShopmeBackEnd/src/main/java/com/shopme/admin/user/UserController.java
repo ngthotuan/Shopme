@@ -138,6 +138,13 @@ public class UserController {
         csvExporter.export(users, response);
     }
 
+    @GetMapping("/users/export/excel")
+    public void exportUserToExcel(HttpServletResponse response) throws IOException {
+        List<User> users = userService.listAll();
+        UserExcelExporter excelExporter = new UserExcelExporter();
+        excelExporter.export(users, response);
+    }
+
     private String redirectAfterUserModified(User user) {
         String firstPartOfEmail = user.getEmail().split("@")[0];
         return "redirect:/users/page/1/?sortField=id&sortType=asc&keyword=" + firstPartOfEmail;
