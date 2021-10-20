@@ -1,43 +1,40 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
-          name="viewport">
-    <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <title th:text="${pageTitle}">Create new user</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.1/css/bootstrap.min.css}">
-</head>
+<head th:replace="partial/header :: head('Login - Shopme Admin')"></head>
 <body>
-<div class="container mt-3">
-    <div class="" style="max-width: 500px; margin: 0 auto">
-        <div class="text-center">
-            <img alt="Shopme Logo" class="img-fluid" th:src="@{/images/ShopmeAdminBig.png}"/>
-            <span class="text-danger" th:if="${param.error}">
+<div class="container-fluid">
+    <div class="content">
+        <div class="" style="max-width: 500px; margin: 0 auto">
+            <div class="text-center">
+                <img alt="Shopme Logo" class="img-fluid" th:src="@{/images/ShopmeAdminBig.png}"/>
+                <span class="text-danger" th:if="${param.error}">
                 [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
             </span>
-            <span class="text-warning" th:if="${param.logout}">
+                <span class="text-warning" th:if="${param.logout}">
                 You have been logged out successfully!
             </span>
+            </div>
+            <form class="m-3 p-3 border border-primary rounded" method="post" th:action="@{/login}">
+                <div class="mb-3">
+                    <label class="form-label" for="email">Email address</label>
+                    <input class="form-control" id="email" name="email" required type="email">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-control" id="password" name="password" required type="password">
+                </div>
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" id="rememberMe" type="checkbox">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-lg btn-success" type="submit">Login</button>
+                </div>
+            </form>
         </div>
-        <form class="m-3 p-3 border border-primary rounded" method="post" th:action="@{/login}">
-            <div class="mb-3">
-                <label class="form-label" for="email">Email address</label>
-                <input class="form-control" id="email" name="email" required type="email">
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="password">Password</label>
-                <input class="form-control" id="password" name="password" required type="password">
-            </div>
-            <div class="mb-3 form-check">
-                <input class="form-check-input" id="rememberMe" type="checkbox">
-                <label class="form-check-label" for="rememberMe">Remember me</label>
-            </div>
-            <div class="text-center">
-                <button class="btn btn-lg btn-success" type="submit">Login</button>
-            </div>
-        </form>
     </div>
+    <div th:replace="partial/footer :: footer"></div>
 </div>
+<div th:replace="partial/footer :: script"></div>
 </body>
 </html>

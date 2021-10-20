@@ -1,245 +1,193 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Shopme Admin</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.1/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/webjars/font-awesome/5.15.4/css/all.css}">
-    <link rel="stylesheet" th:href="@{/style.css}">
-</head>
+<head th:replace="partial/header :: head('Users - Shopme Admin')"></head>
 <body>
-<div class="container">
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a th:href="@{/}" class="navbar-brand">
-                <img th:src="@{/images/ShopmeAdminSmall.png}" alt="Logo"/>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a th:href="@{/users}" class="nav-link">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/categories}" class="nav-link">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/brands}" class="nav-link">Brands</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/products}" class="nav-link">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/customers}" class="nav-link">Customers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/shipping}" class="nav-link">Shipping</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/orders}" class="nav-link">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/report}" class="nav-link">Sales Report</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/articles}" class="nav-link">Articles</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/menus}" class="nav-link">Menus</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/settings}" class="nav-link">Settings</a>
-                    </li>
-                </ul>
-            </div>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="content">
+        <h2>Manager Users</h2>
+        <a class="fa fa-user-plus fa-2x text-decoration-none text-success mx-2" th:href="@{/users/new}"
+           title="Create New User"></a>
+        <a class="fa fa-file-csv fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/csv}"
+           title="Export to CSV"></a>
+        <a class="fa fa-file-excel fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/excel}"
+           title="Export to EXCEL"></a>
+        <a class="fa fa-file-pdf fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/pdf}"
+           title="Export to PDF"></a>
+        <div class="text-center alert alert-success alert-dismissible fade show m-2" th:if="${message}">
+            <span th:text="${message}"></span>
+            <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
         </div>
-    </nav>
-    <h2>Manager Users</h2>
-    <a class="fa fa-user-plus fa-2x text-decoration-none text-secondary mx-2" th:href="@{/users/new}"></a>
-    <a class="fa fa-file-csv fa-2x text-decoration-none text-secondary mx-2" th:href="@{/users/export/csv}"></a>
-    <a class="fa fa-file-excel fa-2x text-decoration-none text-secondary mx-2" th:href="@{/users/export/excel}"></a>
-    <a class="fa fa-file-pdf fa-2x text-decoration-none text-secondary mx-2" th:href="@{/users/export/pdf}"></a>
-    <div class="text-center alert alert-success alert-dismissible fade show m-2" th:if="${message}">
-        <span th:text="${message}"></span>
-        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
-    </div>
-    <div>
-        <form class="m-2 row g-3 align-items-center"
-              th:action="@{/users/page/1}">
-            <input name="sortField" th:value="${sortField}" type="hidden">
-            <input name="sortType" th:value="${sortType}" type="hidden">
-            <div class="col-auto">
-                <label class="col-form-label">Filter:</label>
-            </div>
-            <div class="col-auto">
-                <input class="form-control" name="keyword" required th:value="${keyword}" type="search">
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-primary" type="submit" value="Search">
-                    <i class=" fa fa-search"></i>
-                </button>
-            </div>
-            <div class="col-auto">
-                <a th:href="@{/users}">
-                    <button class="btn btn-secondary" type="button" value="Clear">
-                        <i class="fa fa-eraser"></i>
+        <div>
+            <form class="m-2 row g-3 align-items-center"
+                  th:action="@{/users/page/1}">
+                <input name="sortField" th:value="${sortField}" type="hidden">
+                <input name="sortType" th:value="${sortType}" type="hidden">
+                <div class="col-auto">
+                    <label class="col-form-label">Filter:</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control" name="keyword" required th:value="${keyword}" type="search">
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" type="submit" value="Search">
+                        <i class=" fa fa-search"></i>
                     </button>
-                </a>
-            </div>
-        </form>
-    </div>
-    <div class="full-details">
-        <table class="table table-responsive-xl table-hover table-bordered table-striped">
-            <thead class="table-dark text-center">
-            <th th:replace="fragments::column_link('id', 'User ID', true)"></th>
-            <th>Photos</th>
-            <th th:replace="fragments::column_link('email', 'Email', true)"></th>
-            <th th:replace="fragments::column_link('firstName', 'First Name', false)"></th>
-            <th th:replace="fragments::column_link('lastName', 'Last Name', false)"></th>
-            <th>Roles</th>
-            <th th:replace="fragments::column_link('enabled', 'Enabled', false)"></th>
-            <th>Actions</th>
-            </thead>
-            <tbody>
-            <tr th:each="user:${users}">
-                <td class="text-center hideable-column">[[${user.id}]]</td>
-                <td class="text-center">
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/users}">
+                        <button class="btn btn-secondary" type="button" value="Clear">
+                            <i class="fa fa-eraser"></i>
+                        </button>
+                    </a>
+                </div>
+            </form>
+        </div>
+        <div class="full-details">
+            <table class="table table-responsive-xl table-hover table-bordered table-striped">
+                <thead class="table-dark text-center">
+                <th th:replace="fragments::column_link('id', 'User ID', true)"></th>
+                <th>Photos</th>
+                <th th:replace="fragments::column_link('email', 'Email', true)"></th>
+                <th th:replace="fragments::column_link('firstName', 'First Name', false)"></th>
+                <th th:replace="fragments::column_link('lastName', 'Last Name', false)"></th>
+                <th>Roles</th>
+                <th th:replace="fragments::column_link('enabled', 'Enabled', false)"></th>
+                <th>Actions</th>
+                </thead>
+                <tbody>
+                <tr th:each="user:${users}">
+                    <td class="text-center hideable-column">[[${user.id}]]</td>
+                    <td class="text-center">
+                        <i class="fa fa-user fa-2x" th:unless="${user.photos}"></i>
+                        <img class="img-fluid" style="width: 100px" th:alt="${user.photos}" th:if="${user.photos}"
+                             th:src="@{${user.photosImagePath}}">
+                    </td>
+                    <td class="hideable-column">[[${user.email}]]</td>
+                    <td>[[${user.firstName}]]</td>
+                    <td>[[${user.lastName}]]</td>
+                    <td>[[${user.roles}]]</td>
+                    <td class="text-center">
+                        <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+                           th:if="${user.enabled}"
+                           title="Disable this user"
+                        >
+                            <i class="fa fa-check-circle"></i>
+                        </a>
+                        <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+                           th:unless="${user.enabled}"
+                           title="Enable this user"
+                        >
+                            <i class="fa fa-circle"></i>
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}"
+                           title="Edit this user">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger text-center link-delete"
+                           th:href="@{/users/delete/} + ${user.id}"
+                           th:userId="${user.id}"
+                           th:userName="${user.firstName} + ' ' + ${user.lastName}"
+                           title="Delete this user">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="less-details">
+            <div class="row mb-3" th:each="user:${users}">
+                <div class="col-4">
                     <i class="fa fa-user fa-2x" th:unless="${user.photos}"></i>
                     <img class="img-fluid" style="width: 100px" th:alt="${user.photos}" th:if="${user.photos}"
                          th:src="@{${user.photosImagePath}}">
-                </td>
-                <td class="hideable-column">[[${user.email}]]</td>
-                <td>[[${user.firstName}]]</td>
-                <td>[[${user.lastName}]]</td>
-                <td>[[${user.roles}]]</td>
-                <td class="text-center">
-                    <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-                       th:if="${user.enabled}"
-                       title="Disable this user"
-                    >
-                        <i class="fa fa-check-circle"></i>
-                    </a>
-                    <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-                       th:unless="${user.enabled}"
-                       title="Enable this user"
-                    >
-                        <i class="fa fa-circle"></i>
-                    </a>
-                </td>
-                <td class="text-center">
-                    <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}"
-                       title="Edit this user">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    <a class="btn btn-danger text-center link-delete"
-                       th:href="@{/users/delete/} + ${user.id}"
-                       th:userId="${user.id}"
-                       th:userName="${user.firstName} + ' ' + ${user.lastName}"
-                       title="Delete this user">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="less-details">
-        <div class="row mb-3" th:each="user:${users}">
-            <div class="col-4">
-                <i class="fa fa-user fa-2x" th:unless="${user.photos}"></i>
-                <img class="img-fluid" style="width: 100px" th:alt="${user.photos}" th:if="${user.photos}"
-                     th:src="@{${user.photosImagePath}}">
+                </div>
+                <div class="col-8">
+                    <div>
+                        <h3>[[${user.fullName}]]</h3>
+                    </div>
+                    <div>
+                        <i>[[${user.roles}]]</i>
+                    </div>
+                    <div class="mt-1">
+                        <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+                           th:if="${user.enabled}"
+                           title="Disable this user"
+                        >
+                            <i class="fa fa-check-circle"></i>
+                        </a>
+                        <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+                           th:unless="${user.enabled}"
+                           title="Enable this user"
+                        >
+                            <i class="fa fa-circle"></i>
+                        </a>
+                        <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}"
+                           title="Edit this user">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger text-center link-delete"
+                           th:href="@{/users/delete/} + ${user.id}"
+                           th:userId="${user.id}"
+                           th:userName="${user.firstName} + ' ' + ${user.lastName}"
+                           title="Delete this user">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="col-8">
-                <div>
-                    <h3>[[${user.fullName}]]</h3>
-                </div>
-                <div>
-                    <i>[[${user.roles}]]</i>
-                </div>
-                <div class="mt-1">
-                    <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-                       th:if="${user.enabled}"
-                       title="Disable this user"
-                    >
-                        <i class="fa fa-check-circle"></i>
-                    </a>
-                    <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-                       th:unless="${user.enabled}"
-                       title="Enable this user"
-                    >
-                        <i class="fa fa-circle"></i>
-                    </a>
-                    <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}"
-                       title="Edit this user">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    <a class="btn btn-danger text-center link-delete"
-                       th:href="@{/users/delete/} + ${user.id}"
-                       th:userId="${user.id}"
-                       th:userName="${user.firstName} + ' ' + ${user.lastName}"
-                       title="Delete this user">
-                        <i class="fa fa-trash"></i>
-                    </a>
+        </div>
+        <div class="m-1 text-center" th:if="${totalItems > 0}">
+            <b>Showing users #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
+        </div>
+        <div class="m-1 text-center" th:unless="${totalItems > 0}">
+            <b>No users found</b>
+        </div>
+        <nav th:if="${totalPages > 0}">
+            <ul class="pagination justify-content-center flex-wrap">
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments::page_link(1, 'First')"></a>
+                </li>
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments::page_link(${currentPage - 1}, 'Previous')"></a>
+                </li>
+                <li th:class="${i == currentPage ? 'page-item active' : 'page-item' }"
+                    th:each="i:${#numbers.sequence(1, totalPages)}">
+                    <a th:replace="fragments::page_link(${i}, ${i})"></a>
+                </li>
+                <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments::page_link(${currentPage + 1}, 'Previous')"></a>
+                </li>
+                <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments::page_link(${totalPages}, 'Last')"></a>
+                </li>
+            </ul>
+        </nav>
+        <div class="modal fade text-center" id="deleteConfirmation">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm delete</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmText">Do you want to delete user ID</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-success" href="#" id="confirmYes" type="button">Yes</a>
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="m-1 text-center" th:if="${totalItems > 0}">
-        <b>Showing users #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
-    </div>
-    <div class="m-1 text-center" th:unless="${totalItems > 0}">
-        <b>No users found</b>
-    </div>
-    <nav th:if="${totalPages > 0}">
-        <ul class="pagination justify-content-center flex-wrap">
-            <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                <a th:replace="fragments::page_link(1, 'First')"></a>
-            </li>
-            <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                <a th:replace="fragments::page_link(${currentPage - 1}, 'Previous')"></a>
-            </li>
-            <li th:class="${i == currentPage ? 'page-item active' : 'page-item' }"
-                th:each="i:${#numbers.sequence(1, totalPages)}">
-                <a th:replace="fragments::page_link(${i}, ${i})"></a>
-            </li>
-            <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                <a th:replace="fragments::page_link(${currentPage + 1}, 'Previous')"></a>
-            </li>
-            <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                <a th:replace="fragments::page_link(${totalPages}, 'Last')"></a>
-            </li>
-        </ul>
-    </nav>
-    <footer class="text-center">
-        <p>&copy; 2021 <strong>Shopme</strong>. All Rights Reserved</p>
-    </footer>
-    <div class="modal fade text-center" id="deleteConfirmation">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Confirm delete</h5>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirmText">Do you want to delete user ID</p>
-                </div>
-                <div class="modal-footer">
-                    <a class="btn btn-success" href="#" id="confirmYes" type="button">Yes</a>
-                    <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="partial/footer :: footer"></div>
 </div>
-<script th:src="@{/webjars/bootstrap/5.1.1/js/bootstrap.min.js}"></script>
-<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+</body>
+<div th:replace="partial/footer :: script"></div>
 <script>
     $(function () {
         $('.link-delete').click(function (e) {
@@ -253,5 +201,4 @@
         })
     })
 </script>
-</body>
 </html>
