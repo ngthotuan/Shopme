@@ -2,6 +2,7 @@ package com.shopme.admin.security;
 
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
+@Data
 public class ShopmeUserDetails implements UserDetails {
 
     private final User user;
@@ -61,4 +63,13 @@ public class ShopmeUserDetails implements UserDetails {
     public String getFullName() {
         return user.getFullName();
     }
+
+    public void setFirstName(String firstName) {
+        user.setFirstName(firstName);
+    }
+
+    public void setLastName(String lastName) {
+        user.setLastName(lastName);
+    }
+
 }

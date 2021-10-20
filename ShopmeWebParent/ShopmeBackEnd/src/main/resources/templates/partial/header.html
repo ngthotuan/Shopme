@@ -62,6 +62,7 @@
                         <span sec:authentication="principal.fullName"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-dark">
+                        <a class="dropdown-item" th:href="@{/account}">Account</a>
                         <a class="dropdown-item" href="" id="logoutLink">Logout</a>
                     </div>
                     <form hidden id="formLogout" method="post" th:action="@{/logout}">

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -78,6 +79,26 @@ public class UserService {
 
     public void updateUserEnabledStatus(Long id, boolean status) {
         userRepository.updateEnabledStatus(id, status);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    public User updateAccount(User account) {
+        Optional<User> opt = userRepository.findById(account.getId());
+        User user = opt.orElseThrow(() -> new UserNotFoundException("Not found User"));
+        if (!account.getPassword().isEmpty()) {
+            user.setPassword(account.getPassword());
+            encodePassword(user);
+        }
+        if (account.getPhotos() != null) {
+            user.setPhotos(account.getPhotos());
+        }
+
+        user.setFirstName(account.getFirstName());
+        user.setLastName(account.getLastName());
+        return userRepository.save(user);
     }
 
 }
