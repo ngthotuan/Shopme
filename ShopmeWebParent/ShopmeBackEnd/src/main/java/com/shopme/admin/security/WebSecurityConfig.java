@@ -1,6 +1,5 @@
 package com.shopme.admin.security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -9,23 +8,26 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final ShopmeUserDetailsService shopmeUserDetailsService;
+    @Bean
+    public BCryptPasswordEncoder getBCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
-    BCryptPasswordEncoder getBCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+    public UserDetailsService userDetailsService() {
+        return new ShopmeUserDetailsService();
     }
 
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(getBCryptPasswordEncoder());
-        authenticationProvider.setUserDetailsService(shopmeUserDetailsService);
+        authenticationProvider.setUserDetailsService(userDetailsService());
         return authenticationProvider;
     }
 
@@ -46,7 +48,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .permitAll()
                 .and().logout()
-                .permitAll();
+                .permitAll()
+                .and().rememberMe()
+                .key("keyFixed")
+                .tokenValiditySeconds(7 * 24 * 60 * 60);
 
     }
 
