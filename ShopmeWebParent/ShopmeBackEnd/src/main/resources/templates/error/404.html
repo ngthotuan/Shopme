@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="partial/header :: head('Error - Shopme Admin')"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="content text-center text-danger">
+        <h2 class="mt-5">Sorry, the requested page could not be found!</h2>
+    </div>
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+<div th:replace="partial/footer :: script"></div>
+</body>
+</html>
