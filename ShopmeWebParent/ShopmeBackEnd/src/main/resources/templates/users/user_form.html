@@ -79,7 +79,7 @@
 
                 <div class="text-center mt-4">
                     <button class="btn btn-primary m-3" id="btnSubmit" type="submit">Save</button>
-                    <button class="btn btn-secondary" id="btnCancel">Cancel</button>
+                    <button class="btn btn-secondary" id="btnCancel" type="button">Cancel</button>
                 </div>
             </div>
         </form>
@@ -104,33 +104,17 @@
 </div>
 <div th:replace="partial/footer :: script"></div>
 <script>
+    moduleURL = '[[@{/users}]]';
     $(function () {
-        $('#btnCancel').click(function () {
-            window.location = '[[@{/users}]]';
-        })
+        $('#btnSubmit').click(function (e) {
+            e.preventDefault();
+            const params = {
+                id: $('#id').val(),
+                email: $('#email').val()
+            }
 
-        $('#fileImage').change(function () {
-            const fileSize = this.files[0].size;
-            if (fileSize > 1048576) {
-                this.setCustomValidity("You must choose an image less than 1MB!");
-                    this.reportValidity();
-                } else {
-                    this.setCustomValidity("");
-                    showImageThumbnail(this);
-                }
-
-            })
-
-
-            $('#btnSubmit').click(function (e) {
-                e.preventDefault();
-                const params = {
-                    id: $('#id').val(),
-                    email: $('#email').val()
-                }
-
-                $.post("[[@{/users/check_email}]]", params)
-                    .done(function (data) {
+            $.post("[[@{/users/check_email}]]", params)
+                .done(function (data) {
                         if (data) {
                             $('#formUser').submit();
                         } else {
@@ -150,15 +134,7 @@
                 $('#modalDialog').modal('show');
             }
         })
-
-    function showImageThumbnail(fileInput) {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            $('#thumbnail').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(file);
-    }
 </script>
+<script th:src="@{/js/common_form.js}"></script>
 </body>
 </html>

@@ -75,6 +75,7 @@
 
                 <div class="text-center mt-4">
                     <button class="btn btn-primary m-3" id="btnSubmit" type="submit">Update</button>
+                    <button class="btn btn-secondary" id="btnCancel" type="button">Cancel</button>
                 </div>
             </div>
         </form>
@@ -83,22 +84,7 @@
 </div>
 <div th:replace="partial/footer :: script"></div>
 <script>
-    $(function () {
-        $('#fileImage').change(function () {
-            const fileSize = this.files[0].size;
-            if (fileSize > 1048576) {
-                this.setCustomValidity("You must choose an image less than 1MB!");
-                this.reportValidity();
-            } else {
-                this.setCustomValidity("");
-                showImageThumbnail(this);
-            }
-
-        })
-
-
-    })
-
+    moduleURL = '[[@{/}]]';
     function checkConfirmPassword(confirmPassword) {
         if (confirmPassword.value !== $('#password').val()) {
             confirmPassword.setCustomValidity("Password does not match");
@@ -106,15 +92,7 @@
             confirmPassword.setCustomValidity("");
         }
     }
-
-    function showImageThumbnail(fileInput) {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            $('#thumbnail').attr('src', e.target.result);
-        }
-        reader.readAsDataURL(file);
-    }
 </script>
+<script th:src="@{/js/common_form.js}"></script>
 </body>
 </html>
