@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <body>
-<th th:class="${hiddenMedium ? 'hideable-column' : ''}" th:fragment="column_link(fieldName, fieldLabel, hiddenMedium)">
+<th th:class="${hiddenMedium ? 'hideable-column' : ''}" th:fragment="column_link(module, fieldName, fieldLabel, hiddenMedium)">
     <a class="text-white text-decoration-none"
-       th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortType=' + ${sortField != fieldName ? sortType : sortTypeReverse} + ${keyword != null ? '&keyword=' + keyword : ''} }"
+       th:href="@{'/' + ${module} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortType=' + ${sortField != fieldName ? sortType : sortTypeReverse} + ${keyword != null ? '&keyword=' + keyword : ''} }"
        th:text="${fieldLabel}"
        title="Sort this column"></a>
     <i th:class="${sortType == 'asc' ? 'fa fa-sort-up' : 'fa fa-sort-down'}" th:if="${sortField == fieldName}"></i>
 </th>
-<a class="page-link" th:fragment="page_link(page, label)"
-   th:href="@{'/users/page/' + ${page} + '?sortField=' + ${sortField} + '&sortType=' + ${sortType} + ${keyword != null ? '&keyword=' + keyword : ''} }"
+<a class="page-link" th:fragment="page_link(module, page, label)"
+   th:href="@{'/' + ${module} + '/page/' + ${page} + '?sortField=' + ${sortField} + '&sortType=' + ${sortType} + ${keyword != null ? '&keyword=' + keyword : ''} }"
    th:text="${label}"></a>
 </body>
 </html>

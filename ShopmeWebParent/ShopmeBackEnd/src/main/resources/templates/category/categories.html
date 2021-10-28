@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head th:replace="partial/header :: head('Users - Shopme Admin')"></head>
+<head th:replace="partial/header :: head('Categories - Shopme Admin')"></head>
 <body>
 <div class="container-fluid">
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
-        <h2>Manager Users</h2>
-        <a class="fa fa-user-plus fa-2x text-decoration-none text-success mx-2" th:href="@{/users/new}"
-           title="Create New User"></a>
-        <a class="fa fa-file-csv fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/csv}"
+        <h2>Manager Category</h2>
+        <a class="fa fa-folder-plus fa-2x text-decoration-none text-success mx-2" th:href="@{/categories/new}"
+           title="Create New Category"></a>
+        <a class="fa fa-file-csv fa-2x text-decoration-none text-success mx-2" th:href="@{/categories/export/csv}"
            title="Export to CSV"></a>
-        <a class="fa fa-file-excel fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/excel}"
+        <a class="fa fa-file-excel fa-2x text-decoration-none text-success mx-2" th:href="@{/categories/export/excel}"
            title="Export to EXCEL"></a>
-        <a class="fa fa-file-pdf fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/pdf}"
+        <a class="fa fa-file-pdf fa-2x text-decoration-none text-success mx-2" th:href="@{/categories/export/pdf}"
            title="Export to PDF"></a>
         <div class="text-center alert alert-success alert-dismissible fade show m-2" th:if="${message}">
             <span th:text="${message}"></span>
@@ -20,7 +20,7 @@
         </div>
         <div>
             <form class="m-2 row g-3 align-items-center"
-                  th:action="@{/users/page/1}">
+                  th:action="@{/categories/page/1}">
                 <input name="sortField" th:value="${sortField}" type="hidden">
                 <input name="sortType" th:value="${sortType}" type="hidden">
                 <div class="col-auto">
@@ -35,7 +35,7 @@
                     </button>
                 </div>
                 <div class="col-auto">
-                    <a th:href="@{/users}">
+                    <a th:href="@{/categories}">
                         <button class="btn btn-secondary" type="button" value="Clear">
                             <i class="fa fa-eraser"></i>
                         </button>
@@ -46,94 +46,91 @@
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
-                <th th:replace="fragments::column_link('users', 'id', 'User ID', true)"></th>
-                <th>Photos</th>
-                <th th:replace="fragments::column_link('users', 'email', 'Email', true)"></th>
-                <th th:replace="fragments::column_link('users', 'firstName', 'First Name', false)"></th>
-                <th th:replace="fragments::column_link('users', 'lastName', 'Last Name', false)"></th>
-                <th>Roles</th>
-                <th th:replace="fragments::column_link('users', 'enabled', 'Enabled', false)"></th>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Alias</th>
+                <th>Enabled</th>
                 <th>Actions</th>
                 </thead>
                 <tbody>
-                <tr th:each="user:${users}">
-                    <td class="text-center hideable-column">[[${user.id}]]</td>
+                <tr th:each="category:${categories}">
+                    <td class="text-center hideable-column">[[${category.id}]]</td>
                     <td class="text-center">
-                        <i class="fa fa-user fa-2x" th:unless="${user.photos}"></i>
-                        <img class="img-fluid" style="width: 100px" th:alt="${user.photos}" th:if="${user.photos}"
-                             th:src="@{${user.photosImagePath}}">
+                        <i class="fa fa-folder fa-2x" th:unless="${category.image}"></i>
+                        <img class="img-fluid" style="width: 100px" th:alt="${category.image}" th:if="${category.image}"
+                             th:src="@{${category.photosImagePath}}">
                     </td>
-                    <td class="hideable-column">[[${user.email}]]</td>
-                    <td>[[${user.firstName}]]</td>
-                    <td>[[${user.lastName}]]</td>
-                    <td>[[${user.roles}]]</td>
+                    <td>[[${category.name}]]</td>
+                    <td>[[${category.alias}]]</td>
                     <td class="text-center">
-                        <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-                           th:if="${user.enabled}"
-                           title="Disable this user"
+                        <a class="btn btn-primary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
+                           th:if="${category.enabled}"
+                           title="Disable this category"
                         >
                             <i class="fa fa-check-circle"></i>
                         </a>
-                        <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-                           th:unless="${user.enabled}"
-                           title="Enable this user"
+                        <a class="btn btn-secondary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
+                           th:unless="${category.enabled}"
+                           title="Enable this category"
                         >
                             <i class="fa fa-circle"></i>
                         </a>
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}"
-                           title="Edit this user">
+                        <a class="btn btn-success text-center" th:href="@{/categories/edit/} + ${category.id}"
+                           title="Edit this category">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a class="btn btn-danger text-center link-delete"
-                           th:href="@{/users/delete/} + ${user.id}"
-                           th:userId="${user.id}"
-                           th:userName="${user.firstName} + ' ' + ${user.lastName}"
-                           title="Delete this user">
+                           th:href="@{/categories/delete/} + ${category.id}"
+                           th:categoryId="${category.id}"
+                           th:categoryName="${category.name}"
+                           title="Delete this category">
                             <i class="fa fa-trash"></i>
                         </a>
                     </td>
+
                 </tr>
                 </tbody>
             </table>
         </div>
         <div class="less-details">
-            <div class="row mb-3" th:each="user:${users}">
+            <div class="row mb-3" th:each="category:${categories}">
                 <div class="col-4">
-                    <i class="fa fa-user fa-2x" th:unless="${user.photos}"></i>
-                    <img class="img-fluid" style="width: 100px" th:alt="${user.photos}" th:if="${user.photos}"
-                         th:src="@{${user.photosImagePath}}">
+                    <i class="fa fa-folder fa-2x" th:unless="${category.image}"></i>
+                    <img class="img-fluid" style="width: 100px" th:alt="${category.image}" th:if="${category.image  }"
+                         th:src="@{${category.photosImagePath}}">
                 </div>
                 <div class="col-8">
                     <div>
-                        <h3>[[${user.fullName}]]</h3>
+                        <h3>[[${category.name}]]</h3>
                     </div>
                     <div>
-                        <i>[[${user.roles}]]</i>
+                        <i>[[${category.alias}]]</i>
                     </div>
                     <div class="mt-1">
-                        <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-                           th:if="${user.enabled}"
-                           title="Disable this user"
+                        <a class="btn btn-primary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
+                           th:if="${category.enabled}"
+                           title="Disable this category"
                         >
                             <i class="fa fa-check-circle"></i>
                         </a>
-                        <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-                           th:unless="${user.enabled}"
-                           title="Enable this user"
+                        <a class="btn btn-secondary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
+                           th:unless="${category.enabled}"
+                           title="Enable this category"
                         >
                             <i class="fa fa-circle"></i>
                         </a>
-                        <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}"
-                           title="Edit this user">
+                        <a class="btn btn-success text-center" th:href="@{/categories/edit/} + ${category.id}"
+                           title="Edit this category">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a class="btn btn-danger text-center link-delete"
-                           th:href="@{/users/delete/} + ${user.id}"
-                           th:userId="${user.id}"
-                           th:userName="${user.firstName} + ' ' + ${user.lastName}"
-                           title="Delete this user">
+                           th:href="@{/categories/delete/} + ${category.id}"
+                           th:categoryId="${category.id}"
+                           th:categoryName="${category.name}"
+                           title="Delete this category">
                             <i class="fa fa-trash"></i>
                         </a>
                     </div>
@@ -141,28 +138,28 @@
             </div>
         </div>
         <div class="m-1 text-center" th:if="${totalItems > 0}">
-            <b>Showing users #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
+            <b>Showing categories #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
         </div>
         <div class="m-1 text-center" th:unless="${totalItems > 0}">
-            <b>No users found</b>
+            <b>No categories found</b>
         </div>
         <nav th:if="${totalPages > 0}">
             <ul class="pagination justify-content-center flex-wrap">
                 <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                    <a th:replace="fragments::page_link('users', 1, 'First')"></a>
+                    <a th:replace="fragments::page_link('categories', 1, 'First')"></a>
                 </li>
                 <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                    <a th:replace="fragments::page_link('users', ${currentPage - 1}, 'Previous')"></a>
+                    <a th:replace="fragments::page_link('categories', ${currentPage - 1}, 'Previous')"></a>
                 </li>
                 <li th:class="${i == currentPage ? 'page-item active' : 'page-item' }"
                     th:each="i:${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="fragments::page_link('users', ${i}, ${i})"></a>
+                    <a th:replace="fragments::page_link('categories', ${i}, ${i})"></a>
                 </li>
                 <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                    <a th:replace="fragments::page_link('users', ${currentPage + 1}, 'Next')"></a>
+                    <a th:replace="fragments::page_link('categories', ${currentPage + 1}, 'Next')"></a>
                 </li>
                 <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                    <a th:replace="fragments::page_link('users', ${totalPages}, 'Last')"></a>
+                    <a th:replace="fragments::page_link('categories', ${totalPages}, 'Last')"></a>
                 </li>
             </ul>
         </nav>
@@ -174,7 +171,7 @@
                         <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
                     <div class="modal-body">
-                        <p id="confirmText">Do you want to delete user ID</p>
+                        <p id="confirmText">Do you want to delete category ID</p>
                     </div>
                     <div class="modal-footer">
                         <a class="btn btn-success" href="#" id="confirmYes" type="button">Yes</a>
@@ -193,9 +190,9 @@
         $('.link-delete').click(function (e) {
             e.preventDefault();
             const link = $(this);
-            const userId = link.attr('userId');
-            const userName = link.attr('userName');
-            $('#confirmText').html(`Do you want to delete user <br>ID: <b>${userId}</b>, name: <b>${userName}</b>`);
+            const categoryId = link.attr('categoryId');
+            const categoryName = link.attr('categoryName');
+            $('#confirmText').html(`Do you want to delete category <br>ID: <b>${categoryId}</b>, name: <b>${categoryName}</b>`);
             $('#confirmYes').attr('href', link.attr('href'));
             $('#deleteConfirmation').modal('show');
         })
