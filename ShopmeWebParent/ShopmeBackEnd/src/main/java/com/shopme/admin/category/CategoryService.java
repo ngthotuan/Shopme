@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,5 +32,28 @@ public class CategoryService {
             return categoryRepository.findAll(keyword, pageable);
         }
         return categoryRepository.findAll(pageable);
+    }
+
+    public List<Category> listCategoriesInForm() {
+        List<Category> categoriesInForm = new ArrayList<>();
+        List<Category> categories = categoryRepository.findAll();
+        for(Category category: categories) {
+            if(category.getParent() == null) {
+                categoriesInForm.add(Category.copyIdAndName(category));
+                printCategoryChildren(categoriesInForm, category, 1);
+            }
+        }
+
+        return categoriesInForm;
+    }
+
+    private void printCategoryChildren(List<Category> categories, Category parent, int level) {
+        for(Category category : parent.getChildren()) {
+            String categoryName = "--".repeat(Math.max(0, level)) +
+                    category.getName();
+            categories.add(Category.copyIdAndName(category.getId(), categoryName));
+
+            printCategoryChildren(categories, category, level + 1);
+        }
     }
 }

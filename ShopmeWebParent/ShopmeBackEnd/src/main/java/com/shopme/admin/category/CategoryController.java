@@ -1,8 +1,6 @@
 package com.shopme.admin.category;
 
-import com.shopme.admin.user.UserService;
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,13 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-
-//    @GetMapping("")
-//    public String index(Model model) {
-//        List<Category> categories = categoryService.listAll();
-//        model.addAttribute("categories", categories);
-//        return "category/categories";
-//    }
 
     @GetMapping("")
     public String listAll(Model model) {
@@ -58,4 +49,16 @@ public class CategoryController {
         model.addAttribute("keyword", keyword);
         return "category/categories";
     }
+
+    @GetMapping("/new")
+    public String createCategory(Model model) {
+        Category category = new Category();
+        List<Category> categories = categoryService.listCategoriesInForm();
+        category.setEnabled(true);
+        model.addAttribute("pageTitle", "Create New Category");
+        model.addAttribute("category", category);
+        model.addAttribute("categories", categories);
+        return "category/category_form";
+    }
+
 }

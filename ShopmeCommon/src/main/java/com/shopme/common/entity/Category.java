@@ -22,11 +22,34 @@ public class Category {
     private String image;
     private boolean enabled;
 
+    public static Category copyIdAndName(Category category) {
+        Category copy = new Category();
+        copy.setId(category.getId());
+        copy.setName(category.getName());
+        return copy;
+    }
+
+    public static Category copyIdAndName(Long id, String name) {
+        Category copy = new Category();
+        copy.setId(id);
+        copy.setName(name);
+        return copy;
+    }
+
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parent;
 
     @OneToMany(mappedBy = "parent")
     private Set<Category> children = new HashSet<>();
+
+    @Transient
+    public String getImagePath() {
+        if (id == null || image == null) {
+            return "/images/image-thumbnail.png";
+        }
+        return String.format("/category-image/%d/%s", id, image);
+    }
+
 
 }

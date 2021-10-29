@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="partial/header :: head(${pageTitle})"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="content">
+        <h2>Manager Categories | <span th:text="${pageTitle}">Create new user</span></h2>
+        <form class="m-auto" enctype="multipart/form-data" id="formUser" method="post" style="max-width: 750px"
+              th:action="@{/categories/save}" th:object="${category}">
+            <input th:field="*{id}" type="hidden">
+            <div class="border border-success rounded p-3">
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Name:</div>
+                    <div class="col-sm-8">
+                        <input class="form-control" maxlength="45" minlength="2"
+                               required th:field="*{name}" type="text">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Alias:</div>
+                    <div class="col-sm-8">
+                        <input class="form-control" maxlength="45" minlength="2"
+                               required th:field="*{alias}" type="text">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Parent:</div>
+                    <div class="col-sm-8">
+                        <select class="form-select" th:field="*{parent}">
+                            <option value="0">[No Parent]</option>
+                            <th:block th:each="category:${categories}">
+                                <option th:text="${category.name}" th:value="${category.id}">
+                                </option>
+                            </th:block>
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Enabled:</div>
+                    <div class="col-sm-8">
+                        <input class="form-check" th:field="*{enabled}" type="checkbox"/>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Image:</div>
+                    <div class="col-sm-8">
+                        <input th:field="*{image}" type="hidden">
+                        <input accept="image/png, image/jpg" class="form-file" id="fileImage" name="image" type="file"/>
+                        <img alt="Image preview" class="img-fluid" id="thumbnail" th:src="@{${category.imagePath}}"/>
+                    </div>
+                </div>
+
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary m-3" id="btnSubmit" type="submit">Save</button>
+                    <button class="btn btn-secondary" id="btnCancel" type="button">Cancel</button>
+                </div>
+            </div>
+        </form>
+        <div class="modal fade text-center" id="modalDialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modalContent">Modal body text goes here.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+<div th:replace="partial/footer :: script"></div>
+<script>
+    moduleURL = '[[@{/categories}]]';
+    $(function () {
+        $('#btnSubmit').click(function (e) {
+            e.preventDefault();
+            const params = {
+                id: $('#id').val(),
+                email: $('#email').val()
+            }
+
+            $.post("[[@{/users/check_email}]]", params)
+                .done(function (data) {
+                        if (data) {
+                            $('#formUser').submit();
+                        } else {
+                            showModal('Warning', 'There are another user with email ' + $('#email').val());
+                        }
+                    })
+                    .fail(function (e) {
+                        showModal('Error', 'Service unavailable');
+                        console.log(e);
+                    });
+            })
+
+
+            function showModal(title, message) {
+                $('#modalTitle').text(title)
+                $('#modalContent').text(message)
+                $('#modalDialog').modal('show');
+            }
+        })
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>
