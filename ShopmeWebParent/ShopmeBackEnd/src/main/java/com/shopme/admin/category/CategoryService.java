@@ -56,4 +56,8 @@ public class CategoryService {
             printCategoryChildren(categories, category, level + 1);
         }
     }
+
+    public Category save(Category category) {
+        return categoryRepository.save(category);
+    }
 }
