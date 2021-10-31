@@ -1,6 +1,7 @@
 package com.shopme.common.entity;
 
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -22,17 +23,15 @@ public class Category {
     private String image;
     private boolean enabled;
 
-    public static Category copyIdAndName(Category category) {
-        Category copy = new Category();
-        copy.setId(category.getId());
-        copy.setName(category.getName());
+    public static Category from(Category category, String newName) {
+        Category copy = from(category);
+        copy.setName(newName);
         return copy;
     }
 
-    public static Category copyIdAndName(Long id, String name) {
+    public static Category from(Category category) {
         Category copy = new Category();
-        copy.setId(id);
-        copy.setName(name);
+        BeanUtils.copyProperties(category, copy);
         return copy;
     }
 
@@ -48,7 +47,7 @@ public class Category {
         if (id == null || image == null) {
             return "/images/image-thumbnail.png";
         }
-        return String.format("/category-image/%d/%s", id, image);
+        return String.format("/category-images/%d/%s", id, image);
     }
 
 

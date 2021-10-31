@@ -24,40 +24,15 @@ public class CategoryController {
 
     @GetMapping("")
     public String listAll(Model model) {
-        return listByPage(model, 1, "name", "asc", null);
-    }
-
-    @GetMapping("/page/{pageNum}")
-    public String listByPage(Model model, @PathVariable Integer pageNum,
-                             @RequestParam String sortField, @RequestParam String sortType,
-                             @RequestParam(required = false) String keyword) {
-        Page<Category> categoryPage = categoryService.listByPage(pageNum, sortField, sortType, keyword);
-        List<Category> categories = categoryPage.getContent();
-
-        long startCount = (long) (pageNum - 1) * CategoryService.CATEGORIES_PER_PAGE + 1;
-        long endCount = pageNum * CategoryService.CATEGORIES_PER_PAGE;
-        if (endCount > categoryPage.getTotalElements()) {
-            endCount = categoryPage.getTotalElements();
-        }
-        String sortTypeReverse = sortType.equals("asc") ? "desc" : "asc";
-
-        model.addAttribute("startCount", startCount);
-        model.addAttribute("endCount", endCount);
-        model.addAttribute("totalItems", categoryPage.getTotalElements());
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", categoryPage.getTotalPages());
+        List<Category> categories = categoryService.listAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortType", sortType);
-        model.addAttribute("sortTypeReverse", sortTypeReverse);
-        model.addAttribute("keyword", keyword);
         return "category/categories";
     }
 
     @GetMapping("/new")
     public String createCategory(Model model) {
         Category category = new Category();
-        List<Category> categories = categoryService.listCategoriesInForm();
+        List<Category> categories = categoryService.listAll();
         category.setEnabled(true);
         model.addAttribute("pageTitle", "Create New Category");
         model.addAttribute("category", category);

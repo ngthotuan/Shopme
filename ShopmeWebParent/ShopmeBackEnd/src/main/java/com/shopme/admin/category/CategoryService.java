@@ -1,11 +1,7 @@
 package com.shopme.admin.category;
 
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,48 +12,32 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public static final int CATEGORIES_PER_PAGE = 4;
-
     public List<Category> listAll() {
-        return categoryRepository.findAll(Sort.by("name").ascending());
-    }
-
-    public Page<Category> listByPage(int pageNum, String sortField, String sortType, String keyword) {
-        Sort sort = Sort.by(sortField);
-        sort = sortType.equals("asc") ? sort.ascending() : sort.descending();
-
-        PageRequest pageable = PageRequest.of(pageNum - 1, CATEGORIES_PER_PAGE, sort);
-
-        if (keyword != null) {
-            return categoryRepository.findAll(keyword, pageable);
-        }
-        return categoryRepository.findAll(pageable);
-    }
-
-    public List<Category> listCategoriesInForm() {
-        List<Category> categoriesInForm = new ArrayList<>();
-        List<Category> categories = categoryRepository.findAll();
-        for(Category category: categories) {
-            if(category.getParent() == null) {
-                categoriesInForm.add(Category.copyIdAndName(category));
-                printCategoryChildren(categoriesInForm, category, 1);
-            }
-        }
-
-        return categoriesInForm;
-    }
-
-    private void printCategoryChildren(List<Category> categories, Category parent, int level) {
-        for(Category category : parent.getChildren()) {
-            String categoryName = "--".repeat(Math.max(0, level)) +
-                    category.getName();
-            categories.add(Category.copyIdAndName(category.getId(), categoryName));
-
-            printCategoryChildren(categories, category, level + 1);
-        }
+        List<Category> rootCategories = categoryRepository.findAllRootCategories();
+        return hierarchicalCategories(rootCategories);
     }
 
     public Category save(Category category) {
         return categoryRepository.save(category);
+    }
+
+    private List<Category> hierarchicalCategories(List<Category> rootCategories) {
+        List<Category> hierarchicalCategories = new ArrayList<>();
+        for(Category category: rootCategories) {
+            hierarchicalCategories.add(Category.from(category));
+            categoryChildren(hierarchicalCategories, category, 1);
+        }
+        return hierarchicalCategories;
+    }
+
+    private void categoryChildren(List<Category> categories, Category parent, int level) {
+        for(Category category : parent.getChildren()) {
+            String categoryName = "--".repeat(Math.max(0, level)) +
+                    category.getName();
+
+            categories.add(Category.from(category, categoryName));
+
+            categoryChildren(categories, category, level + 1);
+        }
     }
 }
