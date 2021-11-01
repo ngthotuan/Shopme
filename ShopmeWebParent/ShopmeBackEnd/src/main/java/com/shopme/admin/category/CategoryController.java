@@ -40,6 +40,22 @@ public class CategoryController {
         return "category/category_form";
     }
 
+    @GetMapping("/edit/{id}")
+    public String editCategory(Model model, @PathVariable(name = "id") Long id,
+                               RedirectAttributes redirectAttributes) {
+        try {
+            Category category = categoryService.findById(id);
+            List<Category> categories = categoryService.listAll();
+            model.addAttribute("pageTitle", "Update Category " + category.getId());
+            model.addAttribute("category", category);
+            model.addAttribute("categories", categories);
+            return "category/category_form";
+        } catch (CategoryNotFoundException ex) {
+            redirectAttributes.addFlashAttribute("errMessage", ex.getMessage());
+            return "redirect:/categories";
+        }
+    }
+
     @PostMapping("/save")
     public String saveCategory(Category category, @RequestParam(value = "fileImage", required = false) MultipartFile image,
                            RedirectAttributes redirectAttributes) throws IOException {

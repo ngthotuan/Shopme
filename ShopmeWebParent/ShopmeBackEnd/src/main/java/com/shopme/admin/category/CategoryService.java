@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,11 @@ public class CategoryService {
 
     public Category save(Category category) {
         return categoryRepository.save(category);
+    }
+
+    public Category findById(Long id) {
+        Optional<Category> opt = categoryRepository.findById(id);
+        return opt.orElseThrow(() -> new CategoryNotFoundException("Could not found category with id " + id));
     }
 
     private List<Category> hierarchicalCategories(List<Category> rootCategories) {

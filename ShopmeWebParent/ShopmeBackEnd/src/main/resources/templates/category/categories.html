@@ -18,6 +18,10 @@
             <span th:text="${message}"></span>
             <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
         </div>
+        <div class="text-center alert alert-danger alert-dismissible fade show m-2" th:if="${errMessage}">
+            <span th:text="${errMessage}"></span>
+            <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+        </div>
         <div>
             <form class="m-2 row g-3 align-items-center"
                   th:action="@{/categories/page/1}">
