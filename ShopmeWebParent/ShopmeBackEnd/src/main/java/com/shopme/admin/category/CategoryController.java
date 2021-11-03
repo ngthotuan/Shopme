@@ -2,9 +2,7 @@ package com.shopme.admin.category;
 
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -23,9 +21,16 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("")
-    public String listAll(Model model) {
-        List<Category> categories = categoryService.listAll();
+    public String listAll(Model model,
+                          @RequestParam(name = "sortField", required = false, defaultValue = "name") String sortField,
+                          @RequestParam(name = "sortType", required = false, defaultValue = "asc") String sortType) {
+        List<Category> categories = categoryService.listAll(sortField, sortType);
+        String sortTypeReverse = sortType.equals("asc") ? "desc" : "asc";
+
         model.addAttribute("categories", categories);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("sortTypeReverse", sortTypeReverse);
         return "category/categories";
     }
 
