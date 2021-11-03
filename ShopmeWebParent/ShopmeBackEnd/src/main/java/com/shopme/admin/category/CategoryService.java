@@ -27,6 +27,29 @@ public class CategoryService {
         return opt.orElseThrow(() -> new CategoryNotFoundException("Could not found category with id " + id));
     }
 
+    public String checkDuplicate(Long id, String name, String alias) {
+        boolean isCreate = id == null;
+        Category category = categoryRepository.findByName(name);
+        if(isCreate) {
+            if(category != null) {
+                return "DuplicateName";
+            }
+            category = categoryRepository.findByAlias(alias);
+            if(category != null) {
+                return "DuplicateAlias";
+            }
+        } else {
+            if(category != null && !category.getId().equals(id)) {
+                return "DuplicateName";
+            }
+            category = categoryRepository.findByAlias(alias);
+            if(category != null && !category.getId().equals(id)) {
+                return "DuplicateAlias";
+            }
+        }
+        return "OK";
+    }
+
     private List<Category> hierarchicalCategories(List<Category> rootCategories) {
         List<Category> hierarchicalCategories = new ArrayList<>();
         for(Category category: rootCategories) {

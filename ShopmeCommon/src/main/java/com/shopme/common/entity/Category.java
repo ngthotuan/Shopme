@@ -35,6 +35,12 @@ public class Category {
         return copy;
     }
 
+    public Category(Long id, String name, String alias) {
+        this.id = id;
+        this.name = name;
+        this.alias = alias;
+    }
+
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parent;

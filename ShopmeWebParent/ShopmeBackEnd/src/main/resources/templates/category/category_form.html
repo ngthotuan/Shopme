@@ -5,8 +5,8 @@
 <div class="container-fluid">
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
-        <h2>Manager Categories | <span th:text="${pageTitle}">Create new user</span></h2>
-        <form class="m-auto" enctype="multipart/form-data" id="formUser" method="post" style="max-width: 750px"
+        <h2>Manager Categories | <span th:text="${pageTitle}"></span></h2>
+        <form class="m-auto" enctype="multipart/form-data" id="formCategory" method="post" style="max-width: 750px"
               th:action="@{/categories/save}" th:object="${category}">
             <input th:field="*{id}" type="hidden">
             <div class="border border-success rounded p-3">
@@ -90,6 +90,36 @@
             const name = $("#name").val().toLowerCase();
             $("#alias").val(name.replace(/\s+/g, "-"));
         });
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            const form = $("#formCategory")[0];
+            if(form.checkValidity()) {
+                const params = {
+                    id: $("#id").val(),
+                    name: $("#name").val(),
+                    alias: $("#alias").val()
+                }
+                $.post(`${moduleURL}/check_duplicate`, params)
+                    .done(function (data) {
+                        if (data === 'OK') {
+                            $('#formCategory').submit();
+                        } else if(data === 'DuplicateName') {
+                            showModal('Warning', `There are another category with name ${params.name}`);
+                        } else if (data === 'DuplicateAlias') {
+                            showModal('Warning', `There are another category with alias ${params.alias}`);
+                        } else {
+                            showModal('Error', 'There are an error when checking duplicate');
+                        }
+                    })
+                    .fail(function (e) {
+                        showModal('Error', 'Service unavailable');
+                        console.log(e);
+                    });
+            } else {
+                form.reportValidity();
+            }
+        })
     })
 </script>
 <script th:src="@{/js/common_form.js}"></script>

@@ -10,3 +10,9 @@ $(function () {
         $(this).find('.dropdown-menu').delay(100).slideUp();
     })
 });
+
+function showModal(title, message) {
+    $('#modalTitle').text(title)
+    $('#modalContent').text(message)
+    $('#modalDialog').modal('show');
+}

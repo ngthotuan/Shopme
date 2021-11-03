@@ -1,19 +1,16 @@
 package com.shopme.admin.category;
 
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 import java.util.Set;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -29,7 +26,7 @@ public class CategoryRepositoryTests {
         category.setAlias("computer");
         Category categorySaved = categoryRepository.save(category);
 
-        Assertions.assertThat(categorySaved.getId()).isGreaterThan(0);
+        assertThat(categorySaved.getId()).isGreaterThan(0);
     }
 
     @Test
@@ -43,7 +40,7 @@ public class CategoryRepositoryTests {
         category.setParent(parent);
 
         Category categorySaved = categoryRepository.save(category);
-        Assertions.assertThat(categorySaved.getId()).isGreaterThan(0);
+        assertThat(categorySaved.getId()).isGreaterThan(0);
     }
 
     @Test
@@ -52,7 +49,7 @@ public class CategoryRepositoryTests {
         Set<Category> children = category.getChildren();
         children.forEach(c -> System.out.println(c.getName()));
 
-        Assertions.assertThat(children.size()).isGreaterThan(0);
+        assertThat(children.size()).isGreaterThan(0);
     }
 
     @Test
@@ -79,6 +76,21 @@ public class CategoryRepositoryTests {
     public void testListRootCategories() {
         List<Category> categories= categoryRepository.findAllRootCategories();
         categories.forEach(c -> System.out.println(c.getName()));
+    }
+
+    @Test
+    public void testFindByName() {
+        String name = "Computers";
+        Category category = categoryRepository.findByName(name);
+        assertThat(category).isNotNull();
+        assertThat(category.getName()).isEqualTo(name);
+    }
+
+    @Test
+    public void testFindByAlias() {
+        String name = "computers";
+        Category category = categoryRepository.findByAlias(name);
+        assertThat(category).isNotNull();
     }
 
 }
