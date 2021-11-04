@@ -2,6 +2,9 @@ package com.shopme.admin.category;
 
 import com.shopme.common.entity.Category;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -10,19 +13,37 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
+    public static final int ROOT_CATEGORY_PER_PAGE = 2;
     private final CategoryRepository categoryRepository;
 
     public List<Category> listAll(String sortField, String sortType) {
-        Sort sort = Sort.by(sortField).ascending();
-        if (Objects.equals(sortType, "desc")) {
-            sort = Sort.by(sortField).descending();
-        }
+        Sort sort = createSort(sortField, sortType);
         List<Category> rootCategories = categoryRepository.findAllRootCategories(sort);
         return hierarchicalCategories(rootCategories, sortType);
     }
 
     public List<Category> listAll() {
         return listAll("name", "asc");
+    }
+
+    public List<Category> listByPage(PageInfo pageInfo, int page, String sortField, String sortType) {
+        Sort sort = createSort(sortField, sortType);
+        Pageable pageable = PageRequest.of(page - 1, ROOT_CATEGORY_PER_PAGE, sort);
+
+        Page<Category> categoryPage = categoryRepository.findAllRootCategories(pageable);
+        List<Category> rootCategories = categoryPage.getContent();
+        pageInfo.setTotalPages(categoryPage.getTotalPages());
+        pageInfo.setTotalItems(categoryPage.getTotalElements());
+
+        return hierarchicalCategories(rootCategories, sortType);
+    }
+
+    private Sort createSort(String sortField, String sortType) {
+        Sort sort = Sort.by(sortField).ascending();
+        if (Objects.equals(sortType, "desc")) {
+            sort = Sort.by(sortField).descending();
+        }
+        return sort;
     }
 
     public Category save(Category category) {

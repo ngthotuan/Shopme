@@ -1,6 +1,8 @@
 package com.shopme.admin.category;
 
 import com.shopme.common.entity.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +15,10 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("SELECT category FROM Category category WHERE category.parent IS NULL")
     List<Category> findAllRootCategories(Sort sort);
+
+    @Query("SELECT category FROM Category category WHERE category.parent IS NULL")
+    Page<Category> findAllRootCategories(Pageable pageable);
+
 
     Category findByName(String name);
 

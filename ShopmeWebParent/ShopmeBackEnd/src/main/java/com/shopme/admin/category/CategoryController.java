@@ -22,12 +22,30 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("")
-    public String listAll(Model model,
-                          @RequestParam(name = "sortField", required = false, defaultValue = "name") String sortField,
-                          @RequestParam(name = "sortType", required = false, defaultValue = "asc") String sortType) {
-        List<Category> categories = categoryService.listAll(sortField, sortType);
+    public String listFirstPage(Model model) {
+        return listByPage(model, 1, "name", "asc");
+    }
+
+    @GetMapping("/page/{pageNum}")
+    public String listByPage(Model model, @PathVariable(name = "pageNum") Integer pageNum,
+                             @RequestParam(name = "sortField", required = false, defaultValue = "name") String sortField,
+                             @RequestParam(name = "sortType", required = false, defaultValue = "asc") String sortType) {
+
+        PageInfo pageInfo = new PageInfo();
+        List<Category> categories = categoryService.listByPage(pageInfo, pageNum, sortField, sortType);
+
+        long startCount = (long) (pageNum - 1) * CategoryService.ROOT_CATEGORY_PER_PAGE + 1;
+        long endCount = pageNum * CategoryService.ROOT_CATEGORY_PER_PAGE;
+        if (endCount > pageInfo.getTotalItems()) {
+            endCount = pageInfo.getTotalItems();
+        }
         String sortTypeReverse = sortType.equals("asc") ? "desc" : "asc";
 
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalItems", pageInfo.getTotalItems());
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", pageInfo.getTotalPages());
         model.addAttribute("categories", categories);
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortType", sortType);

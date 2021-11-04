@@ -54,7 +54,7 @@
                 <th>Image</th>
                 <th>
                     <a class="text-white text-decoration-none"
-                       th:href="@{'/categories?sortField=name&sortType=' + ${sortField != 'name' ? sortType : sortTypeReverse}}"
+                       th:href="@{'/categories/page/' + ${currentPage} + '?sortField=name&sortType=' + ${sortField != 'name' ? sortType : sortTypeReverse}}"
                        title="Sort this column">Name</a>
                     <i th:class="${sortType == 'desc' ? 'fa fa-sort-down' : 'fa fa-sort-up'}"
                        th:if="${sortField == 'name'}"></i>
@@ -149,32 +149,32 @@
                 </div>
             </div>
         </div>
-<!--        <div class="m-1 text-center" th:if="${totalItems > 0}">-->
-<!--            <b>Showing categories #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>-->
-<!--        </div>-->
-<!--        <div class="m-1 text-center" th:unless="${totalItems > 0}">-->
-<!--            <b>No categories found</b>-->
-<!--        </div>-->
-<!--        <nav th:if="${totalPages > 0}">-->
-<!--            <ul class="pagination justify-content-center flex-wrap">-->
-<!--                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">-->
-<!--                    <a th:replace="fragments::page_link('categories', 1, 'First')"></a>-->
-<!--                </li>-->
-<!--                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">-->
-<!--                    <a th:replace="fragments::page_link('categories', ${currentPage - 1}, 'Previous')"></a>-->
-<!--                </li>-->
-<!--                <li th:class="${i == currentPage ? 'page-item active' : 'page-item' }"-->
-<!--                    th:each="i:${#numbers.sequence(1, totalPages)}">-->
-<!--                    <a th:replace="fragments::page_link('categories', ${i}, ${i})"></a>-->
-<!--                </li>-->
-<!--                <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">-->
-<!--                    <a th:replace="fragments::page_link('categories', ${currentPage + 1}, 'Next')"></a>-->
-<!--                </li>-->
-<!--                <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">-->
-<!--                    <a th:replace="fragments::page_link('categories', ${totalPages}, 'Last')"></a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </nav>-->
+        <div class="m-1 text-center" th:if="${totalItems > 0}">
+            <b>Showing top-level categories #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
+        </div>
+        <div class="m-1 text-center" th:unless="${totalItems > 0}">
+            <b>No categories found</b>
+        </div>
+        <nav th:if="${totalPages > 0}">
+            <ul class="pagination justify-content-center flex-wrap">
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments::page_link('categories', 1, 'First')"></a>
+                </li>
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments::page_link('categories', ${currentPage - 1}, 'Previous')"></a>
+                </li>
+                <li th:class="${i == currentPage ? 'page-item active' : 'page-item' }"
+                    th:each="i:${#numbers.sequence(1, totalPages)}">
+                    <a th:replace="fragments::page_link('categories', ${i}, ${i})"></a>
+                </li>
+                <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments::page_link('categories', ${currentPage + 1}, 'Next')"></a>
+                </li>
+                <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments::page_link('categories', ${totalPages}, 'Last')"></a>
+                </li>
+            </ul>
+        </nav>
     </div>
     <div th:replace="fragments :: modal_confirm_delete"></div>
     <div th:replace="partial/footer :: footer"></div>
