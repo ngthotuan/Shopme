@@ -95,8 +95,8 @@
                         <a class="btn btn-danger text-center link-delete"
                            th:href="@{/categories/delete/} + ${category.id}"
                            th:if="${!category.hasChildren}"
-                           th:categoryId="${category.id}"
-                           th:categoryName="${category.name}"
+                           th:data-entity="category"
+                           th:data-id="${category.id}"
                            title="Delete this category">
                             <i class="fa fa-trash"></i>
                         </a>
@@ -139,8 +139,9 @@
                         </a>
                         <a class="btn btn-danger text-center link-delete"
                            th:href="@{/categories/delete/} + ${category.id}"
-                           th:categoryId="${category.id}"
-                           th:categoryName="${category.name}"
+                           th:data-entity="category"
+                           th:data-id="${category.id}"
+                           th:if="${!category.hasChildren}"
                            title="Delete this category">
                             <i class="fa fa-trash"></i>
                         </a>
@@ -174,39 +175,11 @@
 <!--                </li>-->
 <!--            </ul>-->
 <!--        </nav>-->
-        <div class="modal fade text-center" id="deleteConfirmation">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirm delete</h5>
-                        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="confirmText">Do you want to delete category ID</p>
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-success" href="#" id="confirmYes" type="button">Yes</a>
-                        <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+    <div th:replace="fragments :: modal_confirm_delete"></div>
     <div th:replace="partial/footer :: footer"></div>
 </div>
 </body>
 <div th:replace="partial/footer :: script"></div>
-<script>
-    $(function () {
-        $('.link-delete').click(function (e) {
-            e.preventDefault();
-            const link = $(this);
-            const categoryId = link.attr('categoryId');
-            const categoryName = link.attr('categoryName');
-            $('#confirmText').html(`Do you want to delete category <br>ID: <b>${categoryId}</b>, name: <b>${categoryName}</b>`);
-            $('#confirmYes').attr('href', link.attr('href'));
-            $('#deleteConfirmation').modal('show');
-        })
-    })
-</script>
+<script th:src="@{/js/common_list.js}"></script>
 </html>

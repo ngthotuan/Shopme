@@ -27,5 +27,22 @@
         </div>
     </div>
 </div>
+<div class="modal fade text-center" id="deleteConfirmation" th:fragment="modal_confirm_delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm delete</h5>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmText">Do you want to delete</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-success" href="#" id="confirmYes" type="button">Yes</a>
+                <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
