@@ -81,4 +81,8 @@ public class CategoryService {
             categoryChildren(categories, category, level + 1, sortType);
         }
     }
+
+    public void updateCategoryEnabledStatus(Long id, boolean status) {
+        categoryRepository.updateEnabledStatus(id, status);
+    }
 }

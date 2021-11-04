@@ -4,6 +4,7 @@ import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +64,7 @@ public class CategoryController {
 
     @PostMapping("/save")
     public String saveCategory(Category category, @RequestParam(value = "fileImage", required = false) MultipartFile image,
-                           RedirectAttributes redirectAttributes) throws IOException {
+                               RedirectAttributes redirectAttributes) throws IOException {
         if (!image.isEmpty()) {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
             category.setImage(fileName);
@@ -79,6 +80,17 @@ public class CategoryController {
         }
         redirectAttributes.addFlashAttribute("message", "The category has been saved successfully");
 
+        return "redirect:/categories";
+    }
+
+    @GetMapping("/{id}/enabled/{enabled}")
+    @Transactional
+    public String updateUserStatus(@PathVariable Long id,
+                                   @PathVariable boolean enabled,
+                                   RedirectAttributes redirectAttributes) {
+        String status = enabled ? "enabled" : "disabled";
+        categoryService.updateCategoryEnabledStatus(id, enabled);
+        redirectAttributes.addFlashAttribute("message", String.format("The category with ID %d has been %s", id, status));
         return "redirect:/categories";
     }
 
