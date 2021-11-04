@@ -85,4 +85,12 @@ public class CategoryService {
     public void updateCategoryEnabledStatus(Long id, boolean status) {
         categoryRepository.updateEnabledStatus(id, status);
     }
+
+    public void delete(Long id) {
+        long c = categoryRepository.countById(id);
+        if (c == 0) {
+            throw new CategoryNotFoundException("Could not found category with id " + id);
+        }
+        categoryRepository.deleteById(id);
+    }
 }

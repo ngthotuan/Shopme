@@ -1,6 +1,8 @@
 package com.shopme.common.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
@@ -56,5 +58,9 @@ public class Category {
         return String.format("/category-images/%d/%s", id, image);
     }
 
+    @Transient
+    public boolean hasChildren() {
+        return children.size() > 0;
+    }
 
 }

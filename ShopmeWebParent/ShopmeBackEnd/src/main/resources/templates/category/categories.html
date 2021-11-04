@@ -94,6 +94,7 @@
                         </a>
                         <a class="btn btn-danger text-center link-delete"
                            th:href="@{/categories/delete/} + ${category.id}"
+                           th:if="${!category.hasChildren}"
                            th:categoryId="${category.id}"
                            th:categoryName="${category.name}"
                            title="Delete this category">
