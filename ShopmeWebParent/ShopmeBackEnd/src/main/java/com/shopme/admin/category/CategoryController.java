@@ -23,16 +23,17 @@ public class CategoryController {
 
     @GetMapping("")
     public String listFirstPage(Model model) {
-        return listByPage(model, 1, "name", "asc");
+        return listByPage(model, 1, "name", "asc", null);
     }
 
     @GetMapping("/page/{pageNum}")
     public String listByPage(Model model, @PathVariable(name = "pageNum") Integer pageNum,
                              @RequestParam(name = "sortField", required = false, defaultValue = "name") String sortField,
-                             @RequestParam(name = "sortType", required = false, defaultValue = "asc") String sortType) {
+                             @RequestParam(name = "sortType", required = false, defaultValue = "asc") String sortType,
+                             @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
 
         PageInfo pageInfo = new PageInfo();
-        List<Category> categories = categoryService.listByPage(pageInfo, pageNum, sortField, sortType);
+        List<Category> categories = categoryService.listByPage(pageInfo, pageNum, sortField, sortType, keyword);
 
         long startCount = (long) (pageNum - 1) * CategoryService.ROOT_CATEGORY_PER_PAGE + 1;
         long endCount = pageNum * CategoryService.ROOT_CATEGORY_PER_PAGE;
@@ -50,6 +51,7 @@ public class CategoryController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortType", sortType);
         model.addAttribute("sortTypeReverse", sortTypeReverse);
+        model.addAttribute("keyword", keyword);
         return "category/categories";
     }
 

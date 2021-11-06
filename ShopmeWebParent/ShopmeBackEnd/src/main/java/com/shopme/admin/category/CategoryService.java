@@ -26,16 +26,27 @@ public class CategoryService {
         return listAll("name", "asc");
     }
 
-    public List<Category> listByPage(PageInfo pageInfo, int page, String sortField, String sortType) {
+    public List<Category> listByPage(PageInfo pageInfo, int page,
+                                     String sortField, String sortType,
+                                     String keyword) {
         Sort sort = createSort(sortField, sortType);
-        Pageable pageable = PageRequest.of(page - 1, ROOT_CATEGORY_PER_PAGE, sort);
+        Pageable pageable;
+        Page<Category> categoryPage;
 
-        Page<Category> categoryPage = categoryRepository.findAllRootCategories(pageable);
-        List<Category> rootCategories = categoryPage.getContent();
-        pageInfo.setTotalPages(categoryPage.getTotalPages());
-        pageInfo.setTotalItems(categoryPage.getTotalElements());
-
-        return hierarchicalCategories(rootCategories, sortType);
+        if (keyword != null && !keyword.isEmpty()) {
+            pageable = PageRequest.of(page, 5, sort);
+            categoryPage = categoryRepository.findByKeyword(keyword, pageable);
+            pageInfo.setTotalItems(categoryPage.getTotalElements());
+            pageInfo.setTotalPages(categoryPage.getTotalPages());
+            return categoryPage.getContent();
+        } else {
+            pageable = PageRequest.of(page - 1, ROOT_CATEGORY_PER_PAGE, sort);
+            categoryPage = categoryRepository.findAllRootCategories(pageable);
+            List<Category> rootCategories = categoryPage.getContent();
+            pageInfo.setTotalPages(categoryPage.getTotalPages());
+            pageInfo.setTotalItems(categoryPage.getTotalElements());
+            return hierarchicalCategories(rootCategories, sortType);
+        }
     }
 
     private Sort createSort(String sortField, String sortType) {
@@ -58,20 +69,20 @@ public class CategoryService {
     public String checkDuplicate(Long id, String name, String alias) {
         boolean isCreate = id == null;
         Category category = categoryRepository.findByName(name);
-        if(isCreate) {
-            if(category != null) {
+        if (isCreate) {
+            if (category != null) {
                 return "DuplicateName";
             }
             category = categoryRepository.findByAlias(alias);
-            if(category != null) {
+            if (category != null) {
                 return "DuplicateAlias";
             }
         } else {
-            if(category != null && !category.getId().equals(id)) {
+            if (category != null && !category.getId().equals(id)) {
                 return "DuplicateName";
             }
             category = categoryRepository.findByAlias(alias);
-            if(category != null && !category.getId().equals(id)) {
+            if (category != null && !category.getId().equals(id)) {
                 return "DuplicateAlias";
             }
         }

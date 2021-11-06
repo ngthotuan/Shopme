@@ -52,13 +52,7 @@
                 <thead class="table-dark text-center">
                 <th>ID</th>
                 <th>Image</th>
-                <th>
-                    <a class="text-white text-decoration-none"
-                       th:href="@{'/categories/page/' + ${currentPage} + '?sortField=name&sortType=' + ${sortField != 'name' ? sortType : sortTypeReverse}}"
-                       title="Sort this column">Name</a>
-                    <i th:class="${sortType == 'desc' ? 'fa fa-sort-down' : 'fa fa-sort-up'}"
-                       th:if="${sortField == 'name'}"></i>
-                </th>
+                <th th:replace="fragments :: column_link('categories', 'name', 'Name', false) "></th>
                 <th>Alias</th>
                 <th>Enabled</th>
                 <th>Actions</th>
@@ -110,7 +104,7 @@
             <div class="row mb-3" th:each="category:${categories}">
                 <div class="col-4">
                     <i class="fa fa-folder fa-2x" th:unless="${category.image}"></i>
-                    <img class="img-fluid" style="width: 100px" th:alt="${category.image}" th:if="${category.image  }"
+                    <img class="img-fluid" style="width: 100px" th:alt="${category.image}" th:if="${category.image}"
                          th:src="@{${category.imagePath}}">
                 </div>
                 <div class="col-8">
