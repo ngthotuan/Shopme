@@ -1,4 +1,4 @@
-package com.shopme.admin;
+package com.shopme.admin.export;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AbstractExporter {
+public abstract class AbstractExporter {
     public void setResponseHeader(HttpServletResponse response, String prefix, String extension, String contentType) throws IOException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
         String currentDate = dateFormat.format(new Date());
