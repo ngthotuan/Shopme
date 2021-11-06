@@ -34,7 +34,7 @@ public class CategoryService {
         Page<Category> categoryPage;
 
         if (keyword != null && !keyword.isEmpty()) {
-            pageable = PageRequest.of(page, 5, sort);
+            pageable = PageRequest.of(page - 1, 5, sort);
             categoryPage = categoryRepository.findByKeyword(keyword, pageable);
             pageInfo.setTotalItems(categoryPage.getTotalElements());
             pageInfo.setTotalPages(categoryPage.getTotalPages());
