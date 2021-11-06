@@ -1,7 +1,7 @@
-package com.shopme.admin.user.export;
+package com.shopme.admin.category.export;
 
 import com.shopme.admin.AbstractExporter;
-import com.shopme.common.entity.User;
+import com.shopme.common.entity.Category;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.*;
 
@@ -10,21 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class UserExcelExporter extends AbstractExporter {
+public class CategoryExcelExporter extends AbstractExporter {
     private final XSSFWorkbook workbook;
     private final XSSFSheet sheet;
 
-    public UserExcelExporter() {
+    public CategoryExcelExporter() {
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet();
     }
 
-    public void export(List<User> users, HttpServletResponse response) throws IOException {
-        super.setResponseHeader(response, "users", "xlsx", "application/octet-stream");
+    public void export(List<Category> categories, HttpServletResponse response) throws IOException {
+        super.setResponseHeader(response, "categories", "xlsx", "application/octet-stream");
 
-        String[] headers = {"User ID", "Email", "First Name", "Last Name", "Roles", "Enabled"};
+        String[] headers = {"Category ID", "Category Name", "Enabled"};
         writeHeaders(headers);
-        writeData(users);
+        writeData(categories);
         autoResizeColumn(headers);
 
         ServletOutputStream outputStream = response.getOutputStream();
@@ -65,17 +65,14 @@ public class UserExcelExporter extends AbstractExporter {
         }
     }
 
-    private void writeData(List<User> users) {
+    private void writeData(List<Category> categories) {
         int rowIndex = 1;
-        for (User user : users) {
+        for (Category category : categories) {
             XSSFRow row = sheet.createRow(rowIndex++);
             int columnIndex = 0;
-            createCell(row, columnIndex++, user.getId(), null);
-            createCell(row, columnIndex++, user.getEmail(), null);
-            createCell(row, columnIndex++, user.getFirstName(), null);
-            createCell(row, columnIndex++, user.getLastName(), null);
-            createCell(row, columnIndex++, user.getRoles(), null);
-            createCell(row, columnIndex++, user.isEnabled(), null);
+            createCell(row, columnIndex++, category.getId(), null);
+            createCell(row, columnIndex++, category.getName().replace("--", "  "), null);
+            createCell(row, columnIndex++, category.isEnabled(), null);
         }
     }
 }

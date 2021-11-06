@@ -1,7 +1,14 @@
 package com.shopme.admin.category;
 
+import com.shopme.admin.category.export.CategoryCSVExporter;
+import com.shopme.admin.category.export.CategoryExcelExporter;
+import com.shopme.admin.category.export.CategoryPDFExporter;
+import com.shopme.admin.user.export.UserCSVExporter;
+import com.shopme.admin.user.export.UserExcelExporter;
+import com.shopme.admin.user.export.UserPDFExporter;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Category;
+import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -126,4 +134,25 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
+
+    @GetMapping("/export/csv")
+    public void exportToCSV(HttpServletResponse response) throws IOException {
+        List<Category> categories = categoryService.listAll();
+        CategoryCSVExporter csvExporter = new CategoryCSVExporter();
+        csvExporter.export(categories, response);
+    }
+
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        List<Category> categories = categoryService.listAll();
+        CategoryExcelExporter excelExporter = new CategoryExcelExporter();
+        excelExporter.export(categories, response);
+    }
+
+    @GetMapping("/export/pdf")
+    public void exportToPDF(HttpServletResponse response) throws IOException {
+        List<Category> categories = categoryService.listAll();
+        CategoryPDFExporter categoryPDFExporter = new CategoryPDFExporter();
+        categoryPDFExporter.export(categories, response);
+    }
 }
