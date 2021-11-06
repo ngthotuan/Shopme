@@ -6,43 +6,9 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Users</h2>
-        <a class="fa fa-user-plus fa-2x text-decoration-none text-success mx-2" th:href="@{/users/new}"
-           title="Create New User"></a>
-        <a class="fa fa-file-csv fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/csv}"
-           title="Export to CSV"></a>
-        <a class="fa fa-file-excel fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/excel}"
-           title="Export to EXCEL"></a>
-        <a class="fa fa-file-pdf fa-2x text-decoration-none text-success mx-2" th:href="@{/users/export/pdf}"
-           title="Export to PDF"></a>
-        <div class="text-center alert alert-success alert-dismissible fade show m-2" th:if="${message}">
-            <span th:text="${message}"></span>
-            <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
-        </div>
-        <div>
-            <form class="m-2 row g-3 align-items-center"
-                  th:action="@{/users/page/1}">
-                <input name="sortField" th:value="${sortField}" type="hidden">
-                <input name="sortType" th:value="${sortType}" type="hidden">
-                <div class="col-auto">
-                    <label class="col-form-label">Filter:</label>
-                </div>
-                <div class="col-auto">
-                    <input class="form-control" name="keyword" required th:value="${keyword}" type="search">
-                </div>
-                <div class="col-auto">
-                    <button class="btn btn-primary" type="submit" value="Search">
-                        <i class=" fa fa-search"></i>
-                    </button>
-                </div>
-                <div class="col-auto">
-                    <a th:href="@{/users}">
-                        <button class="btn btn-secondary" type="button" value="Clear">
-                            <i class="fa fa-eraser"></i>
-                        </button>
-                    </a>
-                </div>
-            </form>
-        </div>
+        <th:block th:replace="fragments::export('users')"/>
+        <th:block th:replace="partial/messages::messages"/>
+        <th:block th:replace="partial/form::form_search('users')"/>
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
@@ -140,34 +106,9 @@
                 </div>
             </div>
         </div>
-        <div class="m-1 text-center" th:if="${totalItems > 0}">
-            <b>Showing users #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
-        </div>
-        <div class="m-1 text-center" th:unless="${totalItems > 0}">
-            <b>No users found</b>
-        </div>
-        <nav th:if="${totalPages > 0}">
-            <ul class="pagination justify-content-center flex-wrap">
-                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                    <a th:replace="fragments::page_link('users', 1, 'First')"></a>
-                </li>
-                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                    <a th:replace="fragments::page_link('users', ${currentPage - 1}, 'Previous')"></a>
-                </li>
-                <li th:class="${i == currentPage ? 'page-item active' : 'page-item' }"
-                    th:each="i:${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="fragments::page_link('users', ${i}, ${i})"></a>
-                </li>
-                <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                    <a th:replace="fragments::page_link('users', ${currentPage + 1}, 'Next')"></a>
-                </li>
-                <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                    <a th:replace="fragments::page_link('users', ${totalPages}, 'Last')"></a>
-                </li>
-            </ul>
-        </nav>
+        <th:block th:replace="partial/pagination :: page_pagination('users')"/>
     </div>
-    <div th:replace="fragments :: modal_confirm_delete"></div>
+    <div th:replace="partial/modal :: modal_confirm_delete"></div>
     <div th:replace="partial/footer :: footer"></div>
 </div>
 </body>

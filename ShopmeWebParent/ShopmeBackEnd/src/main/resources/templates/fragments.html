@@ -1,48 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <body>
-<th th:class="${hiddenMedium ? 'hideable-column' : ''}" th:fragment="column_link(module, fieldName, fieldLabel, hiddenMedium)">
+<th:block th:fragment="export(module)">
+    <a class="fa fa-plus fa-2x text-decoration-none text-success mx-2"
+       th:href="@{'/' + ${module} + '/new'}"
+       title="Create New"></a>
+    <a class="fa fa-file-csv fa-2x text-decoration-none text-success mx-2"
+       th:href="@{'/' + ${module} + '/export/csv'}"
+       title="Export to CSV"></a>
+    <a class="fa fa-file-excel fa-2x text-decoration-none text-success mx-2"
+       th:href="@{'/' + ${module} + '/export/excel'}"
+       title="Export to EXCEL"></a>
+    <a class="fa fa-file-pdf fa-2x text-decoration-none text-success mx-2"
+       th:href="@{'/' + ${module} + '/export/pdf'}"
+       title="Export to PDF"></a>
+</th:block>
+<th th:fragment="column_link(module, fieldName, fieldLabel, hiddenMedium)"
+    th:class="${hiddenMedium ? 'hideable-column' : ''}">
     <a class="text-white text-decoration-none"
-       th:href="@{'/' + ${module} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortType=' + ${sortField != fieldName ? sortType : sortTypeReverse} + ${keyword != null ? '&keyword=' + keyword : ''} }"
+       th:href="@{'/' + ${module} + '/page/' + ${currentPage}
+       + '?sortField=' + ${fieldName}
+       + '&sortType=' + ${sortField != fieldName ? sortType : sortTypeReverse}
+       + ${keyword != null ? '&keyword=' + keyword : ''} }"
        th:text="${fieldLabel}"
        title="Sort this column"></a>
-    <i th:class="${sortType == 'asc' ? 'fa fa-sort-up' : 'fa fa-sort-down'}" th:if="${sortField == fieldName}"></i>
+    <i th:class="${sortType == 'asc' ? 'fa fa-sort-up' : 'fa fa-sort-down'}"
+       th:if="${sortField == fieldName}"></i>
 </th>
-<a class="page-link" th:fragment="page_link(module, page, label)"
-   th:href="@{'/' + ${module} + '/page/' + ${page} + '?sortField=' + ${sortField} + '&sortType=' + ${sortType} + ${keyword != null ? '&keyword=' + keyword : ''} }"
-   th:text="${label}"></a>
-<div class="modal fade text-center" id="modalDialog" th:fragment="modal_form">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTitle">Modal title</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-                <p id="modalContent">Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade text-center" id="deleteConfirmation" th:fragment="modal_confirm_delete">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirm delete</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-                <p id="confirmText">Do you want to delete</p>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-success" href="#" id="confirmYes" type="button">Yes</a>
-                <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>
