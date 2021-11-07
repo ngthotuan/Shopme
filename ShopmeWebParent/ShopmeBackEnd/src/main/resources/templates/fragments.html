@@ -27,5 +27,36 @@
     <i th:class="${sortType == 'asc' ? 'fa fa-sort-up' : 'fa fa-sort-down'}"
        th:if="${sortField == fieldName}"></i>
 </th>
+<th:block th:fragment="status(module, entityId, entityName, status)">
+    <a class="btn btn-primary text-center" th:href="@{ '/' + ${module} + '/' + ${entityId} + '/enabled/false'}"
+       th:if="${status}"
+       th:title="'Disable this ' + ${entityName}"
+    >
+        <i class="fa fa-check-circle"></i>
+    </a>
+    <a class="btn btn-secondary text-center" th:href="@{ '/' + ${module} + '/' + ${entityId} + '/enabled/true'}"
+       th:title="'Enable this ' + ${entityName}"
+       th:unless="${status}"
+    >
+        <i class="fa fa-circle"></i>
+    </a>
+</th:block>
+<a class="btn btn-success text-center"
+   th:fragment="edit(module, entityId, entityName)"
+   th:href="@{ '/' + ${module} + '/edit/' + ${entityId} }"
+   th:title="'Edit this ' + ${entityName}"
+>
+    <i class="fa fa-edit"></i>
+</a>
+<a class="btn btn-danger text-center link-delete"
+   th:data-entity="${entityName}"
+   th:data-id="${entityId}"
+   th:fragment="delete(module, entityId, entityName, show)"
+   th:href="@{ '/' + ${module} + '/delete/' + ${entityId} }"
+   th:if="${show}"
+   th:title="'Delete this ' + ${entityName}"
+>
+    <i class="fa fa-trash"></i>
+</a>
 </body>
 </html>

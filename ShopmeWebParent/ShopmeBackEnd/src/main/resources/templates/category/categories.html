@@ -6,15 +6,15 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Category</h2>
-        <th:block th:replace="fragments::export('categories')"/>
+        <th:block th:replace="fragments::export(${module})"/>
         <th:block th:replace="partial/messages::messages"/>
-        <th:block th:replace="partial/form::form_search('categories')"/>
+        <th:block th:replace="partial/form::form_search(${module})"/>
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
                 <th>ID</th>
                 <th>Image</th>
-                <th th:replace="fragments :: column_link('categories', 'name', 'Name', false) "></th>
+                <th th:replace="fragments :: column_link(${module}, 'name', 'Name', false) "></th>
                 <th class="hideable-column">Alias</th>
                 <th>Enabled</th>
                 <th>Actions</th>
@@ -30,34 +30,12 @@
                     <td>[[${category.name}]]</td>
                     <td class="hideable-column">[[${category.alias}]]</td>
                     <td class="text-center">
-                        <a class="btn btn-primary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
-                           th:if="${category.enabled}"
-                           title="Disable this category"
-                        >
-                            <i class="fa fa-check-circle"></i>
-                        </a>
-                        <a class="btn btn-secondary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
-                           th:unless="${category.enabled}"
-                           title="Enable this category"
-                        >
-                            <i class="fa fa-circle"></i>
-                        </a>
+                        <a th:replace="fragments::status(${module}, ${category.id}, 'category', ${category.enabled})"></a>
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-success text-center" th:href="@{/categories/edit/} + ${category.id}"
-                           title="Edit this category">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger text-center link-delete"
-                           th:href="@{/categories/delete/} + ${category.id}"
-                           th:if="${!category.hasChildren}"
-                           th:data-entity="category"
-                           th:data-id="${category.id}"
-                           title="Delete this category">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                        <a th:replace="fragments::edit(${module}, ${category.id}, 'category')"></a>
+                        <a th:replace="fragments::delete(${module}, ${category.id}, 'category', ${!category.hasChildren})"></a>
                     </td>
-
                 </tr>
                 </tbody>
             </table>
@@ -77,40 +55,19 @@
                         <i>[[${category.alias}]]</i>
                     </div>
                     <div class="mt-1">
-                        <a class="btn btn-primary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
-                           th:if="${category.enabled}"
-                           title="Disable this category"
-                        >
-                            <i class="fa fa-check-circle"></i>
-                        </a>
-                        <a class="btn btn-secondary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
-                           th:unless="${category.enabled}"
-                           title="Enable this category"
-                        >
-                            <i class="fa fa-circle"></i>
-                        </a>
-                        <a class="btn btn-success text-center" th:href="@{/categories/edit/} + ${category.id}"
-                           title="Edit this category">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger text-center link-delete"
-                           th:href="@{/categories/delete/} + ${category.id}"
-                           th:data-entity="category"
-                           th:data-id="${category.id}"
-                           th:if="${!category.hasChildren}"
-                           title="Delete this category">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                        <a th:replace="fragments::status(${module}, ${category.id}, 'category', ${category.enabled})"></a>
+                        <a th:replace="fragments::edit(${module}, ${category.id}, 'category')"></a>
+                        <a th:replace="fragments::delete(${module}, ${category.id}, 'category', ${!category.hasChildren})"></a>
                     </div>
                 </div>
             </div>
         </div>
         <div th:if="${keyword != null}" class="text-center">
             <span>Search categories don't show hierarchical</span>
-            <th:block th:replace="partial/pagination :: page_pagination('categories')"/>
+            <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
         </div>
         <th:block th:if="${keyword == null}">
-            <div th:replace="partial/pagination :: page_pagination('top-level categories')"></div>
+            <div th:replace="partial/pagination :: page_pagination(${module}, 'top-level categories')"></div>
         </th:block>
     </div>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>

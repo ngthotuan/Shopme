@@ -6,19 +6,19 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Users</h2>
-        <th:block th:replace="fragments::export('users')"/>
+        <th:block th:replace="fragments::export(${module})"/>
         <th:block th:replace="partial/messages::messages"/>
-        <th:block th:replace="partial/form::form_search('users')"/>
+        <th:block th:replace="partial/form::form_search(${module})"/>
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
-                <th th:replace="fragments::column_link('users', 'id', 'User ID', true)"></th>
+                <th th:replace="fragments::column_link(${module}, 'id', 'User ID', true)"></th>
                 <th>Photos</th>
-                <th th:replace="fragments::column_link('users', 'email', 'Email', true)"></th>
-                <th th:replace="fragments::column_link('users', 'firstName', 'First Name', false)"></th>
-                <th th:replace="fragments::column_link('users', 'lastName', 'Last Name', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'email', 'Email', true)"></th>
+                <th th:replace="fragments::column_link(${module}, 'firstName', 'First Name', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'lastName', 'Last Name', false)"></th>
                 <th>Roles</th>
-                <th th:replace="fragments::column_link('users', 'enabled', 'Enabled', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'enabled', 'Enabled', false)"></th>
                 <th>Actions</th>
                 </thead>
                 <tbody>
@@ -34,31 +34,11 @@
                     <td>[[${user.lastName}]]</td>
                     <td>[[${user.roles}]]</td>
                     <td class="text-center">
-                        <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-                           th:if="${user.enabled}"
-                           title="Disable this user"
-                        >
-                            <i class="fa fa-check-circle"></i>
-                        </a>
-                        <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-                           th:unless="${user.enabled}"
-                           title="Enable this user"
-                        >
-                            <i class="fa fa-circle"></i>
-                        </a>
+                        <a th:replace="fragments::status(${module}, ${user.id}, 'user', ${user.enabled})"></a>
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}"
-                           title="Edit this user">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger text-center link-delete"
-                           th:href="@{/users/delete/} + ${user.id}"
-                           th:data-entity="user"
-                           th:data-id="${user.id}"
-                           title="Delete this user">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                        <a th:replace="fragments::edit(${module}, ${user.id}, 'user')"></a>
+                        <a th:replace="fragments::delete(${module}, ${user.id}, 'user', true)"></a>
                     </td>
                 </tr>
                 </tbody>
@@ -79,34 +59,14 @@
                         <i>[[${user.roles}]]</i>
                     </div>
                     <div class="mt-1">
-                        <a class="btn btn-primary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
-                           th:if="${user.enabled}"
-                           title="Disable this user"
-                        >
-                            <i class="fa fa-check-circle"></i>
-                        </a>
-                        <a class="btn btn-secondary text-center" th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
-                           th:unless="${user.enabled}"
-                           title="Enable this user"
-                        >
-                            <i class="fa fa-circle"></i>
-                        </a>
-                        <a class="btn btn-success text-center" th:href="@{/users/edit/} + ${user.id}"
-                           title="Edit this user">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger text-center link-delete"
-                           th:href="@{/users/delete/} + ${user.id}"
-                           th:data-entity="user"
-                           th:data-id="${user.id}"
-                           title="Delete this user">
-                            <i class="fa fa-trash"></i>
-                        </a>
+                        <a th:replace="fragments::status(${module}, ${user.id}, 'user', ${user.enabled})"></a>
+                        <a th:replace="fragments::edit(${module}, ${user.id}, 'user')"></a>
+                        <a th:replace="fragments::delete(${module}, ${user.id}, 'user', true)"></a>
                     </div>
                 </div>
             </div>
         </div>
-        <th:block th:replace="partial/pagination :: page_pagination('users')"/>
+        <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
     </div>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>
     <div th:replace="partial/footer :: footer"></div>

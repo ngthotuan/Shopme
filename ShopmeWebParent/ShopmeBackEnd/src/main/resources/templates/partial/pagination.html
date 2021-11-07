@@ -5,9 +5,9 @@
    th:href="@{'/' + ${module} + '/page/' + ${page} + '?sortField=' + ${sortField} + '&sortType=' + ${sortType} + ${keyword != null ? '&keyword=' + keyword : ''} }"
    th:text="${label}"></a>
 
-<th:block th:fragment="page_pagination(module)">
+<th:block th:fragment="page_pagination(module, otherText)">
     <div class="m-1 text-center" th:if="${totalItems > 0}">
-        <b>Showing [[${module}]] #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
+        <b>Showing [[${otherText}]] #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
     </div>
     <div class="m-1 text-center" th:unless="${totalItems > 0}">
         <b>No [[${module}]] found</b>

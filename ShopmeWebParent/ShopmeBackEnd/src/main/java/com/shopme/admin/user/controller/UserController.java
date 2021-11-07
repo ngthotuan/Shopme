@@ -7,18 +7,15 @@ import com.shopme.admin.user.export.UserCSVExporter;
 import com.shopme.admin.user.export.UserExcelExporter;
 import com.shopme.admin.user.export.UserPDFExporter;
 import com.shopme.admin.utils.FileUploadUtil;
+import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,47 +24,37 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+import static com.shopme.common.utils.Common.setModelListPage;
+
 @Controller
 @RequiredArgsConstructor
 @Transactional
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
 
-    @GetMapping("users")
+    @GetMapping({"", "/"})
     public String listAll(Model model) {
         return listByPage(model, 1, "firstName", "asc", null);
     }
 
-    @GetMapping("users/page/{pageNum}")
+    @GetMapping("/page/{pageNum}")
     public String listByPage(Model model, @PathVariable Integer pageNum,
                              @RequestParam String sortField, @RequestParam String sortType,
                              @RequestParam(required = false) String keyword) {
-        Page<User> userPage = userService.listByPage(pageNum, sortField, sortType, keyword);
-        List<User> users = userPage.getContent();
 
-        long startCount = (long) (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
-        long endCount = pageNum * UserService.USERS_PER_PAGE;
-        if (endCount > userPage.getTotalElements()) {
-            endCount = userPage.getTotalElements();
-        }
-        String sortTypeReverse = sortType.equals("asc") ? "desc" : "asc";
+        PageInfo pageInfo = new PageInfo();
+        List<User> users = userService.listByPage(pageInfo, pageNum, sortField, sortType, keyword);
 
-        model.addAttribute("startCount", startCount);
-        model.addAttribute("endCount", endCount);
-        model.addAttribute("totalItems", userPage.getTotalElements());
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", userPage.getTotalPages());
         model.addAttribute("users", users);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortType", sortType);
-        model.addAttribute("sortTypeReverse", sortTypeReverse);
-        model.addAttribute("keyword", keyword);
+        setModelListPage(model, "users", sortField, sortType, keyword, pageInfo);
+
         return "users/users";
     }
 
-    @GetMapping("users/new")
+    @GetMapping("/new")
     public String createUser(Model model) {
         User user = new User();
         user.setEnabled(true);
@@ -78,7 +65,7 @@ public class UserController {
         return "users/user_form";
     }
 
-    @PostMapping("users/save")
+    @PostMapping("/save")
     public String saveUser(User user, @RequestParam(value = "image", required = false) MultipartFile image,
                            RedirectAttributes redirectAttributes) throws IOException {
         if (!image.isEmpty()) {
@@ -99,7 +86,7 @@ public class UserController {
         return redirectAfterUserModified(user);
     }
 
-    @GetMapping("/users/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String updateUser(Model model, @PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             User user = userService.findById(id);
@@ -115,7 +102,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             userService.delete(id);
@@ -126,7 +113,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/users/{id}/enabled/{enabled}")
+    @GetMapping("/{id}/enabled/{enabled}")
     public String updateUserStatus(@PathVariable Long id,
                                    @PathVariable boolean enabled,
                                    RedirectAttributes redirectAttributes) {
@@ -136,21 +123,21 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/users/export/csv")
+    @GetMapping("/export/csv")
     public void exportUserToCSV(HttpServletResponse response) throws IOException {
         List<User> users = userService.listAll();
         UserCSVExporter csvExporter = new UserCSVExporter();
         csvExporter.export(users, response);
     }
 
-    @GetMapping("/users/export/excel")
+    @GetMapping("/export/excel")
     public void exportUserToExcel(HttpServletResponse response) throws IOException {
         List<User> users = userService.listAll();
         UserExcelExporter excelExporter = new UserExcelExporter();
         excelExporter.export(users, response);
     }
 
-    @GetMapping("/users/export/pdf")
+    @GetMapping("`/export/pdf")
     public void exportUserToPDF(HttpServletResponse response) throws IOException {
         List<User> users = userService.listAll();
         UserPDFExporter excelExporter = new UserPDFExporter();

@@ -1,6 +1,7 @@
 package com.shopme.admin.category;
 
 import com.shopme.common.entity.Category;
+import com.shopme.common.entity.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.shopme.common.utils.Common.setPageInfo;
 
 @Service
 @RequiredArgsConstructor
@@ -34,17 +37,20 @@ public class CategoryService {
         Page<Category> categoryPage;
 
         if (keyword != null && !keyword.isEmpty()) {
-            pageable = PageRequest.of(page - 1, 5, sort);
+            int perPage = 5;
+            pageable = PageRequest.of(page - 1, perPage, sort);
             categoryPage = categoryRepository.findByKeyword(keyword, pageable);
-            pageInfo.setTotalItems(categoryPage.getTotalElements());
-            pageInfo.setTotalPages(categoryPage.getTotalPages());
+
+            setPageInfo(pageInfo, page, categoryPage, perPage);
+
             return categoryPage.getContent();
         } else {
             pageable = PageRequest.of(page - 1, ROOT_CATEGORY_PER_PAGE, sort);
             categoryPage = categoryRepository.findAllRootCategories(pageable);
             List<Category> rootCategories = categoryPage.getContent();
-            pageInfo.setTotalPages(categoryPage.getTotalPages());
-            pageInfo.setTotalItems(categoryPage.getTotalElements());
+
+            setPageInfo(pageInfo, page, categoryPage, ROOT_CATEGORY_PER_PAGE);
+
             return hierarchicalCategories(rootCategories, sortType);
         }
     }

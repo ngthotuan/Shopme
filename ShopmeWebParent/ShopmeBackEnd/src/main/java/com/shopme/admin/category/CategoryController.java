@@ -3,12 +3,9 @@ package com.shopme.admin.category;
 import com.shopme.admin.category.export.CategoryCSVExporter;
 import com.shopme.admin.category.export.CategoryExcelExporter;
 import com.shopme.admin.category.export.CategoryPDFExporter;
-import com.shopme.admin.user.export.UserCSVExporter;
-import com.shopme.admin.user.export.UserExcelExporter;
-import com.shopme.admin.user.export.UserPDFExporter;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.User;
+import com.shopme.common.entity.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +20,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+import static com.shopme.common.utils.Common.setModelListPage;
+
 @Controller
 @RequestMapping("/categories")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping("")
+    @GetMapping({"", "/"})
     public String listFirstPage(Model model) {
         return listByPage(model, 1, "name", "asc", null);
     }
@@ -43,23 +42,8 @@ public class CategoryController {
         PageInfo pageInfo = new PageInfo();
         List<Category> categories = categoryService.listByPage(pageInfo, pageNum, sortField, sortType, keyword);
 
-        long startCount = (long) (pageNum - 1) * CategoryService.ROOT_CATEGORY_PER_PAGE + 1;
-        long endCount = pageNum * CategoryService.ROOT_CATEGORY_PER_PAGE;
-        if (endCount > pageInfo.getTotalItems()) {
-            endCount = pageInfo.getTotalItems();
-        }
-        String sortTypeReverse = sortType.equals("asc") ? "desc" : "asc";
-
-        model.addAttribute("startCount", startCount);
-        model.addAttribute("endCount", endCount);
-        model.addAttribute("totalItems", pageInfo.getTotalItems());
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("totalPages", pageInfo.getTotalPages());
         model.addAttribute("categories", categories);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortType", sortType);
-        model.addAttribute("sortTypeReverse", sortTypeReverse);
-        model.addAttribute("keyword", keyword);
+        setModelListPage(model, "categories", sortField, sortType, keyword, pageInfo);
         return "category/categories";
     }
 
