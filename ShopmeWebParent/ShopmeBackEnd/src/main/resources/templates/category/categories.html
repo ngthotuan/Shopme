@@ -15,20 +15,20 @@
                 <th>ID</th>
                 <th>Image</th>
                 <th th:replace="fragments :: column_link('categories', 'name', 'Name', false) "></th>
-                <th>Alias</th>
+                <th class="hideable-column">Alias</th>
                 <th>Enabled</th>
                 <th>Actions</th>
                 </thead>
                 <tbody>
                 <tr th:each="category:${categories}">
-                    <td class="text-center hideable-column">[[${category.id}]]</td>
+                    <td class="text-center">[[${category.id}]]</td>
                     <td class="text-center">
                         <i class="fa fa-folder fa-2x" th:unless="${category.image}"></i>
                         <img class="img-fluid" style="width: 100px" th:alt="${category.image}" th:if="${category.image}"
                              th:src="@{${category.imagePath}}">
                     </td>
                     <td>[[${category.name}]]</td>
-                    <td>[[${category.alias}]]</td>
+                    <td class="hideable-column">[[${category.alias}]]</td>
                     <td class="text-center">
                         <a class="btn btn-primary text-center" th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
                            th:if="${category.enabled}"
