@@ -22,6 +22,16 @@ public class Brand {
     @Column(length = 128, nullable = false)
     private String logo;
 
+    public Brand(String name) {
+        this.name = name;
+        this.logo = "brand-logo.png";
+    }
+
+    public Brand(String name, String logo) {
+        this.name = name;
+        this.logo = logo;
+    }
+
     @ManyToMany()
     @JoinTable(
             name = "brands_categories",
