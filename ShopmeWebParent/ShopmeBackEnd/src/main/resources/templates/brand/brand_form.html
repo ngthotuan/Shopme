@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="partial/header :: head(${pageTitle})"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="content">
+        <h2>Manager Categories | <span th:text="${pageTitle}"></span></h2>
+        <form class="m-auto" enctype="multipart/form-data" id="formBrand" method="post" style="max-width: 750px"
+              th:action="@{/brands/save}" th:object="${brand}">
+            <input th:field="*{id}" type="hidden">
+            <div class="border border-success rounded p-3">
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Name:</div>
+                    <div class="col-sm-8">
+                        <input class="form-control" maxlength="45" minlength="2"
+                               required th:field="*{name}" type="text">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Logo:</div>
+                    <div class="col-sm-8">
+                        <input th:field="*{logo}" type="hidden">
+                        <input accept="image/png, image/jpg" class="form-file" id="fileImage" name="fileImage"
+                               type="file"/>
+                        <img alt="Image preview" class="img-fluid" id="thumbnail" th:src="@{${brand.logoPath}}"/>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Select one or more categories:</div>
+                    <div class="col-sm-8">
+                        <select class="form-select" multiple style="resize: vertical; height: 200px"
+                                th:field="*{categories}">
+                            <th:block th:each="category:${categories}">
+                                <option th:text="${category.name}" th:value="${category.id}">
+                                </option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <div class="col-sm-4 col-form-label">Chosen categories:</div>
+                    <div class="col-sm-8" id="chosenCategories">
+
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary m-3" id="btnSubmit" type="submit">Save</button>
+                    <button class="btn btn-secondary" id="btnCancel" type="button">Cancel</button>
+                </div>
+            </div>
+        </form>
+        <div th:replace="partial/modal :: modal_form"></div>
+    </div>
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+<div th:replace="partial/footer :: script"></div>
+<script>
+    moduleURL = '[[@{/brands}]]';
+    $(function () {
+        const categories = $('#formBrand select[name="categories"]');
+        const chosenCategories = $('#chosenCategories');
+        categories.change(function () {
+            chosenCategories.html('');
+            categories.find('option:selected').each(function () {
+                const text = $(this).text().replaceAll('-', '');
+                chosenCategories.append(`<span class="badge bg-primary m-1">${text}</span>`);
+            });
+        });
+
+        $("#btnSubmit").click(function (e) {
+            e.preventDefault();
+            const form = $("#formBrand")[0];
+            if (form.checkValidity()) {
+                const params = {
+                    id: $("#id").val(),
+                    name: $("#name").val(),
+                }
+                $.post(`${moduleURL}/check_duplicate`, params)
+                    .done(function (data) {
+                        if (data === 'OK') {
+                            form.submit();
+                        } else if (data === 'DuplicateName') {
+                            showModal('Warning', `There are another brand with name ${params.name}`);
+                        } else {
+                            showModal('Error', 'There are an error when checking duplicate');
+                        }
+                    })
+                    .fail(function (e) {
+                        showModal('Error', 'Service unavailable');
+                        console.log(e);
+                    });
+            } else {
+                form.reportValidity();
+            }
+        });
+    })
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

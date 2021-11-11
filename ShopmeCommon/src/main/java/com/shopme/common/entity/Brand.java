@@ -19,12 +19,11 @@ public class Brand {
     private Long id;
     @Column(length = 128, nullable = false, unique = true)
     private String name;
-    @Column(length = 128, nullable = false)
+    @Column(length = 128)
     private String logo;
 
     public Brand(String name) {
         this.name = name;
-        this.logo = "brand-logo.png";
     }
 
     public Brand(String name, String logo) {
@@ -39,4 +38,12 @@ public class Brand {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> categories = new HashSet<>();
+
+    @Transient
+    public String getLogoPath() {
+        if (id == null || logo == null) {
+            return "/images/image-thumbnail.png";
+        }
+        return String.format("/brand-images/%d/%s", id, logo);
+    }
 }

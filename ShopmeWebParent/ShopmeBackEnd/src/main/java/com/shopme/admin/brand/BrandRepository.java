@@ -11,4 +11,6 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     @Query("SELECT brand FROM Brand brand WHERE brand.name LIKE %?1%")
     Page<Brand> findAll(String keyword, Pageable pageable);
+
+    long countById(Long id);
 }
