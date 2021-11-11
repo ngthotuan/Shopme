@@ -2,7 +2,10 @@ package com.shopme.common.utils;
 
 import com.shopme.common.entity.PageInfo;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.ui.Model;
+
+import java.util.Objects;
 
 public class Common {
     public static void setModelListPage(Model model, String module, String sortField, String sortType,
@@ -30,5 +33,13 @@ public class Common {
         pageInfo.setCurrentPage(pageNum);
         pageInfo.setStartCount(startCount);
         pageInfo.setEndCount(endCount);
+    }
+
+    public static Sort createSort(String sortField, String sortType) {
+        Sort sort = Sort.by(sortField).ascending();
+        if (Objects.equals(sortType, "desc")) {
+            sort = Sort.by(sortField).descending();
+        }
+        return sort;
     }
 }

@@ -13,54 +13,42 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.shopme.common.utils.Common.createSort;
 import static com.shopme.common.utils.Common.setPageInfo;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
+    private static final int PER_PAGE = 4;
     private final BCryptPasswordEncoder passwordEncoder;
-
-    public static final int USERS_PER_PAGE = 4;
+    private final UserRepository repo;
 
     public List<User> listAll() {
-        return userRepository.findAll(Sort.by("firstName").ascending());
+        return repo.findAll(Sort.by("firstName").ascending());
     }
 
     public List<User> listByPage(PageInfo pageInfo, int pageNum, String sortField, String sortType, String keyword) {
-        Sort sort = Sort.by(sortField);
-        sort = sortType.equals("asc") ? sort.ascending() : sort.descending();
+        Sort sort = createSort(sortField, sortType);
 
-        PageRequest pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE, sort);
+        PageRequest pageable = PageRequest.of(pageNum - 1, PER_PAGE, sort);
 
-        Page<User> userPage;
+        Page<User> pageModel;
         if (keyword != null) {
-            userPage = userRepository.findAll(keyword, pageable);
+            pageModel = repo.findAll(keyword, pageable);
         } else {
-            userPage = userRepository.findAll(pageable);
+            pageModel = repo.findAll(pageable);
         }
 
-        long startCount = (long) (pageNum - 1) * USERS_PER_PAGE + 1;
-        long endCount = startCount + USERS_PER_PAGE - 1;
-        if (endCount > userPage.getTotalElements()) {
-            endCount = userPage.getTotalElements();
-        }
-        pageInfo.setStartCount(startCount);
-        pageInfo.setEndCount(endCount);
-        pageInfo.setCurrentPage(pageNum);
-        pageInfo.setTotalPages(userPage.getTotalPages());
-        pageInfo.setTotalItems(userPage.getTotalElements());
+        setPageInfo(pageInfo, pageNum, pageModel, PER_PAGE);
 
-        setPageInfo(pageInfo, pageNum, userPage, USERS_PER_PAGE);
-
-        return userPage.getContent();
+        return pageModel.getContent();
     }
 
 
     public User save(User user) {
         boolean isUpdatingUser = user.getId() != null;
         if (isUpdatingUser) {
-            User existingUser = userRepository.getById(user.getId());
+            User existingUser = repo.getById(user.getId());
             if (user.getPassword().isEmpty()) {
                 user.setPassword(existingUser.getPassword());
             } else {
@@ -69,7 +57,7 @@ public class UserService {
         } else {
             encodePassword(user);
         }
-        return userRepository.save(user);
+        return repo.save(user);
     }
 
     public void encodePassword(User user) {
@@ -78,35 +66,35 @@ public class UserService {
     }
 
     public boolean isEmailUnique(Long id, String email) {
-        User user = userRepository.findUserByEmail(email);
+        User user = repo.findUserByEmail(email);
         if (user == null) {
             return true;
         } else return Objects.equals(user.getId(), id);
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id)
+        return repo.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Could not found user with ID " + id));
     }
 
     public void delete(Long id) {
-        Long countById = userRepository.countById(id);
+        Long countById = repo.countById(id);
         if (countById == null || countById == 0) {
             throw new UserNotFoundException("Could not found user with ID " + id);
         }
-        userRepository.deleteById(id);
+        repo.deleteById(id);
     }
 
     public void updateUserEnabledStatus(Long id, boolean status) {
-        userRepository.updateEnabledStatus(id, status);
+        repo.updateEnabledStatus(id, status);
     }
 
     public User findByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+        return repo.findUserByEmail(email);
     }
 
     public User updateAccount(User account) {
-        Optional<User> opt = userRepository.findById(account.getId());
+        Optional<User> opt = repo.findById(account.getId());
         User user = opt.orElseThrow(() -> new UserNotFoundException("Not found User"));
         if (!account.getPassword().isEmpty()) {
             user.setPassword(account.getPassword());
@@ -118,7 +106,7 @@ public class UserService {
 
         user.setFirstName(account.getFirstName());
         user.setLastName(account.getLastName());
-        return userRepository.save(user);
+        return repo.save(user);
     }
 
 }

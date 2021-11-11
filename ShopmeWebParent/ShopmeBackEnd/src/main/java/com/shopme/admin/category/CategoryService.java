@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.shopme.common.utils.Common.createSort;
 import static com.shopme.common.utils.Common.setPageInfo;
 
 @Service
@@ -53,14 +54,6 @@ public class CategoryService {
 
             return hierarchicalCategories(rootCategories, sortType);
         }
-    }
-
-    private Sort createSort(String sortField, String sortType) {
-        Sort sort = Sort.by(sortField).ascending();
-        if (Objects.equals(sortType, "desc")) {
-            sort = Sort.by(sortField).descending();
-        }
-        return sort;
     }
 
     public Category save(Category category) {
