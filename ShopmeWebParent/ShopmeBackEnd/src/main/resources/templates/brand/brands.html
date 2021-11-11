@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="partial/header :: head('Users - Shopme Admin')"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="content">
+        <h2>Manager Brand</h2>
+        <th:block th:replace="fragments::export(${module})"/>
+        <th:block th:replace="partial/messages::messages"/>
+        <th:block th:replace="partial/form::form_search(${module})"/>
+        <div class="full-details">
+            <table class="table table-responsive-xl table-hover table-bordered table-striped">
+                <thead class="table-dark text-center">
+                <th th:replace="fragments::column_link(${module}, 'id', 'ID', true)"></th>
+                <th>Logo</th>
+                <th th:replace="fragments::column_link(${module}, 'name', 'Name', false)"></th>
+                <th>Categories</th>
+                <th>Actions</th>
+                </thead>
+                <tbody>
+                <tr th:each="brand:${brands}">
+                    <td class="text-center hideable-column">[[${brand.id}]]</td>
+                    <td class="text-center">
+                        <i class="fa fa-user fa-2x" th:unless="${brand.logo}"></i>
+                        <img class="img-fluid" style="width: 100px" th:alt="${brand.logo}" th:if="${brand.logo}"
+                             th:src="@{${brand.logo}}">
+                    </td>
+                    <td>[[${brand.name}]]</td>
+                    <td>
+                        <th:block th:each="category:${brand.categories}">
+                            <span class="badge bg-secondary">[[${category.name}]]</span>
+                        </th:block>
+                    </td>
+                    <td class="text-center">
+                        <a th:replace="fragments::edit(${module}, ${brand.id}, 'brand')"></a>
+                        <a th:replace="fragments::delete(${module}, ${brand.id}, 'brand', true)"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="less-details">
+            <div class="row mb-3" th:each="brand:${brands}">
+                <div class="col-4">
+                    <i class="fa fa-user fa-2x" th:unless="${brand.logo}"></i>
+                    <img class="img-fluid" style="width: 100px" th:alt="${brand.logo}" th:if="${brand.logo}"
+                         th:src="@{${brand.logo}}">
+                </div>
+                <div class="col-8">
+                    <div>
+                        <h3>[[${brand.name}]]</h3>
+                    </div>
+                    <div>
+                        <th:block th:each="category:${brand.categories}">
+                            <span class="badge bg-secondary">[[${category.name}]]</span>
+                        </th:block>
+                    </div>
+                    <div class="mt-1">
+                        <a th:replace="fragments::edit(${module}, ${brand.id}, 'brand')"></a>
+                        <a th:replace="fragments::delete(${module}, ${brand.id}, 'brand', true)"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
+    <div th:replace="partial/modal :: modal_confirm_delete"></div>
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+</body>
+<div th:replace="partial/footer :: script"></div>
+<script th:src="@{/js/common_list.js}"></script>
+</html>
