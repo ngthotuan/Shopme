@@ -31,7 +31,7 @@ public class Brand {
         this.logo = logo;
     }
 
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
             name = "brands_categories",
             joinColumns = @JoinColumn(name = "brand_id"),

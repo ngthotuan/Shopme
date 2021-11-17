@@ -96,7 +96,7 @@ public class BrandController {
     @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            categoryService.delete(id);
+            service.delete(id);
             redirectAttributes.addFlashAttribute("message", String.format("The brand with ID %d has been deleted successfully", id));
             FileUploadUtil.removeDir("brand-images/" + id);
         } catch (BrandNotFoundException ex) {

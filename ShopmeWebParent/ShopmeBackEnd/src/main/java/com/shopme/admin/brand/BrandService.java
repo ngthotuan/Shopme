@@ -1,6 +1,5 @@
 package com.shopme.admin.brand;
 
-import com.shopme.admin.category.CategoryNotFoundException;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.PageInfo;
 import lombok.RequiredArgsConstructor;
@@ -65,7 +64,7 @@ public class BrandService {
     public void delete(Long id) {
         long c = repo.countById(id);
         if (c == 0) {
-            throw new CategoryNotFoundException("Could not found category with id " + id);
+            throw new BrandNotFoundException("Could not found brand with id " + id);
         }
         repo.deleteById(id);
     }

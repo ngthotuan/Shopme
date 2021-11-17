@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
-        <h2>Manager Categories | <span th:text="${pageTitle}"></span></h2>
+        <h2>Manager Brands | <span th:text="${pageTitle}"></span></h2>
         <form class="m-auto" enctype="multipart/form-data" id="formBrand" method="post" style="max-width: 750px"
               th:action="@{/brands/save}" th:object="${brand}">
             <input th:field="*{id}" type="hidden">
@@ -62,15 +62,13 @@
 <script>
     moduleURL = '[[@{/brands}]]';
     $(function () {
-        const categories = $('#formBrand select[name="categories"]');
+        const categories = $('#categories');
         const chosenCategories = $('#chosenCategories');
         categories.change(function () {
-            chosenCategories.html('');
-            categories.find('option:selected').each(function () {
-                const text = $(this).text().replaceAll('-', '');
-                chosenCategories.append(`<span class="badge bg-primary m-1">${text}</span>`);
-            });
+            chosenCategories.empty();
+            showChosenCategories();
         });
+        showChosenCategories();
 
         $("#btnSubmit").click(function (e) {
             e.preventDefault();
@@ -99,6 +97,15 @@
             }
         });
     })
+
+    function showChosenCategories() {
+        const categories = $('#categories');
+        const chosenCategories = $('#chosenCategories');
+        categories.children('option:selected').each(function () {
+            const text = $(this).text().replaceAll('-', '');
+            chosenCategories.append(`<span class="badge bg-primary m-1">${text}</span>`);
+        });
+    }
 </script>
 <script th:src="@{/js/common_form.js}"></script>
 </body>
