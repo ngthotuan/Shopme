@@ -11,25 +11,17 @@ import java.nio.file.Path;
 public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        String rootPath = OperatingSystem.isWindows() ? "file:/" : "file://";
-
-        String userPhotosDirName = "user-photos";
-        Path userPhotosDirPath = Path.of(userPhotosDirName);
-        String userPhotosPath = userPhotosDirPath.toFile().getAbsolutePath();
-        registry.addResourceHandler("/" + userPhotosDirName + "/**")
-                .addResourceLocations(rootPath + userPhotosPath + "/");
-
-        String categoryImageDirName = "category-images";
-        Path categoryImageDirPath = Path.of(categoryImageDirName);
-        String categoryImagePath = categoryImageDirPath.toFile().getAbsolutePath();
-        registry.addResourceHandler("/" + categoryImageDirName + "/**")
-                .addResourceLocations(rootPath + categoryImagePath + "/");
-
-        String brandImageDirName = "brand-images";
-        Path brandImageDirPath = Path.of(brandImageDirName);
-        String brandImagePath = brandImageDirPath.toFile().getAbsolutePath();
-        registry.addResourceHandler("/" + brandImageDirName + "/**")
-                .addResourceLocations(rootPath + brandImagePath + "/");
+        exposeDirectory("user-photos", registry);
+        exposeDirectory("category-images", registry);
+        exposeDirectory("brand-images", registry);
     }
+
+    private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry) {
+        String rootPath = OperatingSystem.isWindows() ? "file:/" : "file://";
+        String logicalPath = rootPath + Path.of(pathPattern).toFile().getAbsolutePath() + "/";
+
+        registry.addResourceHandler("/" + pathPattern + "/**")
+                .addResourceLocations(logicalPath);
+    }
+
 }
