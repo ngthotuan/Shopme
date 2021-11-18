@@ -1,9 +1,15 @@
-package com.shopme.admin.category.export;
+package com.shopme.admin.category;
 
-import com.shopme.admin.export.PDFExporter;
+import com.shopme.admin.utils.Exporter;
 import com.shopme.common.entity.Category;
 
-public class CategoryPDFExporter extends PDFExporter<Category> {
+import javax.servlet.http.HttpServletResponse;
+
+public class CategoryExporter extends Exporter<Category> {
+    public CategoryExporter(HttpServletResponse response) {
+        super(response);
+    }
+
 
     @Override
     public String getPDFTitle() {

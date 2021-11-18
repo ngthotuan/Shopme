@@ -1,9 +1,7 @@
 package com.shopme.admin.brand;
 
-import com.shopme.admin.brand.export.BrandCSVExporter;
-import com.shopme.admin.brand.export.BrandExcelExporter;
-import com.shopme.admin.brand.export.BrandPDFExporter;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.utils.Exporter;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
@@ -112,22 +110,22 @@ public class BrandController {
     @GetMapping("/export/csv")
     public void exportToCSV(HttpServletResponse response) throws IOException {
         List<Brand> list = service.listAll();
-        BrandCSVExporter csvExporter = new BrandCSVExporter();
-        csvExporter.export(list, response);
+        Exporter<Brand> exporter = new BrandExporter(response);
+        exporter.exportCSV(list);
     }
 
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
-        List<Brand> categories = service.listAll();
-        BrandExcelExporter excelExporter = new BrandExcelExporter();
-        excelExporter.export(categories, response);
+        List<Brand> list = service.listAll();
+        Exporter<Brand> exporter = new BrandExporter(response);
+        exporter.exportExcel(list);
     }
 
     @GetMapping("/export/pdf")
     public void exportToPDF(HttpServletResponse response) throws IOException {
-        List<Brand> categories = service.listAll();
-        BrandPDFExporter categoryPDFExporter = new BrandPDFExporter();
-        categoryPDFExporter.export(categories, response);
+        List<Brand> list = service.listAll();
+        Exporter<Brand> exporter = new BrandExporter(response);
+        exporter.exportPDF(list);
     }
 
 }

@@ -1,9 +1,14 @@
-package com.shopme.admin.brand.export;
+package com.shopme.admin.brand;
 
-import com.shopme.admin.export.PDFExporter;
+import com.shopme.admin.utils.Exporter;
 import com.shopme.common.entity.Brand;
 
-public class BrandPDFExporter extends PDFExporter<Brand> {
+import javax.servlet.http.HttpServletResponse;
+
+public class BrandExporter extends Exporter<Brand> {
+    public BrandExporter(HttpServletResponse response) {
+        super(response);
+    }
 
     @Override
     public String getPDFTitle() {
@@ -17,7 +22,7 @@ public class BrandPDFExporter extends PDFExporter<Brand> {
 
     @Override
     public String[] getHeaders() {
-        return new String[]{"Brand ID", "Brand Name", "categories"};
+        return new String[]{"Brand ID", "Brand Name", "Categories"};
     }
 
     @Override

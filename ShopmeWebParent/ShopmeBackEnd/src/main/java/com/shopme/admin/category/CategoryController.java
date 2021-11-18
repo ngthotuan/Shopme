@@ -1,8 +1,6 @@
 package com.shopme.admin.category;
 
-import com.shopme.admin.category.export.CategoryCSVExporter;
-import com.shopme.admin.category.export.CategoryExcelExporter;
-import com.shopme.admin.category.export.CategoryPDFExporter;
+import com.shopme.admin.utils.Exporter;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.PageInfo;
@@ -121,22 +119,22 @@ public class CategoryController {
 
     @GetMapping("/export/csv")
     public void exportToCSV(HttpServletResponse response) throws IOException {
-        List<Category> categories = categoryService.listAll();
-        CategoryCSVExporter csvExporter = new CategoryCSVExporter();
-        csvExporter.export(categories, response);
+        List<Category> list = categoryService.listAll();
+        Exporter<Category> exporter = new CategoryExporter(response);
+        exporter.exportCSV(list);
     }
 
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
-        List<Category> categories = categoryService.listAll();
-        CategoryExcelExporter excelExporter = new CategoryExcelExporter();
-        excelExporter.export(categories, response);
+        List<Category> list = categoryService.listAll();
+        Exporter<Category> exporter = new CategoryExporter(response);
+        exporter.exportExcel(list);
     }
 
     @GetMapping("/export/pdf")
     public void exportToPDF(HttpServletResponse response) throws IOException {
-        List<Category> categories = categoryService.listAll();
-        CategoryPDFExporter categoryPDFExporter = new CategoryPDFExporter();
-        categoryPDFExporter.export(categories, response);
+        List<Category> list = categoryService.listAll();
+        Exporter<Category> exporter = new CategoryExporter(response);
+        exporter.exportPDF(list);
     }
 }

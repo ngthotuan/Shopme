@@ -1,9 +1,14 @@
-package com.shopme.admin.user.export;
+package com.shopme.admin.user;
 
-import com.shopme.admin.export.PDFExporter;
+import com.shopme.admin.utils.Exporter;
 import com.shopme.common.entity.User;
 
-public class UserPDFExporter extends PDFExporter<User> {
+import javax.servlet.http.HttpServletResponse;
+
+public class UserExporter extends Exporter<User> {
+    public UserExporter(HttpServletResponse response) {
+        super(response);
+    }
 
     @Override
     public String[] getHeaders() {
@@ -29,5 +34,4 @@ public class UserPDFExporter extends PDFExporter<User> {
     public float[] getTableWidths() {
         return new float[]{1f, 3.5f, 3f, 3f, 3f, 2f};
     }
-
 }

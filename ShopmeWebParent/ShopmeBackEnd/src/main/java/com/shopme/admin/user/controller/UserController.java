@@ -1,11 +1,10 @@
 package com.shopme.admin.user.controller;
 
 import com.shopme.admin.role.RoleService;
+import com.shopme.admin.user.UserExporter;
 import com.shopme.admin.user.UserNotFoundException;
 import com.shopme.admin.user.UserService;
-import com.shopme.admin.user.export.UserCSVExporter;
-import com.shopme.admin.user.export.UserExcelExporter;
-import com.shopme.admin.user.export.UserPDFExporter;
+import com.shopme.admin.utils.Exporter;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Role;
@@ -125,23 +124,23 @@ public class UserController {
 
     @GetMapping("/export/csv")
     public void exportUserToCSV(HttpServletResponse response) throws IOException {
-        List<User> users = userService.listAll();
-        UserCSVExporter csvExporter = new UserCSVExporter();
-        csvExporter.export(users, response);
+        List<User> list = userService.listAll();
+        Exporter<User> exporter = new UserExporter(response);
+        exporter.exportCSV(list);
     }
 
     @GetMapping("/export/excel")
     public void exportUserToExcel(HttpServletResponse response) throws IOException {
-        List<User> users = userService.listAll();
-        UserExcelExporter excelExporter = new UserExcelExporter();
-        excelExporter.export(users, response);
+        List<User> list = userService.listAll();
+        Exporter<User> exporter = new UserExporter(response);
+        exporter.exportExcel(list);
     }
 
-    @GetMapping("`/export/pdf")
+    @GetMapping("/export/pdf")
     public void exportUserToPDF(HttpServletResponse response) throws IOException {
-        List<User> users = userService.listAll();
-        UserPDFExporter excelExporter = new UserPDFExporter();
-        excelExporter.export(users, response);
+        List<User> list = userService.listAll();
+        Exporter<User> exporter = new UserExporter(response);
+        exporter.exportPDF(list);
     }
 
 
