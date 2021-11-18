@@ -20,6 +20,10 @@ public class BrandService {
     private final BrandRepository repo;
     private static final int PER_PAGE = 4;
 
+    public List<Brand> listAll() {
+        return repo.findAll(Sort.by(Sort.Direction.ASC, "name"));
+    }
+
     public List<Brand> listByPage(PageInfo pageInfo, int pageNum, String sortField, String sortType, String keyword) {
         Sort sort = createSort(sortField, sortType);
 

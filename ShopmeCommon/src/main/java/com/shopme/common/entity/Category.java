@@ -63,4 +63,8 @@ public class Category {
         return children.size() > 0;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }
