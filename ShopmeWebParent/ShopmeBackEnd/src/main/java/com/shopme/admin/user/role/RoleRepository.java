@@ -1,4 +1,4 @@
-package com.shopme.admin.role;
+package com.shopme.admin.user.role;
 
 import com.shopme.common.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

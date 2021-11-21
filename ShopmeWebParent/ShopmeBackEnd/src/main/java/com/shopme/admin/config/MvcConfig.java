@@ -1,4 +1,4 @@
-package com.shopme.admin.configuration;
+package com.shopme.admin.config;
 
 import com.shopme.admin.utils.OperatingSystem;
 import org.springframework.context.annotation.Configuration;

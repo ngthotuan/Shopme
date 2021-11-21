@@ -1,6 +1,6 @@
 package com.shopme.admin.user;
 
-import com.shopme.admin.role.RoleRepository;
+import com.shopme.admin.user.role.RoleRepository;
 import com.shopme.common.entity.Role;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
