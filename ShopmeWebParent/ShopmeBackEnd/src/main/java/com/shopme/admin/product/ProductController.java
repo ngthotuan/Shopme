@@ -6,6 +6,7 @@ import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -58,6 +59,17 @@ public class ProductController {
     public String save(Product entity, RedirectAttributes redirectAttributes) throws IOException {
         service.save(entity);
         redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
+        return "redirect:/products";
+    }
+
+    @GetMapping("/{id}/enabled/{enabled}")
+    @Transactional
+    public String updateUserStatus(@PathVariable Long id,
+                                   @PathVariable boolean enabled,
+                                   RedirectAttributes redirectAttributes) {
+        String status = enabled ? "enabled" : "disabled";
+        service.updateEnabledStatus(id, enabled);
+        redirectAttributes.addFlashAttribute("message", String.format("The product with ID %d has been %s", id, status));
         return "redirect:/products";
     }
 

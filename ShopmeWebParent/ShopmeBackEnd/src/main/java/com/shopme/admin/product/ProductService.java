@@ -69,4 +69,8 @@ public class ProductService {
         }
         return "OK";
     }
+
+    public void updateEnabledStatus(Long id, boolean status) {
+        repo.updateEnabledStatus(id, status);
+    }
 }
