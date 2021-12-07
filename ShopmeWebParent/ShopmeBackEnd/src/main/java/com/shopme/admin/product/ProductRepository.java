@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT product FROM Product product WHERE product.name LIKE %?1%")
     Page<Product> findAll(String keyword, Pageable pageable);
+
+    Product findByName(String name);
 }

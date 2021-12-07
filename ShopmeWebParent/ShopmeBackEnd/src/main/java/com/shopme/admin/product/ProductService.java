@@ -54,4 +54,19 @@ public class ProductService {
         product.setUpdatedTime(new Date());
         return repo.save(product);
     }
+
+    public String checkDuplicate(Long id, String name) {
+        boolean isCreate = id == null;
+        Product entity = repo.findByName(name);
+        if (isCreate) {
+            if (entity != null) {
+                return "DuplicateName";
+            }
+        } else {
+            if (entity != null && !entity.getId().equals(id)) {
+                return "DuplicateName";
+            }
+        }
+        return "OK";
+    }
 }

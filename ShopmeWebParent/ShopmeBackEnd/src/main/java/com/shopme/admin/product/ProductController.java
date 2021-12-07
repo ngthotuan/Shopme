@@ -57,7 +57,7 @@ public class ProductController {
     @PostMapping("/save")
     public String save(Product entity, RedirectAttributes redirectAttributes) throws IOException {
         service.save(entity);
-        redirectAttributes.addFlashAttribute("message", "The category has been saved successfully");
+        redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
         return "redirect:/products";
     }
 
