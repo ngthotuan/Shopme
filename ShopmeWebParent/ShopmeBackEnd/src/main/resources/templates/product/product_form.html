@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head th:replace="partial/header :: head(${pageTitle})"></head>
+<head>
+    <head th:replace="partial/header :: head(title='Products - Shopme Admin', remove='tag')"></head>
+    <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}">
+</head>
 <body>
 <div class="container-fluid">
     <div th:replace="partial/header :: menu"></div>
@@ -32,15 +35,25 @@
                                 role="tab">Details
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#shipping" type="button"
+                                role="tab">Shipping
+                        </button>
+                    </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content p-3">
                     <div class="tab-pane active" id="overview" role="tabpanel">
                         <div th:replace="product/product_overview :: content"></div>
                     </div>
-                    <div class="tab-pane" id="description" role="tabpanel">Description</div>
+                    <div class="tab-pane" id="description" role="tabpanel">
+                        <div th:replace="product/product_description :: content"></div>
+                    </div>
                     <div class="tab-pane" id="images" role="tabpanel">Images</div>
                     <div class="tab-pane" id="details" role="tabpanel">Details</div>
+                    <div class="tab-pane" id="shipping" role="tabpanel">
+                        <div th:replace="product/product_shipping :: content"></div>
+                    </div>
                 </div>
             </div>
             <div class="text-center mt-4">
@@ -53,13 +66,18 @@
     <div th:replace="partial/footer :: footer"></div>
 </div>
 <div th:replace="partial/footer :: script"></div>
+<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
 <script>
     moduleURL = '[[@{/products}]]';
     brandURL = '[[@{/brands}]]';
     $(function () {
         getCategories();
         $("#brand").change(getCategories);
+
+        $("#shortDescription").richText();
+        $("#fullDescription").richText();
     })
+
     function getCategories() {
         const id = $("#brand").val();
         const categoryDiv = $("#category");
