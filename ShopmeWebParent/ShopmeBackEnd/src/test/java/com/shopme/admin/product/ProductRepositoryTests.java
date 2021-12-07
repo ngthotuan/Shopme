@@ -76,4 +76,15 @@ public class ProductRepositoryTests {
         product = repo.findById(1L).orElse(null);
         assertThat(product).isNull();
     }
+
+    @Test
+    public void testCreateProductWithImages() {
+        Product product = repo.getById(1L);
+        assertThat(product).isNotNull();
+        product.setMainImage("/images/products/1/main.jpg");
+        product.addExtrasImages("/images/products/1/extras/1.jpg");
+        product.addExtrasImages("/images/products/1/extras/2.jpg");
+        repo.save(product);
+        assertThat(product.getMainImage()).isEqualTo("/images/products/1/main.jpg");
+    }
 }

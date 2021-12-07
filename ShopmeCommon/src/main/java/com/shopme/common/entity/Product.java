@@ -7,6 +7,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -29,6 +31,9 @@ public class Product {
     private String shortDescription;
     @Column(length = 4096, nullable = false, name = "full_description")
     private String fullDescription;
+
+    @Column(name = "main_image", nullable = false, length = 256)
+    private String mainImage;
 
     @Column(name = "created_time")
     private Date createdTime;
@@ -58,6 +63,9 @@ public class Product {
     @ColumnDefault("0")
     private float weight;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductImage> images = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "FK_PRODUCT_CATEGORY"))
     private Category category;
@@ -65,4 +73,11 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "brand_id", foreignKey = @ForeignKey(name = "FK_PRODUCT_BRAND"))
     private Brand brand;
+
+    public void addExtrasImages(String imageName) {
+        ProductImage productImage = new ProductImage();
+        productImage.setProduct(this);
+        productImage.setName(imageName);
+        images.add(productImage);
+    }
 }
