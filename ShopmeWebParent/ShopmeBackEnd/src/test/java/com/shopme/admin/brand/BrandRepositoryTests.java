@@ -7,6 +7,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DataJpaTest
@@ -60,5 +62,12 @@ public class BrandRepositoryTests {
         Brand acerSaved = brandRepository.findById(1L).get();
         brandRepository.delete(acerSaved);
         assertThat(brandRepository.findAll()).hasSize(2);
+    }
+
+    // for product module
+    @Test
+    public void testFindAllList() {
+        List<Brand> brands = brandRepository.findAll();
+        brands.forEach(System.out::println);
     }
 }

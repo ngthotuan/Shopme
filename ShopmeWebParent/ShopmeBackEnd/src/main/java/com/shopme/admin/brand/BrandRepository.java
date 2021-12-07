@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface BrandRepository extends JpaRepository<Brand, Long> {
     Brand findByName(String name);
 
@@ -13,4 +15,7 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
     Page<Brand> findAll(String keyword, Pageable pageable);
 
     long countById(Long id);
+
+    @Query("SELECT new Brand(b.id, b.name) FROM Brand b ORDER BY b.name ASC")
+    List<Brand> findAll();
 }

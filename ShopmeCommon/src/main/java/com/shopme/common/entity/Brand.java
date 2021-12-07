@@ -3,6 +3,7 @@ package com.shopme.common.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "brands")
 public class Brand {
     @Id
@@ -31,12 +33,18 @@ public class Brand {
         this.logo = logo;
     }
 
+    public Brand(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @ManyToMany
     @JoinTable(
             name = "brands_categories",
             joinColumns = @JoinColumn(name = "brand_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
+    @ToString.Exclude
     private Set<Category> categories = new HashSet<>();
 
     @Transient

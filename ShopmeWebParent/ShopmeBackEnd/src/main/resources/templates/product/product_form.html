@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="partial/header :: head(${pageTitle})"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="content">
+        <h2>Manager Products | <span th:text="${pageTitle}"></span></h2>
+        <form class="m-auto" enctype="multipart/form-data" id="formProduct" method="post"
+              th:action="@{/products/save}" th:object="${product}">
+            <input th:field="*{id}" type="hidden">
+            <div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#overview" type="button"
+                                role="tab">Overview
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#description" type="button"
+                                role="tab">Description
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#images" type="button"
+                                role="tab">Images
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#details" type="button"
+                                role="tab">Details
+                        </button>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content p-3">
+                    <div class="tab-pane active" id="overview" role="tabpanel">
+                        <div th:replace="product/product_overview :: content"></div>
+                    </div>
+                    <div class="tab-pane" id="description" role="tabpanel">Description</div>
+                    <div class="tab-pane" id="images" role="tabpanel">Images</div>
+                    <div class="tab-pane" id="details" role="tabpanel">Details</div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <button class="btn btn-primary m-3" id="btnSubmit" type="submit">Save</button>
+                <button class="btn btn-secondary" id="btnCancel" type="button">Cancel</button>
+            </div>
+        </form>
+        <div th:replace="partial/modal :: modal_form"></div>
+    </div>
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+<div th:replace="partial/footer :: script"></div>
+<script>
+    moduleURL = '[[@{/products}]]';
+    brandURL = '[[@{/brands}]]';
+    $(function () {
+        getCategories();
+        $("#brand").change(getCategories);
+    })
+    function getCategories() {
+        const id = $("#brand").val();
+        const categoryDiv = $("#category");
+        $.getJSON(`${brandURL}/${id}/categories`, function (data) {
+            categoryDiv.empty();
+            $.each(data, function (key, value) {
+                categoryDiv.append(`<option value="${value.id}">${value.name}</option>`);
+            });
+        });
+    }
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>
