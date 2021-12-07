@@ -14,7 +14,7 @@
         <div class="col-sm-10">
             <input class="form-control" minlength="3" maxlength="256"
                    placeholder="Default is product name (replace spaces with dashes)"
-                   required th:field="*{alias}" type="text">
+                   th:field="*{alias}" type="text">
         </div>
     </div>
     <div class="mb-3 row">
@@ -50,19 +50,19 @@
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Cost:</div>
         <div class="col-sm-10">
-            <input class="form-control" required th:field="*{cost}" type="number">
+            <input class="form-control" required step="0.01" th:field="*{cost}" type="number">
         </div>
     </div>
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Price:</div>
         <div class="col-sm-10">
-            <input class="form-control" required th:field="*{price}" type="number">
+            <input class="form-control" required step="0.01" th:field="*{price}" type="number">
         </div>
     </div>
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Discount:</div>
         <div class="col-sm-10">
-            <input class="form-control" required th:field="*{discountPercent}" type="number">
+            <input class="form-control" required step="0.01" th:field="*{discountPercent}" type="number">
         </div>
     </div>
 </div>

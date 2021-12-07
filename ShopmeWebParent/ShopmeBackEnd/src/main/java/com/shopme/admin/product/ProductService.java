@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.shopme.common.utils.Common.createSort;
@@ -39,5 +40,18 @@ public class ProductService {
         setPageInfo(pageInfo, pageNum, pageModel, PER_PAGE);
 
         return pageModel.getContent();
+    }
+
+    public Product save(Product product) {
+        if (product.getId() == null) {
+            product.setCreatedTime(new Date());
+            if (product.getAlias() == null || product.getAlias().isEmpty()) {
+                product.setAlias(product.getName().trim().replaceAll("\\s+", "-").toLowerCase());
+            } else {
+                product.setAlias(product.getAlias().trim().replace(" ", "-"));
+            }
+        }
+        product.setUpdatedTime(new Date());
+        return repo.save(product);
     }
 }
