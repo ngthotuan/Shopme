@@ -22,9 +22,7 @@
                 <tr th:each="product:${products}">
                     <td class="text-center hideable-column">[[${product.id}]]</td>
                     <td class="text-center">
-                        <!--                        <i class="fa fa-user fa-2x" th:unless="${product.logo}"></i>-->
-                        <!--                        <img class="img-fluid" style="width: 100px" th:alt="${product.logo}" th:if="${product.logo}"-->
-                        <!--                             th:src="@{${product.logoPath}}">-->
+                        <img class="img-fluid" style="width: 100px" th:src="@{${product.mainImagePath}}">
                     </td>
                     <td>[[${product.name}]]</td>
                     <td class="text-center">

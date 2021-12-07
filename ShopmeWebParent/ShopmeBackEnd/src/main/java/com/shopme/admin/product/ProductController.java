@@ -1,6 +1,7 @@
 package com.shopme.admin.product;
 
 import com.shopme.admin.brand.BrandService;
+import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Product;
@@ -8,11 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import static com.shopme.common.utils.Common.setModelListPage;
 
@@ -56,8 +60,18 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public String save(Product entity, RedirectAttributes redirectAttributes) throws IOException {
-        service.save(entity);
+    public String save(Product entity, RedirectAttributes redirectAttributes,
+                       @RequestParam(value = "fileImage", required = false) MultipartFile image) throws IOException {
+        if (!image.isEmpty()) {
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
+            entity.setMainImage(fileName);
+            Product saved = service.save(entity);
+            String uploadDir = "product-images/" + saved.getId();
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, fileName, image);
+        } else {
+            service.save(entity);
+        }
         redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
         return "redirect:/products";
     }

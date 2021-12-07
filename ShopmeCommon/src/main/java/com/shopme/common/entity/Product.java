@@ -80,4 +80,12 @@ public class Product {
         productImage.setName(imageName);
         images.add(productImage);
     }
+
+    @Transient
+    public String getMainImagePath() {
+        if (id == null || mainImage == null) {
+            return "/images/image-thumbnail.png";
+        }
+        return String.format("/product-images/%d/%s", id, mainImage);
+    }
 }
