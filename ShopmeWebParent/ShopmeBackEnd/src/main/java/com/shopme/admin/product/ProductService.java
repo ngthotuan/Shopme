@@ -73,4 +73,12 @@ public class ProductService {
     public void updateEnabledStatus(Long id, boolean status) {
         repo.updateEnabledStatus(id, status);
     }
+
+    public void delete(Long id) {
+        long c = repo.countById(id);
+        if (c == 0) {
+            throw new ProductNotFoundException("Could not found product with id " + id);
+        }
+        repo.deleteById(id);
+    }
 }

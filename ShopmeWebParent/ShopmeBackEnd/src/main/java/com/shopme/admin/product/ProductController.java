@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     @GetMapping("/new")
-    public String createCategory(Model model) {
+    public String create(Model model) {
         Product product = new Product();
         product.setEnabled(true);
         product.setInStock(true);
@@ -64,12 +64,25 @@ public class ProductController {
 
     @GetMapping("/{id}/enabled/{enabled}")
     @Transactional
-    public String updateUserStatus(@PathVariable Long id,
-                                   @PathVariable boolean enabled,
-                                   RedirectAttributes redirectAttributes) {
+    public String updateStatus(@PathVariable Long id,
+                               @PathVariable boolean enabled,
+                               RedirectAttributes redirectAttributes) {
         String status = enabled ? "enabled" : "disabled";
         service.updateEnabledStatus(id, enabled);
-        redirectAttributes.addFlashAttribute("message", String.format("The product with ID %d has been %s", id, status));
+        redirectAttributes.addFlashAttribute("message",
+                String.format("The product with ID %d has been %s", id, status));
+        return "redirect:/products";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            service.delete(id);
+            redirectAttributes.addFlashAttribute("message",
+                    String.format("The product with ID %d has been deleted successfully", id));
+        } catch (ProductNotFoundException ex) {
+            redirectAttributes.addFlashAttribute("errMessage", ex.getMessage());
+        }
         return "redirect:/products";
     }
 

@@ -16,4 +16,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("UPDATE Product product SET product.enabled=?2 WHERE product.id=?1")
     @Modifying
     void updateEnabledStatus(Long id, boolean status);
+
+    long countById(Long id);
 }
