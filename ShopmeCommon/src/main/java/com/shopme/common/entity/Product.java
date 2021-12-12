@@ -6,9 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor
 @Getter
@@ -74,6 +72,9 @@ public class Product {
     @JoinColumn(name = "brand_id", foreignKey = @ForeignKey(name = "FK_PRODUCT_BRAND"))
     private Brand brand;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductDetail> details = new ArrayList<>();
+
     public void addExtrasImages(String imageName) {
         ProductImage productImage = new ProductImage();
         productImage.setProduct(this);
@@ -87,5 +88,10 @@ public class Product {
             return "/images/image-thumbnail.png";
         }
         return String.format("/product-images/%d/%s", id, mainImage);
+    }
+
+    public void addDetails(String name, String value) {
+        ProductDetail productDetail = new ProductDetail(name, value, this);
+        details.add(productDetail);
     }
 }
