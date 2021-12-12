@@ -61,17 +61,36 @@ public class ProductController {
 
     @PostMapping("/save")
     public String save(Product entity, RedirectAttributes redirectAttributes,
-                       @RequestParam(value = "fileImage", required = false) MultipartFile image) throws IOException {
+                       @RequestParam(value = "fileImage", required = false) MultipartFile image,
+                       @RequestParam(value = "extraImage", required = false) List<MultipartFile> extraImages)
+            throws IOException {
+        // set main image
         if (!image.isEmpty()) {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
             entity.setMainImage(fileName);
-            Product saved = service.save(entity);
-            String uploadDir = "product-images/" + saved.getId();
-            FileUploadUtil.cleanDir(uploadDir);
-            FileUploadUtil.saveFile(uploadDir, fileName, image);
-        } else {
-            service.save(entity);
         }
+        // set extra images
+        if (extraImages != null && !extraImages.isEmpty()) {
+            for (MultipartFile file : extraImages) {
+                String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+                entity.addExtrasImages(fileName);
+            }
+        }
+
+        Product saved = service.save(entity);
+        // save image
+        String uploadDir = "product-images/" + saved.getId();
+        String extraImagesDir = uploadDir + "/extras";
+        FileUploadUtil.saveFile(uploadDir, entity.getMainImage(), image);
+        if (extraImages != null && !extraImages.isEmpty()) {
+            for (MultipartFile file : extraImages) {
+                if (!file.isEmpty()) {
+                    String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+                    FileUploadUtil.saveFile(extraImagesDir, fileName, file);
+                }
+            }
+        }
+
         redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
         return "redirect:/products";
     }
