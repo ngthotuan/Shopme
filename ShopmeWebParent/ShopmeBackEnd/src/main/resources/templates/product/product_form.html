@@ -70,56 +70,12 @@
 <div th:replace="partial/footer :: script"></div>
 <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
 <script>
+    MAX_FILE_SIZE = 1024 * 1024;
     moduleURL = '[[@{/products}]]';
     brandURL = '[[@{/brands}]]';
-    $(function () {
-        getCategories();
-        $("#brand").change(getCategories);
-
-        $("#shortDescription").richText();
-        $("#fullDescription").richText();
-
-        $("#btnSubmit").click(function (e) {
-            e.preventDefault();
-            const form = $("#formProduct")[0];
-            if (form.checkValidity()) {
-                const params = {
-                    id: $("#id").val(),
-                    name: $("#name").val(),
-                }
-                $.post(`${moduleURL}/check_duplicate`, params)
-                    .done(function (data) {
-                        if (data === 'OK') {
-                            form.submit();
-                        } else if (data === 'DuplicateName') {
-                            showModal('Warning', `There are another product with name ${params.name}`);
-                        } else {
-                            showModal('Error', 'There are an error when checking duplicate');
-                        }
-                    })
-                    .fail(function (e) {
-                        showModal('Error', 'Service unavailable');
-                        console.log(e);
-                    });
-            } else {
-                form.reportValidity();
-            }
-        });
-
-
-    })
-
-    function getCategories() {
-        const id = $("#brand").val();
-        const categoryDiv = $("#category");
-        $.getJSON(`${brandURL}/${id}/categories`, function (data) {
-            categoryDiv.empty();
-            $.each(data, function (key, value) {
-                categoryDiv.append(`<option value="${value.id}">${value.name}</option>`);
-            });
-        });
-    }
+    defaultThumbnail = '[[@{/images/image-thumbnail.png}]]';
 </script>
 <script th:src="@{/js/common_form.js}"></script>
+<script th:src="@{/js/product_form.js}"></script>
 </body>
 </html>

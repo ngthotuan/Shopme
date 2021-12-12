@@ -89,6 +89,7 @@
 </div>
 <div th:replace="partial/footer :: script"></div>
 <script>
+    MAX_FILE_SIZE = 0.5 * 1024 * 1024;
     moduleURL = '[[@{/users}]]';
     $(function () {
         $("#btnSubmit").click(function (e) {

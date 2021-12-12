@@ -60,6 +60,7 @@
 </div>
 <div th:replace="partial/footer :: script"></div>
 <script>
+    MAX_FILE_SIZE = 1024 * 1024;
     moduleURL = '[[@{/brands}]]';
     $(function () {
         const categories = $('#categories');
