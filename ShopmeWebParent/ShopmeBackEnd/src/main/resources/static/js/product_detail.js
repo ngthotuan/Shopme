@@ -5,11 +5,11 @@ $('#btnAddDetails').click(function () {
     const html = `<div class="mb-3 row detail-item" id="detailItem${current}">
            <div class="col-sm-1 col-form-label">Name:</div>
            <div class="col-sm-4">
-               <input class="form-control" maxlength="256" type="text" name="names">
+               <input class="form-control" maxlength="256" type="text" name="detailNames">
            </div>
            <div class="col-sm-1 col-form-label">Value:</div>
            <div class="col-sm-5">
-               <input class="form-control" maxlength="256" type="text" name="values">
+               <input class="form-control" maxlength="256" type="text" name="detailValues">
            </div>
           </div>`;
     $("#productDetails").append(html);

@@ -62,7 +62,9 @@ public class ProductController {
     @PostMapping("/save")
     public String save(Product entity, RedirectAttributes redirectAttributes,
                        @RequestParam(value = "fileImage", required = false) MultipartFile image,
-                       @RequestParam(value = "extraImage", required = false) List<MultipartFile> extraImages)
+                       @RequestParam(value = "extraImage", required = false) List<MultipartFile> extraImages,
+                       @RequestParam(value = "detailNames") List<String> detailNames,
+                       @RequestParam(value = "detailValues") List<String> detailValues)
             throws IOException {
         // set main image
         if (!image.isEmpty()) {
@@ -72,8 +74,17 @@ public class ProductController {
         // set extra images
         if (extraImages != null && !extraImages.isEmpty()) {
             for (MultipartFile file : extraImages) {
-                String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-                entity.addExtrasImages(fileName);
+                if (!file.isEmpty()) {
+                    String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+                    entity.addExtrasImages(fileName);
+                }
+            }
+        }
+
+        // set details
+        if (detailNames != null && !detailNames.isEmpty() && detailValues != null && !detailValues.isEmpty()) {
+            for (int i = 0; i < detailNames.size(); i++) {
+                entity.addDetails(detailNames.get(i), detailValues.get(i));
             }
         }
 

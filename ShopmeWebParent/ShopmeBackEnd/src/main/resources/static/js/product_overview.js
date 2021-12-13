@@ -2,9 +2,6 @@ $(function () {
     getCategories();
     $("#brand").change(getCategories);
 
-    $("#shortDescription").richText();
-    $("#fullDescription").richText();
-
     $("#btnSubmit").click(function (e) {
         e.preventDefault();
         const form = $("#formProduct")[0];
