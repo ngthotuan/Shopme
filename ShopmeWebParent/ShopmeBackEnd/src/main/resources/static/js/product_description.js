@@ -1,0 +1,2 @@
+$("#shortDescription").richText();
+$("#fullDescription").richText();

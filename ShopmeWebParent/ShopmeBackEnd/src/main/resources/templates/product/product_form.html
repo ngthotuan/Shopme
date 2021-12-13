@@ -52,7 +52,9 @@
                     <div class="tab-pane" id="images" role="tabpanel">
                         <div th:replace="product/product_images :: content"></div>
                     </div>
-                    <div class="tab-pane" id="details" role="tabpanel">Details</div>
+                    <div class="tab-pane" id="details" role="tabpanel">
+                        <div th:replace="product/product_details :: content"></div>
+                    </div>
                     <div class="tab-pane" id="shipping" role="tabpanel">
                         <div th:replace="product/product_shipping :: content"></div>
                     </div>
@@ -76,6 +78,9 @@
     defaultThumbnail = '[[@{/images/image-thumbnail.png}]]';
 </script>
 <script th:src="@{/js/common_form.js}"></script>
-<script th:src="@{/js/product_form.js}"></script>
+<script th:src="@{/js/product_overview.js}"></script>
+<script th:src="@{/js/product_description.js}"></script>
+<script th:src="@{/js/product_images.js}"></script>
+<script th:src="@{/js/product_detail.js}"></script>
 </body>
 </html>
