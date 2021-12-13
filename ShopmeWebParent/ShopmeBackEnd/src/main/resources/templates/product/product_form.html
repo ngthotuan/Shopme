@@ -12,6 +12,7 @@
         <form class="m-auto" enctype="multipart/form-data" id="formProduct" method="post"
               th:action="@{/products/save}" th:object="${product}">
             <input th:field="*{id}" type="hidden">
+            <input id="categoryId" th:if="${product.category != null}" th:value="${product.category.id}" type="hidden">
             <div>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">

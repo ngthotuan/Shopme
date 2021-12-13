@@ -4,28 +4,26 @@
 <div th:fragment="content" th:remove="tag">
     <div class="mb-3 row" id="productImages">
         <div class="col border m-2">
-            <div>
-                <label>Main image: </label>
-            </div>
-            <div>
-                <img alt="Main image preview" class="img-fluid" id="thumbnail" th:src="@{${product.mainImagePath}}">
-            </div>
-            <div class="mt-1 p-3">
-                <input accept="image/*" class="form-file" id="fileImage" name="fileImage"
-                       type="file"/>
-            </div>
+            <label>Main image: </label><br>
+            <img alt="Main image preview" class="img-fluid" id="thumbnail" th:src="@{${product.mainImagePath}}"><br>
+            <input accept="image/*" class="form-file m-2" id="fileImage" name="fileImage" type="file"/> <br>
+            <input th:field="*{mainImage}" type="hidden">
         </div>
-        <div class="col border m-2" id="extraImageSection0">
-            <div id="extraImageHeader0">
-                <label>Extra image #1: </label>
+        <th:block th:each="productImages : ${product.images}">
+            <div class="col border m-2 extra-image">
+                <label>Extra image:
+                    <button class="btn fas fa-times-circle fa-2x text-danger"
+                            onclick="removeExtraImage(this)"
+                            title="Delete this image"></button>
+                </label><br>
+                <img alt="Extra image preview" class="img-fluid" th:src="@{${productImages.imagePath}}"><br>
+                <input accept="image/*" class="form-file m-2" name="extraImage" type="file"/>
             </div>
-            <div>
-                <img alt="Extra image #1 preview" class="img-fluid" id="extraThumbnail0"
-                     th:src="@{/images/image-thumbnail.png}">
-            </div>
-            <div class="mt-1 p-3">
-                <input accept="image/*" class="form-file" id="extraImage0" name="extraImage" type="file"/>
-            </div>
+        </th:block>
+        <div class="col border m-2 extra-image">
+            <label>Extra image: </label><br>
+            <img alt="Extra image preview" class="img-fluid" th:src="@{/images/image-thumbnail.png}"><br>
+            <input accept="image/*" class="form-file m-2" name="extraImage" type="file"/>
         </div>
 
     </div>

@@ -81,4 +81,9 @@ public class ProductService {
         }
         repo.deleteById(id);
     }
+
+    public Product get(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Could not found product with id " + id));
+    }
 }

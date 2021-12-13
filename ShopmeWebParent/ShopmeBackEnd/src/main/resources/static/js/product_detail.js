@@ -1,8 +1,6 @@
-let current = 0;
-
 $('#btnAddDetails').click(function () {
     addRemoveButton();
-    const html = `<div class="mb-3 row detail-item" id="detailItem${current}">
+    const html = `<div class="mb-3 row detail-item">
            <div class="col-sm-1 col-form-label">Name:</div>
            <div class="col-sm-4">
                <input class="form-control" maxlength="256" type="text" name="detailNames">
@@ -21,8 +19,7 @@ function addRemoveButton() {
                    <span class="fas fa-2x fa-times-circle text-danger"></span>
                </button>
            </div>`;
-    $('#detailItem' + current).append(removeDetail);
-    current++;
+    $('.detail-item').last().append(removeDetail);
 }
 
 function removeDetailItem(btn) {

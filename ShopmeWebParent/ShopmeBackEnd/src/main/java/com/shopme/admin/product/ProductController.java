@@ -130,4 +130,20 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model) {
+        try {
+            Product product = service.get(id);
+            List<Brand> brands = brandService.listAll();
+
+            model.addAttribute("pageTitle", "Edit Product");
+            model.addAttribute("product", product);
+            model.addAttribute("brands", brands);
+            return "product/product_form";
+        } catch (ProductNotFoundException ex) {
+            redirectAttributes.addFlashAttribute("errMessage", ex.getMessage());
+            return "redirect:/products";
+        }
+    }
+
 }

@@ -3,7 +3,26 @@
 <body>
 <div th:fragment="content" th:remove="tag">
     <div id="productDetails">
-        <div class="mb-3 row detail-item" id="detailItem0">
+        <th:block th:each="detail : ${product.details}">
+            <div class="mb-3 row detail-item">
+                <div class="col-sm-1 col-form-label">Name:</div>
+                <div class="col-sm-4">
+                    <input class="form-control" maxlength="256" name="detailNames" required th:value="${detail.name}"
+                           type="text">
+                </div>
+                <div class="col-sm-1 col-form-label">Value:</div>
+                <div class="col-sm-5">
+                    <input class="form-control" maxlength="256" name="detailValues" required th:value="${detail.value}"
+                           type="text">
+                </div>
+                <div class="col-sm-1">
+                    <button class="btn" onclick="removeDetailItem(this)" type="button">
+                        <span class="fas fa-2x fa-times-circle text-danger"></span>
+                    </button>
+                </div>
+            </div>
+        </th:block>
+        <div class="mb-3 row detail-item">
             <div class="col-sm-1 col-form-label">Name:</div>
             <div class="col-sm-4">
                 <input class="form-control" maxlength="256" name="detailNames" required type="text">

@@ -1,5 +1,5 @@
 $(function () {
-    getCategories();
+    getCategoriesForNew();
     $("#brand").change(getCategories);
 
     $("#btnSubmit").click(function (e) {
@@ -39,4 +39,11 @@ function getCategories() {
             categoryDiv.append(`<option value="${value.id}">${value.name}</option>`);
         });
     });
+}
+
+function getCategoriesForNew() {
+    const categoryId = $("#categoryId").val();
+    if (!categoryId) {
+        getCategories();
+    }
 }

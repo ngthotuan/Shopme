@@ -1,51 +1,40 @@
-let currentIndex = 0; // the number of extra images
+$(function () {
+    $('input[name=extraImage]').change(function () {
+        handleExtraInputChange(this);
+    });
+})
 
-$('#extraImage0').change(function () {
-    handleExtraInputChange(this, currentIndex);
-});
-
-function handleExtraInputChange(input, index) {
+function handleExtraInputChange(input) {
     if (!checkFileSize(input)) {
         return;
     }
-    showExtraImageThumbnail(input, index);
-    if (currentIndex === index) {
-        currentIndex++;
-        addNextExtraImageSection(index + 1);
-        const removeLink = `<button onclick="removeExtraImage(${index})"
-                            class="btn fas fa-times-circle fa-2x text-danger" 
-                            title="Delete this image"></button>`;
-        $('#extraImageHeader' + index).append(removeLink);
-    }
-}
-
-function showExtraImageThumbnail(fileInput, index) {
-    const file = fileInput.files[0];
+    // show thumbnail
+    const parent = $(input).parent();
+    const file = input.files[0];
     const reader = new FileReader();
     reader.onload = function (e) {
-        $('#extraThumbnail' + index).attr('src', e.target.result);
+        parent.children('img').attr('src', e.target.result);
     }
     reader.readAsDataURL(file);
-}
 
-function addNextExtraImageSection(index) {
-    const html = `<div class="col border m-2" id="extraImageSection${index}">
-            <div id="extraImageHeader${index}">
-                <label>Extra image #${index + 1}: </label>
-            </div>
-            <div>
-                <img alt="Extra image #${index + 1} preview" class="img-fluid" 
-                        id="extraThumbnail${index}" src="${defaultThumbnail}">
-            </div>
-            <div class="mt-1 p-3">
-                <input accept="image/*" class="form-file" id="extraImage${index}" 
-                onchange="handleExtraInputChange(this, ${index})" name="extraImage" type="file"/>
-            </div>
+    const last = $('.extra-image').last();
+    if (last.is(parent)) {
+        // add remove button
+        const removeBtn = `<button onclick="removeExtraImage(this)"
+                            class="btn fas fa-times-circle fa-2x text-danger" 
+                            title="Delete this image"></button>`;
+        parent.children('label').append(removeBtn);
+
+        // addNextExtraImageSection
+        const html = `<div class="col border m-2 extra-image">
+            <label>Extra image: </label><br>
+            <img alt="Extra image preview" class="img-fluid" src="${defaultThumbnail}"><br>
+            <input accept="image/*" onchange="handleExtraInputChange(this)" class="form-file m-2" name="extraImage" type="file"/>
         </div>`;
-
-    $("#productImages").append(html);
+        $("#productImages").append(html);
+    }
 }
 
-function removeExtraImage(index) {
-    $('#extraImageSection' + index).remove();
+function removeExtraImage(btn) {
+    $(btn).parents('.extra-image').remove();
 }

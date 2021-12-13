@@ -15,6 +15,7 @@
                 <th th:replace="fragments::column_link(${module}, 'id', 'ID', true)"></th>
                 <th>Image</th>
                 <th th:replace="fragments::column_link(${module}, 'name', 'Name', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'category', 'Category', false)"></th>
                 <th th:replace="fragments::column_link(${module}, 'enabled', 'Enabled', false)">Enable</th>
                 <th>Actions</th>
                 </thead>
@@ -25,6 +26,7 @@
                         <img class="img-fluid" style="width: 100px" th:src="@{${product.mainImagePath}}">
                     </td>
                     <td>[[${product.name}]]</td>
+                    <td>[[${product.category.name}]]</td>
                     <td class="text-center">
                         <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>
                     </td>

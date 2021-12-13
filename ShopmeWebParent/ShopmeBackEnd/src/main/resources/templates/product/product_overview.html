@@ -30,8 +30,12 @@
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Category:</div>
         <div class="col-sm-10">
-            <select class="form-select" th:field="*{category}" required>
-
+            <select class="form-select" required th:field="*{category}" th:if="${product.category != null}">
+                <th:block th:each="category:${product.brand.categories}">
+                    <option th:text="${category.name}" th:value="${category.id}"></option>
+                </th:block>
+            </select>
+            <select class="form-select" required th:field="*{category}" th:if="${product.category == null}">
             </select>
         </div>
     </div>

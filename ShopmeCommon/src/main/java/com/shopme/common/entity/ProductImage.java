@@ -22,4 +22,8 @@ public class ProductImage {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public String getImagePath() {
+        return String.format("/product-images/%s/extras/%s", product.getId(), name);
+    }
 }
