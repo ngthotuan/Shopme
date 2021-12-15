@@ -82,8 +82,8 @@ public class ProductRepositoryTests {
         Product product = repo.getById(1L);
         assertThat(product).isNotNull();
         product.setMainImage("/images/products/1/main.jpg");
-        product.addExtrasImages("/images/products/1/extras/1.jpg");
-        product.addExtrasImages("/images/products/1/extras/2.jpg");
+        product.addExtraImage("/images/products/1/extras/1.jpg");
+        product.addExtraImage("/images/products/1/extras/2.jpg");
         repo.save(product);
         assertThat(product.getMainImage()).isEqualTo("/images/products/1/main.jpg");
     }
@@ -92,9 +92,9 @@ public class ProductRepositoryTests {
     public void testCreateProductWithDetails() {
         Product product = repo.findById(2L).orElse(null);
         assertThat(product).isNotNull();
-        product.addDetails("cpu", "i7");
-        product.addDetails("ram", "8gb");
-        product.addDetails("screen", "6.5");
+        product.addDetail("cpu", "i7");
+        product.addDetail("ram", "8gb");
+        product.addDetail("screen", "6.5");
         Product savedProduct = repo.save(product);
         assertThat(savedProduct.getDetails().size()).isGreaterThanOrEqualTo(3);
     }

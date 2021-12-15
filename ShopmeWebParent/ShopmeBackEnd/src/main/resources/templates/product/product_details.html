@@ -15,6 +15,7 @@
                     <input class="form-control" maxlength="256" name="detailValues" required th:value="${detail.value}"
                            type="text">
                 </div>
+                <input name="detailIDs" th:value="${detail.id}" type="hidden">
                 <div class="col-sm-1">
                     <button class="btn" onclick="removeDetailItem(this)" type="button">
                         <span class="fas fa-2x fa-times-circle text-danger"></span>
@@ -25,12 +26,15 @@
         <div class="mb-3 row detail-item">
             <div class="col-sm-1 col-form-label">Name:</div>
             <div class="col-sm-4">
-                <input class="form-control" maxlength="256" name="detailNames" required type="text">
+                <input class="form-control" maxlength="256" name="detailNames"
+                       th:required="${product.id == null}" type="text">
             </div>
             <div class="col-sm-1 col-form-label">Value:</div>
             <div class="col-sm-5">
-                <input class="form-control" maxlength="256" name="detailValues" required type="text">
+                <input class="form-control" maxlength="256" name="detailValues"
+                       th:required="${product.id == null}" type="text">
             </div>
+            <input name="detailIDs" type="hidden" value="-1">
         </div>
     </div>
     <div class="mb-3 row">

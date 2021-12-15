@@ -25,9 +25,9 @@ public class Product {
     private String name;
     @Column(nullable = false, length = 256)
     private String alias;
-    @Column(length = 512, nullable = false, name = "short_description")
+    @Column(columnDefinition = "text", nullable = false, name = "short_description")
     private String shortDescription;
-    @Column(length = 4096, nullable = false, name = "full_description")
+    @Column(columnDefinition = "text", nullable = false, name = "full_description")
     private String fullDescription;
 
     @Column(name = "main_image", nullable = false, length = 256)
@@ -61,7 +61,7 @@ public class Product {
     @ColumnDefault("0")
     private float weight;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductImage> images = new HashSet<>();
 
     @ManyToOne
@@ -72,10 +72,10 @@ public class Product {
     @JoinColumn(name = "brand_id", foreignKey = @ForeignKey(name = "FK_PRODUCT_BRAND"))
     private Brand brand;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductDetail> details = new ArrayList<>();
 
-    public void addExtrasImages(String imageName) {
+    public void addExtraImage(String imageName) {
         ProductImage productImage = new ProductImage();
         productImage.setProduct(this);
         productImage.setName(imageName);
@@ -90,8 +90,18 @@ public class Product {
         return String.format("/product-images/%d/%s", id, mainImage);
     }
 
-    public void addDetails(String name, String value) {
+    public void addDetail(String name, String value) {
         ProductDetail productDetail = new ProductDetail(name, value, this);
         details.add(productDetail);
+    }
+
+    public void addDetail(Long id, String name, String value) {
+        ProductDetail productDetail = new ProductDetail(id, name, value, this);
+        details.add(productDetail);
+    }
+
+    public boolean containsImageName(String imageName) {
+        return images.stream()
+                .anyMatch(image -> image.getName().equals(imageName));
     }
 }

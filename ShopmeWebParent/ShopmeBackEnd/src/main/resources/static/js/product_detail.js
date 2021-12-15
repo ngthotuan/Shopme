@@ -9,6 +9,7 @@ $('#btnAddDetails').click(function () {
            <div class="col-sm-5">
                <input class="form-control" maxlength="256" type="text" name="detailValues">
            </div>
+           <input type="hidden" name="detailIDs" value="-1">
           </div>`;
     $("#productDetails").append(html);
 });

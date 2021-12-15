@@ -5,6 +5,7 @@ import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Product;
+import com.shopme.common.entity.ProductImage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.shopme.common.utils.Common.setModelListPage;
 
@@ -63,47 +68,114 @@ public class ProductController {
     public String save(Product entity, RedirectAttributes redirectAttributes,
                        @RequestParam(value = "fileImage", required = false) MultipartFile image,
                        @RequestParam(value = "extraImage", required = false) List<MultipartFile> extraImages,
-                       @RequestParam(value = "detailNames") List<String> detailNames,
-                       @RequestParam(value = "detailValues") List<String> detailValues)
-            throws IOException {
-        // set main image
+                       @RequestParam(value = "detailIDs") String[] detailIDs,
+                       @RequestParam(value = "detailNames") String[] detailNames,
+                       @RequestParam(value = "detailValues") String[] detailValues,
+                       @RequestParam(name = "imageIDs", required = false) String[] imageIDs,
+                       @RequestParam(name = "imageNames", required = false) String[] imageNames
+    ) throws IOException {
+        setMainImage(entity, image);
+        setExistingExtraImageNames(entity, imageIDs, imageNames);
+        setExtraImages(entity, extraImages);
+        setDetails(entity, detailIDs, detailNames, detailValues);
+
+        Product saved = service.save(entity);
+        saveImages(image, extraImages, saved);
+        removeUnusedImages(saved);
+
+        redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
+        return "redirect:/products";
+    }
+
+    private void removeUnusedImages(Product saved) {
+        String imageDir = "product-images/" + saved.getId() + "/extras/";
+        try {
+            Files.list(Paths.get(imageDir)).forEach(file -> {
+                if (!saved.containsImageName(file.getFileName().toString())) {
+                    try {
+                        Files.delete(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setExistingExtraImageNames(Product entity, String[] imageIDs, String[] imageNames) {
+        if (imageIDs != null && imageNames != null) {
+            Set<ProductImage> images = new HashSet<>();
+            for (int i = 0; i < imageIDs.length; i++) {
+                ProductImage image = new ProductImage();
+                image.setId(Long.parseLong(imageIDs[i]));
+                image.setName(imageNames[i]);
+                image.setProduct(entity);
+                images.add(image);
+            }
+            entity.setImages(images);
+        }
+    }
+
+    private void saveImages(MultipartFile image, List<MultipartFile> extraImages, Product saved) throws IOException {
+        String uploadDir = "product-images/" + saved.getId();
+        String extraImagesDir = uploadDir + "/extras";
+        if (!image.isEmpty()) {
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, saved.getMainImage(), image);
+        }
+        if (extraImages == null || extraImages.isEmpty()) {
+            return;
+        }
+        for (MultipartFile file : extraImages) {
+            if (file.isEmpty()) continue;
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+            FileUploadUtil.saveFile(extraImagesDir, fileName, file);
+        }
+    }
+
+    private void setDetails(Product entity, String[] detailIDs, String[] detailNames, String[] detailValues) {
+        if (detailNames == null || detailValues == null) {
+            return;
+        }
+        for (int i = 0; i < detailNames.length; i++) {
+            String name = detailNames[i];
+            String value = detailValues[i];
+            long id = Long.parseLong(detailIDs[i]);
+
+            if (id != -1) {
+                entity.addDetail(id, name, value);
+            } else {
+                if (!name.isEmpty() && !value.isEmpty()) {
+                    entity.addDetail(name, value);
+                }
+            }
+
+
+        }
+    }
+
+    private void setExtraImages(Product entity, List<MultipartFile> extraImages) {
+        if (extraImages == null || extraImages.isEmpty()) {
+            return;
+        }
+        for (MultipartFile file : extraImages) {
+            if (file.isEmpty()) continue;
+
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+            if (!entity.containsImageName(fileName)) {
+                entity.addExtraImage(fileName);
+            }
+        }
+    }
+
+    private void setMainImage(Product entity, MultipartFile image) {
         if (!image.isEmpty()) {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
             entity.setMainImage(fileName);
         }
-        // set extra images
-        if (extraImages != null && !extraImages.isEmpty()) {
-            for (MultipartFile file : extraImages) {
-                if (!file.isEmpty()) {
-                    String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-                    entity.addExtrasImages(fileName);
-                }
-            }
-        }
-
-        // set details
-        if (detailNames != null && !detailNames.isEmpty() && detailValues != null && !detailValues.isEmpty()) {
-            for (int i = 0; i < detailNames.size(); i++) {
-                entity.addDetails(detailNames.get(i), detailValues.get(i));
-            }
-        }
-
-        Product saved = service.save(entity);
-        // save image
-        String uploadDir = "product-images/" + saved.getId();
-        String extraImagesDir = uploadDir + "/extras";
-        FileUploadUtil.saveFile(uploadDir, entity.getMainImage(), image);
-        if (extraImages != null && !extraImages.isEmpty()) {
-            for (MultipartFile file : extraImages) {
-                if (!file.isEmpty()) {
-                    String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-                    FileUploadUtil.saveFile(extraImagesDir, fileName, file);
-                }
-            }
-        }
-
-        redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
-        return "redirect:/products";
     }
 
     @GetMapping("/{id}/enabled/{enabled}")

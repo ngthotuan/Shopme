@@ -11,13 +11,14 @@
         </div>
         <th:block th:each="productImages : ${product.images}">
             <div class="col border m-2 extra-image">
-                <label>Extra image:
-                    <button class="btn fas fa-times-circle fa-2x text-danger"
-                            onclick="removeExtraImage(this)"
-                            title="Delete this image"></button>
-                </label><br>
+                <label>Extra image:</label>
+                <button class="btn fas fa-times-circle fa-2x text-danger"
+                        onclick="removeExtraImage(this)"
+                        title="Delete this image"></button>
                 <img alt="Extra image preview" class="img-fluid" th:src="@{${productImages.imagePath}}"><br>
                 <input accept="image/*" class="form-file m-2" name="extraImage" type="file"/>
+                <input name="imageIDs" th:value="${productImages.id}" type="hidden"/>
+                <input name="imageNames" th:value="${productImages.name}" type="hidden"/>
             </div>
         </th:block>
         <div class="col border m-2 extra-image">
