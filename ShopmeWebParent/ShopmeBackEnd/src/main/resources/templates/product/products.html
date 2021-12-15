@@ -25,12 +25,25 @@
                     <td class="text-center">
                         <img class="img-fluid" style="width: 100px" th:src="@{${product.mainImagePath}}">
                     </td>
-                    <td>[[${product.name}]]</td>
+                    <td width="50%">
+                        <a class="detail-link"
+                           th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
+                           title="See detail product"
+                        >
+                            [[${product.name}]]
+                        </a>
+                    </td>
                     <td>[[${product.category.name}]]</td>
                     <td class="text-center">
                         <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>
                     </td>
                     <td class="text-center">
+                        <a class="btn btn-info text-center detail-link"
+                           th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
+                           title="See detail product"
+                        >
+                            <i class="fa fa-file-alt"></i>
+                        </a>
                         <a th:replace="fragments::edit(${module}, ${product.id}, 'product')"></a>
                         <a th:replace="fragments::delete(${module}, ${product.id}, 'product', true)"></a>
                     </td>
@@ -62,9 +75,27 @@
     </div>
     <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>
+    <div class="modal fade" id="detailModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
     <div th:replace="partial/footer :: footer"></div>
 </div>
 </body>
 <div th:replace="partial/footer :: script"></div>
 <script th:src="@{/js/common_list.js}"></script>
+<script>
+    $(function () {
+        $('.detail-link').click(function (e) {
+            e.preventDefault();
+            const url = $(this).attr('href');
+            $('#detailModal').modal('show')
+                .find('.modal-content')
+                .load(url);
+        })
+    });
+</script>
 </html>

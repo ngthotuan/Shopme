@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<body>
+<div class="modal-header">
+    <h5 class="modal-title" id="modalTitle">Product details</h5>
+    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+</div>
+<div class="modal-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-target="#overview" data-bs-toggle="tab" role="tab"
+                    type="button">Overview
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-target="#description" data-bs-toggle="tab" role="tab"
+                    type="button">Description
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-target="#images" data-bs-toggle="tab" role="tab"
+                    type="button">Images
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-target="#details" data-bs-toggle="tab" role="tab"
+                    type="button">Details
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-target="#shipping" data-bs-toggle="tab" role="tab"
+                    type="button">Shipping
+            </button>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content p-3">
+        <div class="tab-pane active" id="overview" role="tabpanel">
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Name:</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.name}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Alias:</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.alias}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Category:</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.category.name}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Enabled:</div>
+                <div class="col-sm-10">
+                    <input class="form-check" disabled th:checked="${product.enabled}" type="checkbox"/>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">In Stock:</div>
+                <div class="col-sm-10">
+                    <input class="form-check" disabled th:checked="${product.inStock}" type="checkbox"/>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Cost:</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.cost}" type="number">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Price:</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.price}" type="number">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Discount:</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.discountPercent}" type="number">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Updated time:</div>
+                <div class="col-sm-10">
+                    <span th:text="${#dates.format(product.updatedTime, 'yyyy-MM-dd hh:mm:ss')}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="description" role="tabpanel">
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Short Description:</div>
+                <div class="col-sm-10">
+                    <div class="p-2 border" th:utext="${product.shortDescription}">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Full Description:</div>
+                <div class="col-sm-10">
+                    <div class="p-2 border" th:utext="${product.fullDescription}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="images" role="tabpanel">
+            <div class="mb-3 row">
+                <div class="col border m-2">
+                    <label>Main image: </label><br>
+                    <img alt="Main image preview" class="img-fluid" th:src="@{${product.mainImagePath}}"><br>
+                </div>
+                <th:block th:each="productImages, status : ${product.images}">
+                    <div class="col border m-2 extra-image">
+                        <label>Extra image: #[[${status.index + 1}]]</label>
+                        <img class="img-fluid" th:alt="'Extra image #' + ${status.index + 1} + ' preview'"
+                             th:src="@{${productImages.imagePath}}"><br>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+        <div class="tab-pane" id="details" role="tabpanel">
+            <div class="mb-3 row">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th width="40%">Name</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="productDetails : ${product.details}">
+                        <tr>
+                            <td>[[${productDetails.name}]]</td>
+                            <td>[[${productDetails.value}]]</td>
+                        </tr>
+                    </th:block>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane" id="shipping" role="tabpanel">
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Length (inch):</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.length}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Width (inch):</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.width}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Height (inch):</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.height}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 col-form-label">Weight (pounds):</div>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled th:value="${product.weight}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-danger" data-bs-dismiss="modal" type="button">Close</button>
+</div>
+</body>
+</html>
