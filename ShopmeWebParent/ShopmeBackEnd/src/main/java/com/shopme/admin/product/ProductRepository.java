@@ -8,7 +8,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT product FROM Product product WHERE product.name LIKE %?1%")
+    @Query("SELECT product FROM Product product WHERE product.name LIKE %?1%"
+            + " OR product.alias LIKE %?1%"
+            + " OR product.shortDescription LIKE %?1%"
+            + " OR product.fullDescription LIKE %?1%"
+            + " OR product.brand.name LIKE %?1%"
+            + " OR product.category.name LIKE %?1%"
+    )
     Page<Product> findAll(String keyword, Pageable pageable);
 
     Product findByName(String name);

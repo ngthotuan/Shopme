@@ -15,7 +15,8 @@
                 <th th:replace="fragments::column_link(${module}, 'id', 'ID', true)"></th>
                 <th>Image</th>
                 <th th:replace="fragments::column_link(${module}, 'name', 'Name', false)"></th>
-                <th th:replace="fragments::column_link(${module}, 'category', 'Category', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'brand.name', 'Brand', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'category.name', 'Category', false)"></th>
                 <th th:replace="fragments::column_link(${module}, 'enabled', 'Enabled', false)">Enable</th>
                 <th>Actions</th>
                 </thead>
@@ -28,11 +29,12 @@
                     <td width="50%">
                         <a class="detail-link"
                            th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
-                           title="See detail product"
+                           th:title="${product.name}"
                         >
-                            [[${product.name}]]
+                            [[${product.shortName}]]
                         </a>
                     </td>
+                    <td>[[${product.brand.name}]]</td>
                     <td>[[${product.category.name}]]</td>
                     <td class="text-center">
                         <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>

@@ -18,7 +18,7 @@ import static com.shopme.common.utils.Common.setPageInfo;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-    private static final int PER_PAGE = 4;
+    private static final int PER_PAGE = 5;
     private final ProductRepository repo;
 
     public List<Product> listAll() {

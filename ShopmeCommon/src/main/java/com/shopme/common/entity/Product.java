@@ -104,4 +104,9 @@ public class Product {
         return images.stream()
                 .anyMatch(image -> image.getName().equals(imageName));
     }
+
+    @Transient
+    public String getShortName() {
+        return name.length() > 75 ? name.substring(0, 75) + "..." : name;
+    }
 }
