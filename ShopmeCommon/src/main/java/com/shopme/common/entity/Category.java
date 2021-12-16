@@ -24,6 +24,8 @@ public class Category {
     private String alias;
     private String image;
     private boolean enabled;
+    @Column(name = "all_parent_ids")
+    private String allParentIds;
 
     public static Category from(Category category, String newName) {
         Category copy = from(category);
