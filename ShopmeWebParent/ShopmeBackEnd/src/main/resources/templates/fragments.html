@@ -21,6 +21,7 @@
        th:href="@{'/' + ${module} + '/page/' + ${currentPage}
        + '?sortField=' + ${fieldName}
        + '&sortType=' + ${sortField != fieldName ? sortType : sortTypeReverse}
+       + ${categoryId != null ? '&categoryId=' + categoryId : ''}
        + ${keyword != null ? '&keyword=' + keyword : ''} }"
        th:text="${fieldLabel}"
        title="Sort this column"></a>

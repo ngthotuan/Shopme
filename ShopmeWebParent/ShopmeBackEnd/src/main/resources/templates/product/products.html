@@ -8,7 +8,43 @@
         <h2>Manager Product</h2>
         <th:block th:replace="fragments::export(${module})"/>
         <th:block th:replace="partial/messages::messages"/>
-        <th:block th:replace="partial/form::form_search(${module})"/>
+        <!--        <th:block th:replace="partial/form::form_search(${module})"/>-->
+        <form class="m-2 row g-3 align-items-center" id="formSearch"
+              th:action="@{'/' + ${module} + '/page/1'}">
+            <input name="sortField" th:value="${sortField}" type="hidden">
+            <input name="sortType" th:value="${sortType}" type="hidden">
+            <div class="col-auto">
+                <label class="col-form-label">Category:</label>
+            </div>
+            <div class="col-auto">
+                <select class="form-control form-select" id="categorySelect" name="categoryId">
+                    <option value="-1">All Categories</option>
+                    <th:block th:each="category : ${categories}">
+                        <option th:selected="${category.id == categoryId}" th:value="${category.id}">
+                            [[${category.name}]]
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-auto">
+                <label class="col-form-label">Filter:</label>
+            </div>
+            <div class="col-auto">
+                <input class="form-control" name="keyword" required th:value="${keyword}" type="search">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="submit" value="Search">
+                    <i class=" fa fa-search"></i>
+                </button>
+            </div>
+            <div class="col-auto">
+                <a th:href="@{'/' + ${module} }">
+                    <button class="btn btn-secondary" type="button" value="Clear">
+                        <i class="fa fa-eraser"></i>
+                    </button>
+                </a>
+            </div>
+        </form>
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
@@ -97,6 +133,9 @@
             $('#detailModal').modal('show')
                 .find('.modal-content')
                 .load(url);
+        })
+        $('#categorySelect').change(function () {
+            $('#formSearch').submit();
         })
     });
 </script>

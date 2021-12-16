@@ -25,16 +25,27 @@ public class ProductService {
         return repo.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
-    public List<Product> listByPage(PageInfo pageInfo, int pageNum, String sortField, String sortType, String keyword) {
+    public List<Product> listByPage(PageInfo pageInfo, int pageNum, String sortField, String sortType,
+                                    String keyword, Long categoryId) {
         Sort sort = createSort(sortField, sortType);
 
         PageRequest pageable = PageRequest.of(pageNum - 1, PER_PAGE, sort);
 
         Page<Product> pageModel;
-        if (keyword != null) {
-            pageModel = repo.findAll(keyword, pageable);
+        if (keyword != null && !keyword.isEmpty()) {
+            if (categoryId != -1) {
+                String categoryMatch = String.format("-%s-", categoryId);
+                pageModel = repo.findAllByCategoryAndKeyword(categoryId, categoryMatch, keyword, pageable);
+            } else {
+                pageModel = repo.findAll(keyword, pageable);
+            }
         } else {
-            pageModel = repo.findAll(pageable);
+            if (categoryId != -1) {
+                String categoryMatch = String.format("-%s-", categoryId);
+                pageModel = repo.findAllByCategory(categoryId, categoryMatch, pageable);
+            } else {
+                pageModel = repo.findAll(pageable);
+            }
         }
 
         setPageInfo(pageInfo, pageNum, pageModel, PER_PAGE);

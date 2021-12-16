@@ -2,7 +2,11 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <body>
 <a class="page-link" th:fragment="page_link(module, page, label)"
-   th:href="@{'/' + ${module} + '/page/' + ${page} + '?sortField=' + ${sortField} + '&sortType=' + ${sortType} + ${keyword != null ? '&keyword=' + keyword : ''} }"
+   th:href="@{'/' + ${module} + '/page/' + ${page}
+   + '?sortField=' + ${sortField}
+   + '&sortType=' + ${sortType}
+   + ${categoryId != null ? '&categoryId=' + categoryId : ''}
+   + ${keyword != null ? '&keyword=' + keyword : ''} }"
    th:text="${label}"></a>
 
 <th:block th:fragment="page_pagination(module, otherText)">
