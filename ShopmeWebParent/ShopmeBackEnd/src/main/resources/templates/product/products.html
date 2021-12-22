@@ -101,20 +101,36 @@
         <div class="less-details">
             <div class="row mb-3" th:each="product:${products}">
                 <div class="col-4">
-                    <!--                    <i class="fa fa-user fa-2x" th:unless="${product.logo}"></i>-->
-                    <!--                    <img class="img-fluid" style="width: 100px" th:alt="${product.logo}" th:if="${product.logo}"-->
-                    <!--                         th:src="@{${product.logoPath}}">-->
+                    <i class="fa fa-user fa-2x" th:unless="${product.mainImage}"></i>
+                    <img class="img-fluid" style="width: 100px" th:alt="${product.mainImage}"
+                         th:if="${product.mainImage}"
+                         th:src="@{${product.mainImagePath}}">
                 </div>
                 <div class="col-8">
                     <div>
-                        <h3>[[${product.name}]]</h3>
+                        <h3><a class="detail-link"
+                               th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
+                               th:title="${product.name}"
+                        >
+                            [[${product.shortName}]]
+                        </a></h3>
                     </div>
-                    <td class="text-center">
-                        <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>
-                    </td>
                     <div class="mt-1">
-                        <a th:replace="fragments::edit(${module}, ${product.id}, 'product')"></a>
-                        <a th:replace="fragments::delete(${module}, ${product.id}, 'product', true)"></a>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                            <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>
+                        </th:block>
+                        <a class="btn btn-info text-center detail-link"
+                           th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
+                           title="See detail product"
+                        >
+                            <i class="fa fa-file-alt"></i>
+                        </a>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+                            <a th:replace="fragments::edit(${module}, ${product.id}, 'product')"></a>
+                        </th:block>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                            <a th:replace="fragments::delete(${module}, ${product.id}, 'product', true)"></a>
+                        </th:block>
                     </div>
                 </div>
             </div>
