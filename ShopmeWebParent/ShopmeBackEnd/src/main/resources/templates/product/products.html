@@ -6,7 +6,7 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Product</h2>
-        <th:block th:replace="fragments::export(${module})"/>
+        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')" th:replace="fragments::export(${module})"/>
         <th:block th:replace="partial/messages::messages"/>
         <!--        <th:block th:replace="partial/form::form_search(${module})"/>-->
         <form class="m-2 row g-3 align-items-center" id="formSearch"
@@ -53,7 +53,9 @@
                 <th th:replace="fragments::column_link(${module}, 'name', 'Name', false)"></th>
                 <th th:replace="fragments::column_link(${module}, 'brand.name', 'Brand', false)"></th>
                 <th th:replace="fragments::column_link(${module}, 'category.name', 'Category', false)"></th>
-                <th th:replace="fragments::column_link(${module}, 'enabled', 'Enabled', false)">Enable</th>
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                    <th th:replace="fragments::column_link(${module}, 'enabled', 'Enabled', false)">Enable</th>
+                </th:block>
                 <th>Actions</th>
                 </thead>
                 <tbody>
@@ -72,9 +74,11 @@
                     </td>
                     <td>[[${product.brand.name}]]</td>
                     <td>[[${product.category.name}]]</td>
-                    <td class="text-center">
-                        <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>
-                    </td>
+                    <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                        <td class="text-center">
+                            <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>
+                        </td>
+                    </th:block>
                     <td class="text-center">
                         <a class="btn btn-info text-center detail-link"
                            th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
@@ -82,8 +86,13 @@
                         >
                             <i class="fa fa-file-alt"></i>
                         </a>
-                        <a th:replace="fragments::edit(${module}, ${product.id}, 'product')"></a>
-                        <a th:replace="fragments::delete(${module}, ${product.id}, 'product', true)"></a>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
+                            <a th:replace="fragments::edit(${module}, ${product.id}, 'product')"></a>
+                        </th:block>
+                        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                            <a th:replace="fragments::delete(${module}, ${product.id}, 'product', true)"></a>
+                        </th:block>
+
                     </td>
                 </tr>
                 </tbody>

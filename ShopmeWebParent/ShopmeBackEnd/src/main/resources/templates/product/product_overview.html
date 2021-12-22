@@ -6,49 +6,77 @@
         <div class="col-sm-2 col-form-label">Name:</div>
         <div class="col-sm-10">
             <input class="form-control" minlength="3" maxlength="256"
-                   required th:field="*{name}" type="text">
+                   required th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')')}"
+                   th:field="*{name}"
+                   type="text"
+            >
         </div>
+
     </div>
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Alias:</div>
         <div class="col-sm-10">
             <input class="form-control" minlength="3" maxlength="256"
                    placeholder="Default is product name (replace spaces with dashes)"
-                   th:field="*{alias}" type="text">
+                   th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')')}" th:field="*{alias}"
+                   type="text"
+            >
         </div>
     </div>
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Brand:</div>
         <div class="col-sm-10">
-            <select class="form-select" th:field="*{brand}" required>
-                <th:block th:each="brand:${brands}">
-                    <option th:text="${brand.name}" th:value="${brand.id}"></option>
-                </th:block>
-            </select>
+            <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                <select class="form-select" required th:field="*{brand}">
+                    <th:block th:each="brand:${brands}">
+                        <option th:text="${brand.name}" th:value="${brand.id}"></option>
+                    </th:block>
+                </select>
+            </th:block>
+            <th:block sec:authorize="hasAuthority('Salesperson')">
+                <input class="form-control" disabled maxlength="256"
+                       minlength="3" required th:field="*{brand.name}"
+                       type="text"
+                >
+            </th:block>
         </div>
     </div>
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Category:</div>
         <div class="col-sm-10">
-            <select class="form-select" required th:field="*{category}" th:if="${product.category != null}">
-                <th:block th:each="category:${product.brand.categories}">
-                    <option th:text="${category.name}" th:value="${category.id}"></option>
-                </th:block>
-            </select>
-            <select class="form-select" required th:field="*{category}" th:if="${product.category == null}">
-            </select>
+            <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+                <select class="form-select" required th:field="*{category}" th:if="${product.category != null}">
+                    <th:block th:each="category:${product.brand.categories}">
+                        <option th:text="${category.name}" th:value="${category.id}"></option>
+                    </th:block>
+                </select>
+                <select class="form-select" required th:field="*{category}" th:if="${product.category == null}">
+                </select>
+            </th:block>
+            <th:block sec:authorize="hasAuthority('Salesperson')">
+                <input class="form-control" disabled maxlength="256"
+                       minlength="3" required th:field="*{category.name}"
+                       type="text"
+                >
+            </th:block>
         </div>
     </div>
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Enabled:</div>
         <div class="col-sm-10">
-            <input class="form-check" th:field="*{enabled}" type="checkbox"/>
+            <input class="form-check" th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')')}"
+                   th:field="*{enabled}"
+                   type="checkbox"
+            />
         </div>
     </div>
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">In Stock:</div>
         <div class="col-sm-10">
-            <input class="form-check" th:field="*{inStock}" type="checkbox"/>
+            <input class="form-check" th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')')}"
+                   th:field="*{inStock}"
+                   type="checkbox"
+            />
         </div>
     </div>
     <div class="mb-3 row">

@@ -66,6 +66,17 @@ public class ProductService {
         return repo.save(product);
     }
 
+    public Product saveProductPrice(Product productInform) {
+        Product product = repo.findById(productInform.getId()).orElse(null);
+        if (product == null) {
+            throw new ProductNotFoundException("Could not found product with id " + productInform.getId());
+        }
+        product.setCost(productInform.getCost());
+        product.setPrice(productInform.getPrice());
+        product.setDiscountPercent(productInform.getDiscountPercent());
+        return repo.save(product);
+    }
+
     public String checkDuplicate(Long id, String name) {
         boolean isCreate = id == null;
         Product entity = repo.findByName(name);

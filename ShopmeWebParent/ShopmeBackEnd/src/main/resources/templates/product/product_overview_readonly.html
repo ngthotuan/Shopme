@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Name:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${product.name}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Alias:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${product.alias}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Category:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${product.category.name}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Enabled:</div>
+        <div class="col-sm-10">
+            <input class="form-check" disabled th:checked="${product.enabled}" type="checkbox"/>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">In Stock:</div>
+        <div class="col-sm-10">
+            <input class="form-check" disabled th:checked="${product.inStock}" type="checkbox"/>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Cost:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${product.cost}" type="number">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Price:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${product.price}" type="number">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Discount:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${product.discountPercent}" type="number">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Updated time:</div>
+        <div class="col-sm-10">
+            <span th:text="${#dates.format(product.updatedTime, 'yyyy-MM-dd hh:mm:ss')}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

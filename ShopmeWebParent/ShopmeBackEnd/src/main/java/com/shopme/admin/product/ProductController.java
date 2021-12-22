@@ -2,9 +2,11 @@ package com.shopme.admin.product;
 
 import com.shopme.admin.brand.BrandService;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -71,20 +73,25 @@ public class ProductController {
     public String save(Product entity, RedirectAttributes redirectAttributes,
                        @RequestParam(value = "fileImage", required = false) MultipartFile image,
                        @RequestParam(value = "extraImage", required = false) List<MultipartFile> extraImages,
-                       @RequestParam(value = "detailIDs") String[] detailIDs,
-                       @RequestParam(value = "detailNames") String[] detailNames,
-                       @RequestParam(value = "detailValues") String[] detailValues,
+                       @RequestParam(value = "detailIDs", required = false) String[] detailIDs,
+                       @RequestParam(value = "detailNames", required = false) String[] detailNames,
+                       @RequestParam(value = "detailValues", required = false) String[] detailValues,
                        @RequestParam(name = "imageIDs", required = false) String[] imageIDs,
-                       @RequestParam(name = "imageNames", required = false) String[] imageNames
+                       @RequestParam(name = "imageNames", required = false) String[] imageNames,
+                       @AuthenticationPrincipal ShopmeUserDetails userDetails
     ) throws IOException {
-        setMainImage(entity, image);
-        setExistingExtraImageNames(entity, imageIDs, imageNames);
-        setExtraImages(entity, extraImages);
-        setDetails(entity, detailIDs, detailNames, detailValues);
+        if (userDetails.hasRole("Salesperson")) {
+            service.saveProductPrice(entity);
+        } else {
+            setMainImage(entity, image);
+            setExistingExtraImageNames(entity, imageIDs, imageNames);
+            setExtraImages(entity, extraImages);
+            setDetails(entity, detailIDs, detailNames, detailValues);
 
-        Product saved = service.save(entity);
-        saveImages(image, extraImages, saved);
-        removeUnusedImages(saved);
+            Product saved = service.save(entity);
+            saveImages(image, extraImages, saved);
+            removeUnusedImages(saved);
+        }
 
         redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
         return "redirect:/products";

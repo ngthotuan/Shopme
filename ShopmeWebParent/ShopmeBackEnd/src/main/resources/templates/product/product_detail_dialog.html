@@ -37,136 +37,19 @@
     <!-- Tab panes -->
     <div class="tab-content p-3">
         <div class="tab-pane active" id="overview" role="tabpanel">
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Name:</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.name}">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Alias:</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.alias}">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Category:</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.category.name}">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Enabled:</div>
-                <div class="col-sm-10">
-                    <input class="form-check" disabled th:checked="${product.enabled}" type="checkbox"/>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">In Stock:</div>
-                <div class="col-sm-10">
-                    <input class="form-check" disabled th:checked="${product.inStock}" type="checkbox"/>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Cost:</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.cost}" type="number">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Price:</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.price}" type="number">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Discount:</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.discountPercent}" type="number">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Updated time:</div>
-                <div class="col-sm-10">
-                    <span th:text="${#dates.format(product.updatedTime, 'yyyy-MM-dd hh:mm:ss')}"></span>
-                </div>
-            </div>
+            <div th:replace="product/product_overview_readonly :: content"></div>
         </div>
         <div class="tab-pane" id="description" role="tabpanel">
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Short Description:</div>
-                <div class="col-sm-10">
-                    <div class="p-2 border" th:utext="${product.shortDescription}">
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Full Description:</div>
-                <div class="col-sm-10">
-                    <div class="p-2 border" th:utext="${product.fullDescription}">
-                    </div>
-                </div>
-            </div>
+            <div th:replace="product/product_description_readonly :: content"></div>
         </div>
         <div class="tab-pane" id="images" role="tabpanel">
-            <div class="mb-3 row">
-                <div class="col border m-2">
-                    <label>Main image: </label><br>
-                    <img alt="Main image preview" class="img-fluid" th:src="@{${product.mainImagePath}}"><br>
-                </div>
-                <th:block th:each="productImages, status : ${product.images}">
-                    <div class="col border m-2 extra-image">
-                        <label>Extra image: #[[${status.index + 1}]]</label>
-                        <img class="img-fluid" th:alt="'Extra image #' + ${status.index + 1} + ' preview'"
-                             th:src="@{${productImages.imagePath}}"><br>
-                    </div>
-                </th:block>
-            </div>
+            <div th:replace="product/product_images_readonly :: content"></div>
         </div>
         <div class="tab-pane" id="details" role="tabpanel">
-            <div class="mb-3 row">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead class="table-dark">
-                    <tr>
-                        <th width="40%">Name</th>
-                        <th>Value</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <th:block th:each="productDetails : ${product.details}">
-                        <tr>
-                            <td>[[${productDetails.name}]]</td>
-                            <td>[[${productDetails.value}]]</td>
-                        </tr>
-                    </th:block>
-                </table>
-            </div>
+            <div th:replace="product/product_details_readonly :: content"></div>
         </div>
         <div class="tab-pane" id="shipping" role="tabpanel">
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Length (inch):</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.length}">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Width (inch):</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.width}">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Height (inch):</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.height}">
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-sm-2 col-form-label">Weight (pounds):</div>
-                <div class="col-sm-10">
-                    <input class="form-control" disabled th:value="${product.weight}">
-                </div>
-            </div>
+            <div th:replace="product/product_shipping_readonly :: content"></div>
         </div>
     </div>
 </div>
