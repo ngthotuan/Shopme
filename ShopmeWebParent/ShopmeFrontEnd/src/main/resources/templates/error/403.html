@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head th:replace="partial/header :: head('Homepage - Shopme')"></head>
+<head th:replace="partial/header :: head('Access Denied Error - Shopme')"></head>
 <body>
 <div class="container-fluid">
     <div th:replace="partial/header :: menu"></div>
-    <div class="content">
-        <h1>Welcome to Shopme website</h1>
+    <div class="content text-center text-danger">
+        <h2 class="mt-5">Sorry, you don't have permission to access this page!</h2>
     </div>
     <div th:replace="partial/footer :: footer"></div>
 </div>
