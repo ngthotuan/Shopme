@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<body>
+<a class="page-link" th:fragment="page_link(module, page, label)"
+   th:href="@{'/' + ${module} + '/page/' + ${page}
+   + '?sortField=' + ${sortField}
+   + '&sortType=' + ${sortType}
+   + ${categoryId != null ? '&categoryId=' + categoryId : ''}
+   + ${keyword != null ? '&keyword=' + keyword : ''} }"
+   th:text="${label}"></a>
+
+<th:block th:fragment="page_pagination(module, otherText)">
+    <div class="m-1 text-center" th:if="${totalItems > 0}">
+        <b>Showing [[${otherText}]] #[[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</b>
+    </div>
+    <div class="m-1 text-center" th:unless="${totalItems > 0}">
+        <b>No [[${otherText}]] found</b>
+    </div>
+    <nav th:if="${totalPages > 0}">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                <a th:replace="this::page_link(${module}, 1, 'First')"></a>
+            </li>
+            <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                <a th:replace="this::page_link(${module}, ${currentPage - 1}, 'Previous')"></a>
+            </li>
+            <li th:class="${i == currentPage ? 'page-item active' : 'page-item' }"
+                th:each="i:${#numbers.sequence(1, totalPages)}">
+                <a th:replace="this::page_link(${module}, ${i}, ${i})"></a>
+            </li>
+            <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+                <a th:replace="this::page_link(${module}, ${currentPage + 1}, 'Next')"></a>
+            </li>
+            <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
+                <a th:replace="this::page_link(${module}, ${totalPages}, 'Last')"></a>
+            </li>
+        </ul>
+    </nav>
+</th:block>
+</body>
+</html>

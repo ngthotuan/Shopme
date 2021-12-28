@@ -90,6 +90,12 @@ public class Product {
         return String.format("/product-images/%d/%s", id, mainImage);
     }
 
+    @Transient
+    public String getDiscountPrice() {
+        float discountPrice = price - (price * discountPercent / 100);
+        return String.format("%.2f", discountPrice);
+    }
+
     public void addDetail(String name, String value) {
         ProductDetail productDetail = new ProductDetail(name, value, this);
         details.add(productDetail);

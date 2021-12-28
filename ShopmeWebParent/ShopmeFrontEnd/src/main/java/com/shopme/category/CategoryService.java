@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -26,5 +27,21 @@ public class CategoryService {
         });
 
         return listNoChildrenCategories;
+    }
+
+    public Category getByAlias(String alias) {
+        return repo.findByAliasEnabled(alias);
+    }
+
+    public List<Category> getCategoryParents(Category category) {
+        List<Category> parents = new ArrayList<>();
+        parents.add(category);
+        Category parent = category.getParent();
+        while (parent != null) {
+            parents.add(parent);
+            parent = parent.getParent();
+        }
+        Collections.reverse(parents);
+        return parents;
     }
 }

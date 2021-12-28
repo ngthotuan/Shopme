@@ -18,7 +18,7 @@ public class Common {
         model.addAttribute("totalPages", pageInfo.getTotalPages());
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortType", sortType);
-        model.addAttribute("sortTypeReverse", sortType.equals("asc") ? "desc" : "asc");
+        model.addAttribute("sortTypeReverse", "asc".equals(sortType) ? "desc" : "asc");
         model.addAttribute("keyword", keyword);
     }
 

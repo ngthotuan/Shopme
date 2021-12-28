@@ -12,4 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("SELECT c FROM Category c WHERE c.enabled = true ORDER BY c.name ASC")
     List<Category> findAllEnabled();
+
+    @Query("SELECT c FROM Category c WHERE c.enabled = true AND c.alias = ?1")
+    Category findByAliasEnabled(String alias);
 }

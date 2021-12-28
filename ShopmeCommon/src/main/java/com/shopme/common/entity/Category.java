@@ -52,6 +52,9 @@ public class Category {
     @OneToMany(mappedBy = "parent")
     private Set<Category> children = new HashSet<>();
 
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products = new HashSet<>();
+
     @Transient
     public String getImagePath() {
         if (id == null || image == null) {

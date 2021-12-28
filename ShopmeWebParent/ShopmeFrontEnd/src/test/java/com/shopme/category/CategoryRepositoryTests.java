@@ -20,4 +20,13 @@ public class CategoryRepositoryTests {
         assert allEnabled.stream().allMatch(Category::isEnabled);
         allEnabled.forEach(System.out::println);
     }
+
+    @Test
+    public void testFindByAliasEnabled() {
+        String alias = "computers";
+        Category category = categoryRepository.findByAliasEnabled(alias);
+        assert category != null;
+        assert category.isEnabled();
+        System.out.println(category);
+    }
 }
