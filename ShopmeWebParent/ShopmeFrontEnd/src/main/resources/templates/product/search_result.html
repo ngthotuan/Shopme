@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="partial/header :: head(${pageTitle})"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+
+    <div class="row mt-3">
+        <h2 th:if="${totalItems > 0}">Search Results for '[[${keyword}]]'</h2>
+        <h2 th:unless="${totalItems > 0}">No match found for '[[${keyword}]]'</h2>
+    </div>
+    <div class="row">
+        <th:block th:each="product : ${listResult}">
+            <div th:replace="product/product_fragment :: content"></div>
+        </th:block>
+    </div>
+
+    <div class="row mt-3">
+        <th:block th:replace="partial/pagination :: page_pagination('search',  'Product')"/>
+    </div>
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+<div th:replace="partial/footer :: script"></div>
+</body>
+</html>

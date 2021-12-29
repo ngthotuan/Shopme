@@ -10,11 +10,11 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark" th:fragment="menu">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
     <a class="navbar-brand" th:href="@{/}">
         <img th:src="@{/images/ShopmeAdminSmall.png}"/>
     </a>
-    <button class="navbar-toggler" data-target="#topNavbar" data-toggle="collapse" type="button">
+    <button class="navbar-toggler" data-bs-target="#topNavbar, #searchNavbar" data-bs-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="topNavbar">
@@ -38,6 +38,60 @@
                 <a class="nav-link" href="">Contact</a>
             </li>
         </ul>
+    </div>
+</nav>
+<div class="row" th:fragment="search_nav">
+    <div class="col-md">
+        <nav class="navbar navbar-expand-sm bg-light">
+            <div class="collapse navbar-collapse" id="searchNavbar">
+                <form class="form-inline" method="get" th:action="@{/search}">
+                    <input class="form-control mr-sm-2" name="keyword" placeholder="keyword"
+                           required
+                           th:value="${keyword}" type="search"/>
+                    <input class="btn btn-outline-success" type="submit" value="Search"/>
+                </form>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark" th:fragment="menu">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{/images/ShopmeAdminSmall.png}"/>
+        </a>
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler"
+                data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="">Careers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Payments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Shipping &amp; Delivery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Contact</a>
+                </li>
+            </ul>
+            <form class="d-flex" th:action="@{/search}">
+                <input aria-label="Search" class="form-control me-2" name="keyword" placeholder="Search a product"
+                       required th:value="${keyword}" type="search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
     </div>
 </nav>
 </body>

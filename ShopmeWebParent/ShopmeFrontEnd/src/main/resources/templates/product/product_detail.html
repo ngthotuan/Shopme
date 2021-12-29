@@ -93,7 +93,7 @@
 
         bigImage.click(function () {
             $("#carouselModal").modal("show");
-            $('#carousel').carousel(bigImage.data('index'));
+            $('#carousel').carousel(+bigImage.attr('data-index'));
         });
 
         images.mouseover(function () {

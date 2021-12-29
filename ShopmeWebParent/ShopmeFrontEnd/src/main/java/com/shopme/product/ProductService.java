@@ -37,4 +37,13 @@ public class ProductService {
         return product;
     }
 
+    public List<Product> searchByPage(PageInfo pageInfo, int pageNum, String search) {
+        PageRequest pageable = PageRequest.of(pageNum - 1, PER_PAGE);
+
+        Page<Product> pageModel = repo.searchMatching(search, pageable);
+        setPageInfo(pageInfo, pageNum, pageModel, PER_PAGE);
+
+        return pageModel.getContent();
+    }
+
 }

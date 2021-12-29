@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ProductController {
     private final CategoryService categoryService;
 
     @GetMapping("/c/{categoryAlias}")
-    public String getProductByCategory(Model model, @PathVariable(name = "categoryAlias") String alias) {
+    public String listFirstPage(Model model, @PathVariable(name = "categoryAlias") String alias) {
         return listByPage(model, alias, 1);
     }
 
@@ -61,4 +62,26 @@ public class ProductController {
             return "error/404";
         }
     }
+
+    @GetMapping("/search")
+    public String searchFirstPage(Model model, @RequestParam(name = "keyword") String keyword) {
+        return searchByPage(model, keyword, 1);
+    }
+
+    @GetMapping("/search/page/{pageNum}")
+    public String searchByPage(Model model, @RequestParam(name = "keyword") String keyword,
+                               @PathVariable(name = "pageNum") Integer pageNum) {
+        PageInfo pageInfo = new PageInfo();
+        List<Product> list = service.searchByPage(pageInfo, pageNum, keyword);
+        model.addAttribute("pageTitle", "Search: " + keyword);
+        model.addAttribute("products", list);
+        setModelListPage(model, "products", null, null, null, pageInfo);
+        model.addAttribute("pageTitle", keyword + " - Search Result");
+
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("listResult", list);
+
+        return "product/search_result";
+    }
+
 }

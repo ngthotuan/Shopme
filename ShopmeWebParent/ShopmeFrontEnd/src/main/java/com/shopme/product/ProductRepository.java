@@ -13,5 +13,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "ORDER BY p.name ASC")
     Page<Product> findProductByCategory(Long categoryId, String categoryMatch, Pageable pageable);
 
+    @Query("SELECT p from Product p WHERE p.enabled = TRUE  AND p.alias = ?1")
     Product findByAlias(String alias);
+
+    @Query(value = "SELECT * FROM products p WHERE p.enabled = TRUE " +
+            "AND MATCH(p.name, p.short_description, p.full_description) " +
+            "AGAINST (?1)", nativeQuery = true)
+    Page<Product> searchMatching(String search, Pageable pageable);
 }

@@ -6,9 +6,9 @@
     <div th:replace="partial/header :: menu"></div>
     <div th:replace="partial/breadcrumb :: content"></div>
 
-    <div class="row mt-3 text-center">
+    <div class="row mt-3 text-center justify-content-center">
         <th:block th:each="cat : ${category.children}">
-            <div class="col" th:if="${cat.enabled == true}">
+            <div class="col-2" th:if="${cat.enabled == true}">
                 <a th:href="@{'/c/' + ${cat.alias}}">
                     <img height="100" th:src="@{${cat.imagePath}}"/>
                     <br/>
@@ -20,25 +20,7 @@
 
     <div class="row mt-3">
         <th:block th:each="product : ${products}">
-            <div class="col-sm-3 mt-2">
-                <div class="card mx-1 h-100">
-                    <a th:href="@{'/p/' + ${product.alias}}">
-                        <img class="card-img-top" th:alt="${product.mainImage}" th:src="@{${product.mainImagePath}}">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a th:href="@{'/p/' + ${product.alias}}">[[${product.shortName}]]</a>
-                        </h5>
-                        <p class="card-text" th:if="${product.discountPercent <= 0}">
-                            <span>$ [[${product.price}]]</span>
-                        </p>
-                        <p class="card-text" th:if="${product.discountPercent > 0}">
-                            <span class="text-danger h5">$ [[${product.discountPrice}]]</span>
-                            <del><span>$ [[${product.price}]]</span></del>
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <div th:replace="product/product_fragment :: content"></div>
         </th:block>
     </div>
     <div class="row mt-3">
