@@ -4,6 +4,7 @@ import com.shopme.admin.utils.Exporter;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.PageInfo;
+import com.shopme.common.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;

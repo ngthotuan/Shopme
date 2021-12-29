@@ -4,24 +4,7 @@
 <body>
 <div class="container-fluid">
     <div th:replace="partial/header :: menu"></div>
-
-    <div class="row mt-3">
-        <div class="col">
-            <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a th:href="@{/}">Home</a>
-                    </li>
-
-                    <th:block th:each="parent : ${categoryParents}">
-                        <li class="breadcrumb-item">
-                            <a th:href="@{'/c/' + ${parent.alias}}">[[${parent.name}]]</a>
-                        </li>
-                    </th:block>
-                </ol>
-            </nav>
-        </div>
-    </div>
+    <div th:replace="partial/breadcrumb :: content"></div>
 
     <div class="row mt-3 text-center">
         <th:block th:each="cat : ${category.children}">
@@ -39,9 +22,13 @@
         <th:block th:each="product : ${products}">
             <div class="col-sm-3 mt-2">
                 <div class="card mx-1 h-100">
-                    <img class="card-img-top" th:alt="${product.mainImage}" th:src="@{${product.mainImagePath}}">
+                    <a th:href="@{'/p/' + ${product.alias}}">
+                        <img class="card-img-top" th:alt="${product.mainImage}" th:src="@{${product.mainImagePath}}">
+                    </a>
                     <div class="card-body">
-                        <h5 class="card-title">[[${product.name}]]</h5>
+                        <h5 class="card-title">
+                            <a th:href="@{'/p/' + ${product.alias}}">[[${product.shortName}]]</a>
+                        </h5>
                         <p class="card-text" th:if="${product.discountPercent <= 0}">
                             <span>$ [[${product.price}]]</span>
                         </p>

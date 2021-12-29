@@ -1,6 +1,7 @@
 package com.shopme.category;
 
 import com.shopme.common.entity.Category;
+import com.shopme.common.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,11 @@ public class CategoryService {
     }
 
     public Category getByAlias(String alias) {
-        return repo.findByAliasEnabled(alias);
+        Category category = repo.findByAliasEnabled(alias);
+        if (category == null) {
+            throw new CategoryNotFoundException("Could not find category with alias: " + alias);
+        }
+        return category;
     }
 
     public List<Category> getCategoryParents(Category category) {

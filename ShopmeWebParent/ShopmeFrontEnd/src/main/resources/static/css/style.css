@@ -1,0 +1,10 @@
+
+.img-thumbnail {
+    margin: 10px;
+    padding: 5px;
+    max-width: 50px;
+}
+
+.pointer {
+    cursor: pointer;
+}

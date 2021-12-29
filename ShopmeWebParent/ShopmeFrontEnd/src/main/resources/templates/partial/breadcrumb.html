@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<body>
+<div class="row mt-3" th:fragment="content">
+    <div class="col">
+        <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/}">Home</a>
+                </li>
+
+                <th:block th:each="parent : ${categoryParents}">
+                    <li class="breadcrumb-item">
+                        <a th:href="@{'/c/' + ${parent.alias}}">[[${parent.name}]]</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${product != null}">
+                    <li class="breadcrumb-item active">
+                        <span>[[${product.shortName}]]</span>
+                    </li>
+                </th:block>
+            </ol>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

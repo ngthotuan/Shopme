@@ -7,6 +7,7 @@ import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Product;
+import com.shopme.common.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

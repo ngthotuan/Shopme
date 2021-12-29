@@ -4,6 +4,8 @@ import com.shopme.category.CategoryService;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Product;
+import com.shopme.common.exception.CategoryNotFoundException;
+import com.shopme.common.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,18 +32,33 @@ public class ProductController {
                              @PathVariable(name = "categoryAlias") String alias,
                              @PathVariable(name = "pageNum") Integer pageNum
     ) {
-        Category category = categoryService.getByAlias(alias);
-        if (category == null) {
+        try {
+            Category category = categoryService.getByAlias(alias);
+            List<Category> categoryParents = categoryService.getCategoryParents(category);
+            PageInfo pageInfo = new PageInfo();
+            List<Product> list = service.listByPage(pageInfo, pageNum, category.getId());
+            model.addAttribute("pageTitle", category.getName());
+            model.addAttribute("category", category);
+            model.addAttribute("categoryParents", categoryParents);
+            model.addAttribute("products", list);
+            setModelListPage(model, "products", null, null, null, pageInfo);
+            return "product/products_by_category";
+        } catch (CategoryNotFoundException e) {
             return "error/404";
         }
-        List<Category> categoryParents = categoryService.getCategoryParents(category);
-        PageInfo pageInfo = new PageInfo();
-        List<Product> list = service.listByPage(pageInfo, pageNum, category.getId());
-        model.addAttribute("pageTitle", category.getName());
-        model.addAttribute("category", category);
-        model.addAttribute("categoryParents", categoryParents);
-        model.addAttribute("products", list);
-        setModelListPage(model, "products", null, null, null, pageInfo);
-        return "products_by_category";
+    }
+
+    @GetMapping("/p/{productAlias}")
+    public String viewProductDetail(Model model, @PathVariable(name = "productAlias") String alias) {
+        try {
+            Product product = service.findProductByAlias(alias);
+            List<Category> categoryParents = categoryService.getCategoryParents(product.getCategory());
+            model.addAttribute("pageTitle", product.getShortName());
+            model.addAttribute("product", product);
+            model.addAttribute("categoryParents", categoryParents);
+            return "product/product_detail";
+        } catch (ProductNotFoundException e) {
+            return "error/404";
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.shopme.admin.product;
 
 import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Product;
+import com.shopme.common.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

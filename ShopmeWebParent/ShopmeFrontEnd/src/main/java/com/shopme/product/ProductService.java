@@ -2,6 +2,7 @@ package com.shopme.product;
 
 import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Product;
+import com.shopme.common.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,4 +28,13 @@ public class ProductService {
 
         return pageModel.getContent();
     }
+
+    public Product findProductByAlias(String alias) {
+        Product product = repo.findByAlias(alias);
+        if (product == null) {
+            throw new ProductNotFoundException("Could not find product with alias: " + alias);
+        }
+        return product;
+    }
+
 }

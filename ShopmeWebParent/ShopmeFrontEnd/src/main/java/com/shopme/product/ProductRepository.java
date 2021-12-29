@@ -9,6 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.enabled = TRUE " +
-            "AND (p.category.id = ?1 OR p.category.allParentIds LIKE %?2%)")
+            "AND (p.category.id = ?1 OR p.category.allParentIds LIKE %?2%) " +
+            "ORDER BY p.name ASC")
     Page<Product> findProductByCategory(Long categoryId, String categoryMatch, Pageable pageable);
+
+    Product findByAlias(String alias);
 }
