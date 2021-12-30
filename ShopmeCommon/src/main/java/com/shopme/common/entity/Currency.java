@@ -3,7 +3,6 @@ package com.shopme.common.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -11,7 +10,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@ToString
 @Table(name = "currencies")
 public class Currency {
     @Id
@@ -31,5 +29,10 @@ public class Currency {
         this.name = name;
         this.symbol = symbol;
         this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s - %s", name, code, symbol);
     }
 }

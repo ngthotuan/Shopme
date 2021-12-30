@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+    <form class="m-auto" enctype="multipart/form-data" method="post" th:action="@{/settings/save_general}">
+        <div class="mb-3 row">
+            <label class="col-sm-4 col-form-label">Site Name:</label>
+            <div class="col-sm-8">
+                <input class="form-control" name="SITE_NAME" required
+                       th:value="${SITE_NAME}" type="text"/>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label class="col-sm-4 col-form-label">Copyright:</label>
+            <div class="col-sm-8">
+                <input class="form-control" name="COPYRIGHT" required
+                       th:value="${COPYRIGHT}" type="text"/>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-4 col-form-label">Site Logo:</label>
+            <div class="col-sm-8">
+                <img alt="Site Logo thumbnail" height="70" id="thumbnail"
+                     th:src="@{${SITE_LOGO}}"/>
+                <input accept="image/png, image/jpeg" id="fileImage" name="fileImage" type="file"/>
+
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-4 col-form-label">Currency Type:</label>
+            <div class="col-sm-8">
+                <select class="form-select" name="CURRENCY_ID">
+                    <option th:each="currency : ${currencies}" th:selected="(${currency.id} == ${CURRENCY_ID})"
+                            th:value="${currency.id}">[[${currency}]]
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-4 col-form-label">Currency Symbol Position:</label>
+            <div class="col-sm-8">
+                <select class="form-select" name="CURRENCY_SYMBOL_POSITION">
+                    <option th:selected="(${CURRENCY_SYMBOL_POSITION} == 'Before price')" value="Before price">Before
+                        price
+                    </option>
+                    <option th:selected="(${CURRENCY_SYMBOL_POSITION} == 'After price')" value="After price">After
+                        price
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-4 col-form-label">Decimal Point Type:</label>
+            <div class="col-sm-8">
+                <select class="form-select" name="DECIMAL_POINT_TYPE">
+                    <option th:selected="(${DECIMAL_POINT_TYPE} == 'POINT')" value="POINT">Point (.)</option>
+                    <option th:selected="(${DECIMAL_POINT_TYPE} == 'COMMA')" value="COMMA">Comma (,)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-4 col-form-label">Decimal Digits:</label>
+            <div class="col-sm-8">
+                <select class="form-select" name="DECIMAL_DIGITS">
+                    <option th:selected="(${DECIMAL_DIGITS} == 1)" value="1">1</option>
+                    <option th:selected="(${DECIMAL_DIGITS} == 2)" value="2">2</option>
+                    <option th:selected="(${DECIMAL_DIGITS} == 3)" value="3">3</option>
+                    <option th:selected="(${DECIMAL_DIGITS} == 4)" value="4">4</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-sm-4 col-form-label">Thousands Point Type:</label>
+            <div class="col-sm-8">
+                <select class="form-select" name="THOUSANDS_POINT_TYPE">
+                    <option th:selected="(${THOUSANDS_POINT_TYPE} == 'POINT')" value="POINT">Point (.)</option>
+                    <option th:selected="(${THOUSANDS_POINT_TYPE} == 'COMMA')" value="COMMA">Comma (,)</option>
+                </select>
+            </div>
+        </div>
+        <div class="text-center">
+            <input class="btn btn-primary m-3" type="submit" value="Save"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>
