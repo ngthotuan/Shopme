@@ -11,14 +11,20 @@
                 <a th:href="@{'/p/' + ${product.alias}}">[[${product.shortName}]]</a>
             </h5>
             <p class="card-text" th:if="${product.discountPercent <= 0}">
-                <span>$ [[${product.price}]]</span>
+                <th:block th:replace="this :: price_fragment(${product.price})"/>
             </p>
             <p class="card-text" th:if="${product.discountPercent > 0}">
-                <span class="text-danger h5">$ [[${product.discountPrice}]]</span>
-                <del><span>$ [[${product.price}]]</span></del>
+                <span class="text-danger h5"><th:block
+                        th:replace="this :: price_fragment(${product.discountPrice})"/></span>
+                <del><span><th:block th:replace="this :: price_fragment(${product.price})"/></span></del>
             </p>
         </div>
     </div>
+</div>
+<div th:fragment="price_fragment(productPrice)" th:remove="tag">
+    <span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>[[${#numbers.formatDecimal(productPrice,
+    1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]<span
+        th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 </div>
 </body>
 </html>

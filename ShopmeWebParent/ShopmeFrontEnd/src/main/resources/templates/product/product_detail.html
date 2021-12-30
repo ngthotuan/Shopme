@@ -32,13 +32,19 @@
             </div>
             <div>
                 List Price:
-                <span th:if="${product.discountPercent <= 0}">$ [[${product.price}]]</span>
-                <del th:if="${product.discountPercent > 0}"><span>$ [[${product.price}]]</span></del>
+                <span th:if="${product.discountPercent <= 0}">
+                     <th:block th:replace="product/product_fragment :: price_fragment(${product.price})"/>
+                </span>
+                <del th:if="${product.discountPercent > 0}"><span>
+                    <th:block th:replace="product/product_fragment :: price_fragment(${product.price})"/>
+                </span></del>
             </div>
             <div th:if="${product.discountPercent > 0}">
                 Price:
-                <span style="font-size: larger; color: darkred">$ [[${product.discountPrice}]]</span>
-                ([[${product.discountPercent}]] % off)
+                <span style="font-size: larger; color: darkred"><th:block
+                        th:replace="product/product_fragment :: price_fragment(${product.discountPrice})"/></span>
+                ([[${#numbers.formatDecimal(product.discountPercent, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS,
+                DECIMAL_POINT_TYPE)}]] % off)
             </div>
             <div>&nbsp;</div>
             <div th:utext="${product.shortDescription}"></div>

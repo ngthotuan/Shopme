@@ -91,9 +91,9 @@ public class Product {
     }
 
     @Transient
-    public String getDiscountPrice() {
+    public float getDiscountPrice() {
         float discountPrice = price - (price * discountPercent / 100);
-        return String.format("%.2f", discountPrice);
+        return discountPrice;
     }
 
     public void addDetail(String name, String value) {
