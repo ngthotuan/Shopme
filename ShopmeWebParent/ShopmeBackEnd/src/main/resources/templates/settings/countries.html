@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div aria-atomic="true" aria-live="polite" class="bg-dark position-relative">
+        <div class="toast-container position-absolute top-0 end-0">
+            <div class="toast" data-bs-delay="3000">
+                <div class="toast-header">
+                    <strong class="me-auto">Title</strong>
+                </div>
+                <div class="toast-body">
+                    This is a toast message.
+                </div>
+            </div>
+        </div>
+    </div>
+    <p>
+        Use this page to manage countries which will be displayed in the customer registration form.
+        Click Load Country List first.
+    </p>
+    <input class="btn btn-primary m-2" id="buttonLoadCountries" type="button" value="Load Country List"/>
+    <select class="form-select" id="dropDownCountries" size="10"></select>
+    <form class="row mt-2 gx-3 gy-2 align-items-center justify-content-center">
+        <div class="col-auto">
+            <label for="countryName">Name:</label>
+        </div>
+        <div class="col-sm-4">
+            <input class="form-control" id="countryName" placeholder="Country Name" type="text">
+        </div>
+        <div class="col-auto">
+            <label for="countryCode">Code:</label>
+        </div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <input class="form-control" id="countryCode" placeholder="Country Code" type="text">
+            </div>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-success" id="btnAdd" type="button">Add</button>
+            <button class="btn btn-success" id="btnNew" type="button">New</button>
+            <button class="btn btn-primary" id="btnUpdate" type="button">Update</button>
+            <button class="btn btn-danger" id="btnDelete" type="button">Delete</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

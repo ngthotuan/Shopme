@@ -7,6 +7,7 @@
 <body>
 <div class="container-fluid">
     <div th:replace="partial/header :: menu"></div>
+
     <div class="content">
         <h2>Site Settings</h2>
         <div>
@@ -46,7 +47,7 @@
                     <div th:replace="settings/general :: content"></div>
                 </div>
                 <div class="tab-pane" id="countries" role="tabpanel">
-                    <h2>Countries</h2>
+                    <div th:replace="settings/countries :: content"></div>
                 </div>
                 <div class="tab-pane" id="states" role="tabpanel">
                     <h2>States</h2>
@@ -62,13 +63,14 @@
         <div th:replace="partial/modal :: modal_form"></div>
     </div>
     <div th:replace="partial/footer :: footer"></div>
-
 </div>
 <div th:replace="partial/footer :: script"></div>
 <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
 <script>
-    MAX_FILE_SIZE = 1024 * 1024;
+    const MAX_FILE_SIZE = 1024 * 1024;
+    const contextPath = '[[@{/}]]';
 </script>
 <script th:src="@{/js/common_form.js}"></script>
+<script th:src="@{/js/countries_setting.js}"></script>
 </body>
 </html>
