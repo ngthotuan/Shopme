@@ -1,5 +1,6 @@
 package com.shopme.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,9 +25,16 @@ public class Country {
     private String code;
     @OneToMany(mappedBy = "country")
     @ToString.Exclude
+    @JsonIgnore
     private Set<State> states;
 
     public Country(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
+
+    public Country(long id, String name, String code) {
+        this.id = id;
         this.name = name;
         this.code = code;
     }

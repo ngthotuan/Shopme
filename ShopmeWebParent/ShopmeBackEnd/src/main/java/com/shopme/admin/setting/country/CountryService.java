@@ -14,4 +14,12 @@ public class CountryService {
     public List<Country> findAll() {
         return repo.findAllByOrderByNameAsc();
     }
+
+    public Country save(Country country) {
+        return repo.save(country);
+    }
+
+    public void deleteById(Long id) {
+        repo.deleteById(id);
+    }
 }
