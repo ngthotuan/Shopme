@@ -20,6 +20,7 @@ public class State {
 
     @Column(length = 45, nullable = false)
     private String name;
+
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     @ToString.Exclude
