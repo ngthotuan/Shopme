@@ -2,18 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="content" th:remove="tag">
-    <div aria-atomic="true" aria-live="polite" class="bg-dark position-relative">
-        <div class="toast-container position-absolute top-0 end-0">
-            <div class="toast" data-bs-delay="3000">
-                <div class="toast-header">
-                    <strong class="me-auto">Title</strong>
-                </div>
-                <div class="toast-body">
-                    This is a toast message.
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="settings/toast :: content"></div>
     <p>
         Use this page to manage countries which will be displayed in the customer registration form.
         Click Load Country List first.

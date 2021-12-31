@@ -43,14 +43,14 @@
             </ul>
             <!-- Tab panes -->
             <div class="tab-content p-3">
-                <div class="tab-pane active" id="general" role="tabpanel">
+                <div class="tab-pane" id="general" role="tabpanel">
                     <div th:replace="settings/general :: content"></div>
                 </div>
                 <div class="tab-pane" id="countries" role="tabpanel">
                     <div th:replace="settings/countries :: content"></div>
                 </div>
-                <div class="tab-pane" id="states" role="tabpanel">
-                    <h2>States</h2>
+                <div class="tab-pane active" id="states" role="tabpanel">
+                    <div th:replace="settings/states :: content"></div>
                 </div>
                 <div class="tab-pane" id="mailServer" role="tabpanel">
                     <h2>Mail Server</h2>
@@ -72,5 +72,6 @@
 </script>
 <script th:src="@{/js/common_form.js}"></script>
 <script th:src="@{/js/countries_setting.js}"></script>
+<script th:src="@{/js/states_setting.js}"></script>
 </body>
 </html>

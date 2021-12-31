@@ -36,6 +36,9 @@ function loadCountries() {
             dropDownCountries.append(`<option data-id="${country.id}" data-code="${country.code}">${country.name}</option>`);
         });
         showToast('Success', 'Countries loaded successfully!');
+        buttonLoadCountries.val('Refresh Country List');
+    }).fail(function () {
+        showToast('Error', 'Error loading countries!');
     });
 }
 
