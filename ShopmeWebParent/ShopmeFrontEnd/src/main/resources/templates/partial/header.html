@@ -10,36 +10,6 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-    <a class="navbar-brand" th:href="@{/}">
-        <img th:src="@{/images/ShopmeAdminSmall.png}"/>
-    </a>
-    <button class="navbar-toggler" data-bs-target="#topNavbar, #searchNavbar" data-bs-toggle="collapse" type="button">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="topNavbar">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="">Careers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Payments</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Shipping &amp; Delivery</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Contact</a>
-            </li>
-        </ul>
-    </div>
-</nav>
 <div class="row" th:fragment="search_nav">
     <div class="col-md">
         <nav class="navbar navbar-expand-sm bg-light">
@@ -80,7 +50,7 @@
                     <a class="nav-link" href="">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Register</a>
+                    <a class="nav-link" th:href="@{/register}">Register</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="">Contact</a>

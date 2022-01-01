@@ -1,9 +1,12 @@
-package com.shopme.admin.setting.state;
+package com.shopme.setting.state;
 
 import com.shopme.common.entity.State;
 import com.shopme.common.entity.StateDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +25,5 @@ public class StateRestController {
             stateDTOS.add(new StateDTO(state));
         }
         return stateDTOS;
-    }
-
-    @PostMapping("/save")
-    public State save(@RequestBody State state) {
-        return service.save(state);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        service.delete(id);
     }
 }

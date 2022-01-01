@@ -1,6 +1,5 @@
-package com.shopme.admin.setting.state;
+package com.shopme.common.entity;
 
-import com.shopme.common.entity.State;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
