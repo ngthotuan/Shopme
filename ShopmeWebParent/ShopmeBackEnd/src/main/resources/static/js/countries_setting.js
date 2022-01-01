@@ -2,29 +2,23 @@ const buttonLoadCountries = $('#buttonLoadCountries');
 const dropDownCountries = $('#dropDownCountries');
 const countryName = $('#countryName');
 const countryCode = $('#countryCode');
-const btnAdd = $('#btnAdd');
-const btnNew = $('#btnNew');
-const btnUpdate = $('#btnUpdate');
-const btnDelete = $('#btnDelete');
-let addMode = true;
+const btnAddCountry = $('#btnAddCountry');
+const btnNewCountry = $('#btnNewCountry');
+const btnUpdateCountry = $('#btnUpdateCountry');
+const btnDeleteCountry = $('#btnDeleteCountry');
+let addCountryMode = true;
 
-function showToast(title, message) {
-    $('.toast-header strong').text(title);
-    $('.toast-body').text(message);
-    $('.toast').toast('show');
-}
-
-function showButtons() {
-    if (addMode) {
-        btnAdd.show();
-        btnNew.hide();
-        btnUpdate.hide();
-        btnDelete.hide();
+function showCountryButtons() {
+    if (addCountryMode) {
+        btnAddCountry.show();
+        btnNewCountry.hide();
+        btnUpdateCountry.hide();
+        btnDeleteCountry.hide();
     } else {
-        btnAdd.hide();
-        btnNew.show();
-        btnUpdate.show();
-        btnDelete.show();
+        btnAddCountry.hide();
+        btnNewCountry.show();
+        btnUpdateCountry.show();
+        btnDeleteCountry.show();
     }
 }
 
@@ -43,26 +37,26 @@ function loadCountries() {
 }
 
 function selectCountry() {
-    addMode = false;
-    showButtons();
+    addCountryMode = false;
+    showCountryButtons();
     const selectedCountry = dropDownCountries.find(':selected').get(0);
     countryName.val(selectedCountry.text);
     countryCode.val(selectedCountry.dataset.code);
 }
 
-function initForm() {
-    addMode = true;
-    showButtons();
+function initCountryForm() {
+    addCountryMode = true;
+    showCountryButtons();
     countryName.val('');
     countryCode.val('');
     countryName.focus();
 }
 
-function handleNew() {
-    initForm();
+function handleNewCountry() {
+    initCountryForm();
 }
 
-function handleAdd() {
+function handleAddCountry() {
     const url = contextPath + 'countries/save';
     const country = {
         name: countryName.val(),
@@ -85,8 +79,8 @@ function handleAdd() {
         contentType: 'application/json',
         success: function (c) {
             showToast('Success', 'Country saved successfully!');
-            dropDownCountries.append(`<option data-id="${country.id}" data-code="${country.code}">${country.name}</option>`);
-            initForm();
+            dropDownCountries.append(`<option data-id="${c.id}" data-code="${c.code}">${c.name}</option>`);
+            initCountryForm();
         },
         error: function () {
             showToast('Error', 'Country not added!');
@@ -95,7 +89,7 @@ function handleAdd() {
 }
 
 
-function handleUpdate() {
+function handleUpdateCountry() {
     const url = contextPath + 'countries/save';
     const selectedCountry = dropDownCountries.find(':selected');
     const country = {
@@ -122,7 +116,7 @@ function handleUpdate() {
             showToast('Success', 'Country updated successfully!');
             selectedCountry.text(c.name);
             selectedCountry.attr('data-code', c.code);
-            initForm();
+            initCountryForm();
         },
         error: function () {
             showToast('Error', 'Country not updated!');
@@ -130,16 +124,16 @@ function handleUpdate() {
     });
 }
 
-function handleDelete() {
+function handleDeleteCountry() {
     const selectedCountry = dropDownCountries.find(':selected');
     const url = contextPath + 'countries/delete/' + selectedCountry.data('id');
 
     $.ajax({
         url: url,
-        type: 'GET',
+        type: 'DELETE',
         success: function () {
             showToast('Success', 'Country deleted successfully!');
-            initForm();
+            initCountryForm();
             selectedCountry.remove();
         },
         error: function () {
@@ -149,11 +143,11 @@ function handleDelete() {
 }
 
 $(function () {
-    showButtons();
+    showCountryButtons();
     buttonLoadCountries.click(loadCountries);
     dropDownCountries.change(selectCountry);
-    btnNew.click(handleNew);
-    btnAdd.click(handleAdd);
-    btnUpdate.click(handleUpdate);
-    btnDelete.click(handleDelete);
+    btnNewCountry.click(handleNewCountry);
+    btnAddCountry.click(handleAddCountry);
+    btnUpdateCountry.click(handleUpdateCountry);
+    btnDeleteCountry.click(handleDeleteCountry);
 });

@@ -1,4 +1,4 @@
-const btnLoadCountries = $('#btnLoadCountries');
+const btnLoadCountries4State = $('#btnLoadCountries4State');
 const ddCountries = $('#ddCountries');
 const ddStates = $('#ddStates');
 const stateName = $('#stateName');
@@ -8,13 +8,7 @@ const btnUpdateState = $('#btnUpdateState');
 const btnDeleteState = $('#btnDeleteState');
 let addStateMode = true;
 
-function showToast(title, message) {
-    $('.toast-header strong').text(title);
-    $('.toast-body').text(message);
-    $('.toast').toast('show');
-}
-
-function showButtons() {
+function showStateButtons() {
     if (addStateMode) {
         btnAddState.show();
         btnNewState.hide();
@@ -28,7 +22,7 @@ function showButtons() {
     }
 }
 
-function loadCountries() {
+function loadCountries4State() {
     const url = contextPath + 'countries/list';
     $.getJSON(url, function (data) {
         ddCountries.empty();
@@ -36,9 +30,9 @@ function loadCountries() {
             ddCountries.append(`<option data-id="${country.id}" data-code="${country.code}">${country.name}</option>`);
         });
         showToast('Success', 'Countries loaded successfully!');
-        initForm();
+        initStateForm();
         updateStates();
-        btnLoadCountries.val('Refresh Country List');
+        btnLoadCountries4State.val('Refresh Country List');
     }).fail(function () {
         showToast('Error', 'Error loading countries!');
     });
@@ -60,23 +54,23 @@ function updateStates() {
 
 function selectState() {
     addStateMode = false;
-    showButtons();
+    showStateButtons();
     const selectState = ddStates.find(':selected');
     stateName.val(selectState.text());
 }
 
-function initForm() {
+function initStateForm() {
     addStateMode = true;
-    showButtons();
+    showStateButtons();
     stateName.val('');
     stateName.focus();
 }
 
 function handleNew() {
-    initForm();
+    initStateForm();
 }
 
-function handleAdd() {
+function handleAddState() {
     const url = contextPath + 'states/save';
     const selectedCountry = ddCountries.find(':selected');
     const countryId = selectedCountry.data('id');
@@ -102,10 +96,10 @@ function handleAdd() {
         type: 'POST',
         data: JSON.stringify(state),
         contentType: 'application/json',
-        success: function () {
+        success: function (s) {
             showToast('Success', 'State saved successfully!');
-            ddStates.append(`<option data-id="${state.id}" >${state.name}</option>`);
-            initForm();
+            ddStates.append(`<option data-id="${s.id}" >${s.name}</option>`);
+            initStateForm();
         },
         error: function () {
             showToast('Error', 'State not added!');
@@ -113,7 +107,7 @@ function handleAdd() {
     });
 }
 
-function handleUpdate() {
+function handleUpdateState() {
     const url = contextPath + 'states/save';
     const selectedCountry = ddCountries.find(':selected');
     const selectedState = ddStates.find(':selected');
@@ -146,7 +140,7 @@ function handleUpdate() {
         success: function () {
             showToast('Success', 'State updated successfully!');
             selectedState.text(name);
-            initForm();
+            initStateForm();
         },
         error: function () {
             showToast('Error', 'State not updated!');
@@ -154,16 +148,16 @@ function handleUpdate() {
     });
 }
 
-function handleDelete() {
+function handleDeleteState() {
     const selectedState = ddStates.find(':selected');
     const url = contextPath + 'states/delete/' + selectedState.data('id');
 
     $.ajax({
         url: url,
-        type: 'GET',
+        type: 'DELETE',
         success: function () {
             showToast('Success', 'State deleted successfully!');
-            initForm();
+            initStateForm();
             selectedState.remove();
         },
         error: function () {
@@ -173,12 +167,12 @@ function handleDelete() {
 }
 
 $(function () {
-    showButtons();
-    btnLoadCountries.click(loadCountries);
+    showStateButtons();
+    btnLoadCountries4State.click(loadCountries4State);
     ddCountries.change(updateStates);
     ddStates.change(selectState);
-    btnAddState.click(handleAdd);
+    btnAddState.click(handleAddState);
     btnNewState.click(handleNew);
-    btnUpdateState.click(handleUpdate);
-    btnDeleteState.click(handleDelete);
+    btnUpdateState.click(handleUpdateState);
+    btnDeleteState.click(handleDeleteState);
 });

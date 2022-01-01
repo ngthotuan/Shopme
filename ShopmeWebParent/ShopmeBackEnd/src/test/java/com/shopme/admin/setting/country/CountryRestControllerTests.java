@@ -28,7 +28,7 @@ public class CountryRestControllerTests {
     private CountryRepository repo;
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "Admin")
     public void testListCountries() throws Exception {
         String url = "/countries/list";
         MvcResult result = mockMvc.perform(get(url))
@@ -41,7 +41,7 @@ public class CountryRestControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "Admin")
     public void testCreateCountry() throws Exception {
         String url = "/countries/save";
         Country country = new Country("Test Country", "TC");
@@ -59,7 +59,7 @@ public class CountryRestControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "Admin")
     public void testUpdateCountry() throws Exception {
         String url = "/countries/save";
         Country country = new Country(4, "Test Country update", "TCU");
@@ -77,7 +77,7 @@ public class CountryRestControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "Admin")
     public void testDeleteCountry() throws Exception {
         long countryId = 4;
         String url = "/countries/delete/" + countryId;

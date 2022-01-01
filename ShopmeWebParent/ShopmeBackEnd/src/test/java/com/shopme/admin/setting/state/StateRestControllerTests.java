@@ -29,7 +29,7 @@ public class StateRestControllerTests {
     private StateRepository repo;
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "Admin")
     public void testListByCountry() throws Exception {
         long countryId = 242;
         String url = "/states/list?countryId=" + countryId;
@@ -45,7 +45,7 @@ public class StateRestControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "Admin")
     public void testCreateState() throws Exception {
         long countryId = 242;
         Country country = new Country(countryId);
@@ -66,7 +66,7 @@ public class StateRestControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "Admin")
     public void testUpdateState() throws Exception {
         long stateId = 307;
         State state = repo.findById(stateId).get();
@@ -85,7 +85,7 @@ public class StateRestControllerTests {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(authorities = "Admin")
     public void testDeleteState() throws Exception {
         long stateId = 307;
         String url = "/states/delete/" + stateId;

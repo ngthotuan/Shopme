@@ -22,7 +22,7 @@ public class CountryRestController {
         return service.save(country);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable("id") Long id) {
         service.deleteById(id);
     }

@@ -28,7 +28,7 @@ public class StateRestController {
         return service.save(state);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable("id") Long id) {
         service.delete(id);
     }
