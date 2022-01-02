@@ -7,7 +7,7 @@
 <body>
 <div class="container-fluid">
     <div th:replace="partial/header :: menu"></div>
-
+    <th:block th:replace="partial/messages::messages"/>
     <div class="content">
         <h2>Site Settings</h2>
         <div>
@@ -57,10 +57,10 @@
                     <div th:replace="settings/states :: content"></div>
                 </div>
                 <div class="tab-pane" id="mailServer" role="tabpanel">
-                    <h2>Mail Server</h2>
+                    <div th:replace="settings/mailServer :: content"></div>
                 </div>
                 <div class="tab-pane" id="mailTemplates" role="tabpanel">
-                    <h2>Mail Templates</h2>
+                    <div th:replace="settings/mail_templates/mail_templates :: content"></div>
                 </div>
                 <div class="tab-pane" id="payment" role="tabpanel">
                     <h2>Payment</h2>
@@ -76,6 +76,10 @@
 <script>
     const MAX_FILE_SIZE = 1024 * 1024;
     const contextPath = '[[@{/}]]';
+
+    $(function () {
+        $('#customerVerificationContent').richText();
+    })
 </script>
 <script th:src="@{/js/common_form.js}"></script>
 <script th:src="@{/js/toast.js}"></script>

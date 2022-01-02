@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -35,12 +36,27 @@ public class SettingController {
     }
 
     @PostMapping("save_general")
-    public String update(@RequestParam(value = "fileImage", required = false) MultipartFile fileImage,
-                         HttpServletRequest request) throws IOException {
+    public String saveGeneralSettings(@RequestParam(value = "fileImage", required = false) MultipartFile fileImage,
+                                      HttpServletRequest request, RedirectAttributes ra) throws IOException {
         GeneralSettingBag generalSettingBag = service.getGeneralSettings();
         updateSiteImage(generalSettingBag, fileImage);
         updateSiteCurrencies(generalSettingBag, request);
         saveSettingsInForm(request, generalSettingBag.list());
+        ra.addFlashAttribute("message", "General settings saved successfully");
+        return "redirect:/settings";
+    }
+
+    @PostMapping("save_mail_server")
+    public String saveMailSettings(HttpServletRequest request, RedirectAttributes ra) {
+        saveSettingsInForm(request, service.getMailServerSettings());
+        ra.addFlashAttribute("message", "Mail settings saved successfully");
+        return "redirect:/settings";
+    }
+
+    @PostMapping("save_mail_templates")
+    public String saveMailTemplates(HttpServletRequest request, RedirectAttributes ra) {
+        saveSettingsInForm(request, service.getMailTemplatesSettings());
+        ra.addFlashAttribute("message", "Mail templates saved successfully");
         return "redirect:/settings";
     }
 
