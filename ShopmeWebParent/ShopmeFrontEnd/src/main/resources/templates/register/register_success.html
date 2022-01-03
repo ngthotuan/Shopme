@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="partial/header :: head('Homepage')"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="row text-center m-2">
+        <h2>Customer Registration</h2>
+        <h4>You have registered successfully as a customer</h4>
+        <p>Please check your email to verify our account.</p>
+        <p><a th:href="@{/login}">Login here</a></p>
+    </div>
+    <div th:replace="partial/modal :: modal_form"></div>
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+<div th:replace="partial/footer :: script"></div>
+<script>
+    const contextPath = '[[@{/}]]';
+    const password = $('#password');
+    const confirmPassword = $('#confirmPassword');
+    const ddCountries = $('#country');
+    const state = $('#state');
+    const listStates = $('#listStates');
+    const btnSubmit = $('#btnSubmit');
+    const form = $('#formCustomer')[0];
+    const email = $('#email');
+
+    function checkPasswordMatch() {
+        if (password.val() !== confirmPassword.val()) {
+            this.setCustomValidity("Passwords do not match.");
+        } else {
+            this.setCustomValidity('');
+        }
+    }
+
+    function loadStates4Country() {
+        state.val('');
+        const countryId = $(this).val();
+        $.ajax({
+            url: contextPath + 'states/list?countryId=' + countryId,
+            type: 'GET',
+            success: function (data) {
+                listStates.empty();
+                data.forEach(state => {
+                    listStates.append(`<option value="${state.name}">${state.name}</option>`);
+                });
+            }
+        });
+    }
+
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        if (form.checkValidity()) {
+            const params = {
+                email: email.val(),
+            }
+            const url = contextPath + 'customer/check_email';
+            $.post(url, params)
+                .done(function (data) {
+                    if (data) {
+                        form.submit();
+                    } else {
+                        showModal('Warning', `There are another user with email ${params.email}`);
+                    }
+                })
+                .fail(function (e) {
+                    showModal('Error', 'Service unavailable');
+                    console.log(e);
+                });
+        } else {
+            form.reportValidity();
+        }
+    }
+
+    $(function () {
+        confirmPassword.keyup(checkPasswordMatch);
+        ddCountries.change(loadStates4Country);
+        btnSubmit.click(handleFormSubmit);
+    });
+</script>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

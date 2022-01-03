@@ -60,5 +60,9 @@ public class Customer {
     @Column(length = 64)
     private String verificationCode;
 
+    @Transient
+    public String getFullName() {
+        return String.format("%s %s", firstName, lastName);
+    }
 }
 
