@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -43,6 +44,13 @@ public class CustomerController {
         sentVerificationEmail(request, customer);
         model.addAttribute("pageTitle", "Registration Successful");
         return "register/register_success";
+    }
+
+    @GetMapping("/verify")
+    public String verify(Model model, @RequestParam("code") String code) {
+        boolean success = service.verify(code);
+        model.addAttribute("pageTitle", "Verification " + (success ? "Successful" : "Failed"));
+        return "register/" + (success ? "verify_success" : "verify_fail");
     }
 
     private void sentVerificationEmail(HttpServletRequest request, Customer customer)

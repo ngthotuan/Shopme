@@ -35,6 +35,17 @@ public class CustomerService {
         repo.save(customer);
     }
 
+    public boolean verify(String code) {
+        Customer customer = repo.findByVerificationCode(code);
+        if (customer == null || customer.isEnabled()) {
+            return false;
+        }
+        customer.setEnabled(true);
+        customer.setVerificationCode(null);
+        repo.save(customer);
+        return true;
+    }
+
     private void encodePassword(Customer customer) {
         String encodedPassword = passwordEncoder.encode(customer.getPassword());
         customer.setPassword(encodedPassword);
