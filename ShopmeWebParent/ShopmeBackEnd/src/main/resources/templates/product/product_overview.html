@@ -6,8 +6,8 @@
         <div class="col-sm-2 col-form-label">Name:</div>
         <div class="col-sm-10">
             <input class="form-control" minlength="3" maxlength="256"
-                   required th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')')}"
-                   th:field="*{name}"
+                   required th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')') &&
+                   !#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}" th:field="*{name}"
                    type="text"
             >
         </div>
@@ -18,7 +18,8 @@
         <div class="col-sm-10">
             <input class="form-control" minlength="3" maxlength="256"
                    placeholder="Default is product name (replace spaces with dashes)"
-                   th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')')}" th:field="*{alias}"
+                   th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')') &&
+                   !#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}" th:field="*{alias}"
                    type="text"
             >
         </div>
@@ -33,7 +34,8 @@
                     </th:block>
                 </select>
             </th:block>
-            <th:block sec:authorize="hasAuthority('Salesperson')">
+            <th:block sec:authorize="hasAuthority('Salesperson')"
+                      th:if="${!#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}">
                 <input class="form-control" disabled maxlength="256"
                        minlength="3" required th:field="*{brand.name}"
                        type="text"
@@ -53,7 +55,8 @@
                 <select class="form-select" required th:field="*{category}" th:if="${product.category == null}">
                 </select>
             </th:block>
-            <th:block sec:authorize="hasAuthority('Salesperson')">
+            <th:block sec:authorize="hasAuthority('Salesperson')"
+                      th:if="${!#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}">
                 <input class="form-control" disabled maxlength="256"
                        minlength="3" required th:field="*{category.name}"
                        type="text"
@@ -64,19 +67,21 @@
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">Enabled:</div>
         <div class="col-sm-10">
-            <input class="form-check" th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')')}"
+            <input class="form-check" th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')') &&
+                   !#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}"
                    th:field="*{enabled}"
                    type="checkbox"
-            />
+            >
         </div>
     </div>
     <div class="mb-3 row">
         <div class="col-sm-2 col-form-label">In Stock:</div>
         <div class="col-sm-10">
-            <input class="form-check" th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')')}"
+            <input class="form-check" th:disabled="${#authorization.expression('hasAuthority(''Salesperson'')') &&
+                   !#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}"
                    th:field="*{inStock}"
                    type="checkbox"
-            />
+            >
         </div>
     </div>
     <div class="mb-3 row">

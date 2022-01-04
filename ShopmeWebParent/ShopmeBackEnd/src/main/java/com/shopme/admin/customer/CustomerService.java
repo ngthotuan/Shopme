@@ -53,6 +53,8 @@ public class CustomerService {
         } else {
             encodePassword(customer);
         }
+        customer.setCreatedTime(existingCustomer.getCreatedTime());
+        customer.setVerificationCode(existingCustomer.getVerificationCode());
         return repo.save(customer);
     }
 

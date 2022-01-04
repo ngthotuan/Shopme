@@ -7,12 +7,8 @@
         <div class="" style="max-width: 500px; margin: 0 auto">
             <div class="text-center">
                 <img alt="Shopme Logo" class="img-fluid" th:src="@{/images/ShopmeAdminBig.png}"/>
-                <span class="text-danger" th:if="${param.error}">
-                [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
-            </span>
-                <span class="text-warning" th:if="${param.logout}">
-                You have been logged out successfully!
-            </span>
+                <p class="text-danger" th:if="${param.error}">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                <p class="text-warning" th:if="${param.logout}">You have been logged out successfully!</p>
             </div>
             <form class="m-3 p-3 border border-primary rounded" method="post" th:action="@{/login}">
                 <div class="mb-3">

@@ -78,7 +78,7 @@ public class ProductController {
                        @RequestParam(name = "imageNames", required = false) String[] imageNames,
                        @AuthenticationPrincipal ShopmeUserDetails userDetails
     ) throws IOException {
-        if (userDetails.hasRole("Salesperson")) {
+        if (userDetails.hasRole("Salesperson") && !userDetails.hasAnyRole("Admin", "Editor")) {
             service.saveProductPrice(entity);
         } else {
             setMainImage(entity, image);

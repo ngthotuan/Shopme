@@ -51,7 +51,8 @@
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                             <div th:replace="product/product_description :: content"></div>
                         </th:block>
-                        <th:block sec:authorize="hasAuthority('Salesperson')">
+                        <th:block sec:authorize="hasAuthority('Salesperson')"
+                                  th:if="${!#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}">
                             <div th:replace="product/product_description_readonly :: content"></div>
                         </th:block>
                     </div>
@@ -59,7 +60,8 @@
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                             <div th:replace="product/product_images :: content"></div>
                         </th:block>
-                        <th:block sec:authorize="hasAuthority('Salesperson')">
+                        <th:block sec:authorize="hasAuthority('Salesperson')"
+                                  th:if="${!#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}">
                             <div th:replace="product/product_images_readonly :: content"></div>
                         </th:block>
                     </div>
@@ -67,7 +69,8 @@
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                             <div th:replace="product/product_details :: content"></div>
                         </th:block>
-                        <th:block sec:authorize="hasAuthority('Salesperson')">
+                        <th:block sec:authorize="hasAuthority('Salesperson')"
+                                  th:if="${!#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}">
                             <div th:replace="product/product_details_readonly :: content"></div>
                         </th:block>
                     </div>
@@ -75,7 +78,8 @@
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                             <div th:replace="product/product_shipping :: content"></div>
                         </th:block>
-                        <th:block sec:authorize="hasAuthority('Salesperson')">
+                        <th:block sec:authorize="hasAuthority('Salesperson')"
+                                  th:if="${!#authorization.expression('hasAnyAuthority(''Admin'', ''Editor'')')}">
                             <div th:replace="product/product_shipping_readonly :: content"></div>
                         </th:block>
                     </div>
