@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Customer ID:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.id}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Full Name:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.fullName}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Email:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.email}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Enabled:</div>
+        <div class="col-sm-10">
+            <input class="form-check" disabled th:checked="${customer.enabled}" type="checkbox"/>
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Created time:</div>
+        <div class="col-sm-10">
+            <span th:text="${#dates.format(customer.createdTime, 'yyyy-MM-dd hh:mm:ss')}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

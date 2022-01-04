@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Address Line 1:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.addressLine1}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Address Line 2:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.addressLine2}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">City:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.city}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">State/Province:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.state}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Country:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.country}">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2 col-form-label">Postal Code:</div>
+        <div class="col-sm-10">
+            <input class="form-control" disabled th:value="${customer.postalCode}">
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -42,4 +42,9 @@ public class Country {
     public Country(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

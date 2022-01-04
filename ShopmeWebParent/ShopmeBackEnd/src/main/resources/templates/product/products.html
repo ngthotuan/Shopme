@@ -80,12 +80,7 @@
                         </td>
                     </th:block>
                     <td class="text-center">
-                        <a class="btn btn-info text-center detail-link"
-                           th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
-                           title="See detail product"
-                        >
-                            <i class="fa fa-file-alt"></i>
-                        </a>
+                        <a th:replace="fragments::detail(${module}, ${product.id}, 'product')"></a>
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
                             <a th:replace="fragments::edit(${module}, ${product.id}, 'product')"></a>
                         </th:block>
@@ -138,13 +133,7 @@
     </div>
     <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>
-    <div class="modal fade" id="detailModal">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-
-            </div>
-        </div>
-    </div>
+    <div th:replace="partial/modal :: modal_detail"></div>
     <div th:replace="partial/footer :: footer"></div>
 </div>
 </body>
@@ -158,10 +147,10 @@
             $('#detailModal').modal('show')
                 .find('.modal-content')
                 .load(url);
-        })
+        });
         $('#categorySelect').change(function () {
             $('#formSearch').submit();
-        })
+        });
     });
 </script>
 </html>

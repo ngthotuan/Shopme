@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="partial/header :: head('Customers - Shopme Admin')"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="content">
+        <h2>Manager Customers</h2>
+        <th:block th:replace="fragments::export(${module})"/>
+        <th:block th:replace="partial/messages::messages"/>
+        <th:block th:replace="partial/form::form_search(${module})"/>
+        <div class="full-details">
+            <table class="table table-responsive-xl table-hover table-bordered table-striped">
+                <thead class="table-dark text-center">
+                <th th:replace="fragments::column_link(${module}, 'id', 'ID', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'firstName', 'First Name', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'lastName', 'Last Name', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'email', 'Email', true)"></th>
+                <th th:replace="fragments::column_link(${module}, 'city', 'City', true)"></th>
+                <th th:replace="fragments::column_link(${module}, 'state', 'State', true)"></th>
+                <th th:replace="fragments::column_link(${module}, 'country.name', 'Country', false)"></th>
+                <th th:replace="fragments::column_link(${module}, 'enabled', 'Enabled', false)"></th>
+                <th>Actions</th>
+                </thead>
+                <tbody>
+                <tr th:each="customer:${customers}">
+                    <td>[[${customer.id}]]</td>
+                    <td>[[${customer.firstName}]]</td>
+                    <td>[[${customer.lastName}]]</td>
+                    <td class="hideable-column">[[${customer.email}]]</td>
+                    <td class="hideable-column">[[${customer.city}]]</td>
+                    <td class="hideable-column">[[${customer.state}]]</td>
+                    <td>[[${customer.country.name}]]</td>
+                    <td class="text-center">
+                        <a th:replace="fragments::status(${module}, ${customer.id}, 'customer', ${customer.enabled})"></a>
+                    </td>
+                    <td class="text-center">
+                        <a th:replace="fragments::detail(${module}, ${customer.id}, 'customer')"></a>
+                        <a th:replace="fragments::edit(${module}, ${customer.id}, 'customer')"></a>
+                        <a th:replace="fragments::delete(${module}, ${customer.id}, 'customer', true)"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="less-details">
+            <div class="row mb-3" th:each="customer:${customers}">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">[[${customer.firstName}]] [[${customer.lastName}]]</h5>
+                            <p class="card-text">[[${customer.email}]]</p>
+                            <p class="card-text">[[${customer.city}]] [[${customer.state}]]</p>
+                            <p class="card-text">[[${customer.country.name}]]</p>
+                            <p class="card-text">
+                                <a th:replace="fragments::status(${module}, ${customer.id}, 'customer', ${customer.enabled})"></a>
+                                <a th:replace="fragments::detail(${module}, ${customer.id}, 'customer')"></a>
+                                <a th:replace="fragments::edit(${module}, ${customer.id}, 'customer')"></a>
+                                <a th:replace="fragments::delete(${module}, ${customer.id}, 'customer', true)"></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
+    </div>
+    <div th:replace="partial/modal :: modal_confirm_delete"></div>
+    <div th:replace="partial/modal :: modal_detail"></div>
+
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+</body>
+<div th:replace="partial/footer :: script"></div>
+<script th:src="@{/js/common_list.js}"></script>
+</html>

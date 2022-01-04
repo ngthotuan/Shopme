@@ -59,5 +59,12 @@
 >
     <i class="fa fa-trash"></i>
 </a>
+<a class="btn btn-info text-center detail-link"
+   th:fragment="detail(module, entityId, entityName)"
+   th:href="@{ '/' + ${module} + '/detail/' + ${entityId} }"
+   th:title="'See detail ' + ${entityName}"
+>
+    <i class="fa fa-file-alt"></i>
+</a>
 </body>
 </html>
