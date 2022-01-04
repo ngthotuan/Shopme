@@ -19,20 +19,20 @@
     <nav th:if="${totalPages > 0}">
         <ul class="pagination justify-content-center flex-wrap">
             <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                <a th:replace="this::page_link(${module}, 1, 'First')"></a>
+                <a th:replace="this::page_link(1, 'First')"></a>
             </li>
             <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
-                <a th:replace="this::page_link(${module}, ${currentPage - 1}, 'Previous')"></a>
+                <a th:replace="this::page_link(${currentPage - 1}, 'Previous')"></a>
             </li>
             <li th:class="${i == currentPage ? 'page-item active' : 'page-item' }"
                 th:each="i:${#numbers.sequence(1, totalPages)}">
-                <a th:replace="this::page_link(${module}, ${i}, ${i})"></a>
+                <a th:replace="this::page_link(${i}, ${i})"></a>
             </li>
             <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                <a th:replace="this::page_link(${module}, ${currentPage + 1}, 'Next')"></a>
+                <a th:replace="this::page_link(${currentPage + 1}, 'Next')"></a>
             </li>
             <li th:class="${currentPage == totalPages ? 'page-item disabled' : 'page-item'}">
-                <a th:replace="this::page_link(${module}, ${totalPages}, 'Last')"></a>
+                <a th:replace="this::page_link(${totalPages}, 'Last')"></a>
             </li>
         </ul>
     </nav>

@@ -6,9 +6,9 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Product</h2>
-        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')" th:replace="fragments::export(${module})"/>
+        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')" th:replace="fragments::export"/>
         <th:block th:replace="partial/messages::messages"/>
-        <!--        <th:block th:replace="partial/form::form_search(${module})"/>-->
+        <!--        <th:block th:replace="partial/form::form_search"/>-->
         <form class="m-2 row g-3 align-items-center" id="formSearch"
               th:action="@{'/' + ${module} + '/page/1'}">
             <input name="sortField" th:value="${sortField}" type="hidden">
@@ -48,13 +48,13 @@
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
-                <th th:replace="fragments::column_link(${module}, 'id', 'ID', true)"></th>
+                <th th:replace="fragments::column_link('id', 'ID', true)"></th>
                 <th>Image</th>
-                <th th:replace="fragments::column_link(${module}, 'name', 'Name', false)"></th>
-                <th th:replace="fragments::column_link(${module}, 'brand.name', 'Brand', false)"></th>
-                <th th:replace="fragments::column_link(${module}, 'category.name', 'Category', false)"></th>
+                <th th:replace="fragments::column_link('name', 'Name', false)"></th>
+                <th th:replace="fragments::column_link('brand.name', 'Brand', false)"></th>
+                <th th:replace="fragments::column_link('category.name', 'Category', false)"></th>
                 <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                    <th th:replace="fragments::column_link(${module}, 'enabled', 'Enabled', false)">Enable</th>
+                    <th th:replace="fragments::column_link('enabled', 'Enabled', false)">Enable</th>
                 </th:block>
                 <th>Actions</th>
                 </thead>
@@ -76,16 +76,16 @@
                     <td>[[${product.category.name}]]</td>
                     <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
                         <td class="text-center">
-                            <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>
+                            <a th:replace="fragments::status(${product.id}, 'product', ${product.enabled})"></a>
                         </td>
                     </th:block>
                     <td class="text-center">
-                        <a th:replace="fragments::detail(${module}, ${product.id}, 'product')"></a>
+                        <a th:replace="fragments::detail(${product.id}, 'product')"></a>
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
-                            <a th:replace="fragments::edit(${module}, ${product.id}, 'product')"></a>
+                            <a th:replace="fragments::edit(${product.id}, 'product')"></a>
                         </th:block>
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                            <a th:replace="fragments::delete(${module}, ${product.id}, 'product', true)"></a>
+                            <a th:replace="fragments::delete(${product.id}, 'product', true)"></a>
                         </th:block>
 
                     </td>
@@ -112,7 +112,7 @@
                     </div>
                     <div class="mt-1">
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                            <a th:replace="fragments::status(${module}, ${product.id}, 'product', ${product.enabled})"></a>
+                            <a th:replace="fragments::status(${product.id}, 'product', ${product.enabled})"></a>
                         </th:block>
                         <a class="btn btn-info text-center detail-link"
                            th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
@@ -121,17 +121,17 @@
                             <i class="fa fa-file-alt"></i>
                         </a>
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Salesperson')">
-                            <a th:replace="fragments::edit(${module}, ${product.id}, 'product')"></a>
+                            <a th:replace="fragments::edit(${product.id}, 'product')"></a>
                         </th:block>
                         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
-                            <a th:replace="fragments::delete(${module}, ${product.id}, 'product', true)"></a>
+                            <a th:replace="fragments::delete(${product.id}, 'product', true)"></a>
                         </th:block>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
+    <th:block th:replace="partial/pagination :: page_pagination(${module})"/>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>
     <div th:replace="partial/modal :: modal_detail"></div>
     <div th:replace="partial/footer :: footer"></div>

@@ -6,15 +6,15 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Brand</h2>
-        <th:block th:replace="fragments::export(${module})"/>
+        <th:block th:replace="fragments::export"/>
         <th:block th:replace="partial/messages::messages"/>
-        <th:block th:replace="partial/form::form_search(${module})"/>
+        <th:block th:replace="partial/form::form_search"/>
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
-                <th th:replace="fragments::column_link(${module}, 'id', 'ID', true)"></th>
+                <th th:replace="fragments::column_link('id', 'ID', true)"></th>
                 <th>Logo</th>
-                <th th:replace="fragments::column_link(${module}, 'name', 'Name', false)"></th>
+                <th th:replace="fragments::column_link('name', 'Name', false)"></th>
                 <th>Categories</th>
                 <th>Actions</th>
                 </thead>
@@ -33,8 +33,8 @@
                         </th:block>
                     </td>
                     <td class="text-center">
-                        <a th:replace="fragments::edit(${module}, ${brand.id}, 'brand')"></a>
-                        <a th:replace="fragments::delete(${module}, ${brand.id}, 'brand', true)"></a>
+                        <a th:replace="fragments::edit(${brand.id}, 'brand')"></a>
+                        <a th:replace="fragments::delete(${brand.id}, 'brand', true)"></a>
                     </td>
                 </tr>
                 </tbody>
@@ -57,14 +57,14 @@
                         </th:block>
                     </div>
                     <div class="mt-1">
-                        <a th:replace="fragments::edit(${module}, ${brand.id}, 'brand')"></a>
-                        <a th:replace="fragments::delete(${module}, ${brand.id}, 'brand', true)"></a>
+                        <a th:replace="fragments::edit(${brand.id}, 'brand')"></a>
+                        <a th:replace="fragments::delete(${brand.id}, 'brand', true)"></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
+    <th:block th:replace="partial/pagination :: page_pagination(${module})"/>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>
     <div th:replace="partial/footer :: footer"></div>
 </div>

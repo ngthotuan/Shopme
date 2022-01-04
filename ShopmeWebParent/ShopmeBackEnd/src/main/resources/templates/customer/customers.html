@@ -6,20 +6,20 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Customers</h2>
-        <th:block th:replace="fragments::export(${module})"/>
+        <th:block th:replace="fragments::export"/>
         <th:block th:replace="partial/messages::messages"/>
-        <th:block th:replace="partial/form::form_search(${module})"/>
+        <th:block th:replace="partial/form::form_search"/>
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
-                <th th:replace="fragments::column_link(${module}, 'id', 'ID', false)"></th>
-                <th th:replace="fragments::column_link(${module}, 'firstName', 'First Name', false)"></th>
-                <th th:replace="fragments::column_link(${module}, 'lastName', 'Last Name', false)"></th>
-                <th th:replace="fragments::column_link(${module}, 'email', 'Email', true)"></th>
-                <th th:replace="fragments::column_link(${module}, 'city', 'City', true)"></th>
-                <th th:replace="fragments::column_link(${module}, 'state', 'State', true)"></th>
-                <th th:replace="fragments::column_link(${module}, 'country.name', 'Country', false)"></th>
-                <th th:replace="fragments::column_link(${module}, 'enabled', 'Enabled', false)"></th>
+                <th th:replace="fragments::column_link('id', 'ID', false)"></th>
+                <th th:replace="fragments::column_link('firstName', 'First Name', false)"></th>
+                <th th:replace="fragments::column_link('lastName', 'Last Name', false)"></th>
+                <th th:replace="fragments::column_link('email', 'Email', true)"></th>
+                <th th:replace="fragments::column_link('city', 'City', true)"></th>
+                <th th:replace="fragments::column_link('state', 'State', true)"></th>
+                <th th:replace="fragments::column_link('country.name', 'Country', false)"></th>
+                <th th:replace="fragments::column_link('enabled', 'Enabled', false)"></th>
                 <th>Actions</th>
                 </thead>
                 <tbody>
@@ -32,12 +32,12 @@
                     <td class="hideable-column">[[${customer.state}]]</td>
                     <td>[[${customer.country.name}]]</td>
                     <td class="text-center">
-                        <a th:replace="fragments::status(${module}, ${customer.id}, 'customer', ${customer.enabled})"></a>
+                        <a th:replace="fragments::status(${customer.id}, 'customer', ${customer.enabled})"></a>
                     </td>
                     <td class="text-center">
-                        <a th:replace="fragments::detail(${module}, ${customer.id}, 'customer')"></a>
-                        <a th:replace="fragments::edit(${module}, ${customer.id}, 'customer')"></a>
-                        <a th:replace="fragments::delete(${module}, ${customer.id}, 'customer', true)"></a>
+                        <a th:replace="fragments::detail(${customer.id}, 'customer')"></a>
+                        <a th:replace="fragments::edit(${customer.id}, 'customer')"></a>
+                        <a th:replace="fragments::delete(${customer.id}, 'customer', true)"></a>
                     </td>
                 </tr>
                 </tbody>
@@ -53,17 +53,17 @@
                             <p class="card-text">[[${customer.city}]] [[${customer.state}]]</p>
                             <p class="card-text">[[${customer.country.name}]]</p>
                             <p class="card-text">
-                                <a th:replace="fragments::status(${module}, ${customer.id}, 'customer', ${customer.enabled})"></a>
-                                <a th:replace="fragments::detail(${module}, ${customer.id}, 'customer')"></a>
-                                <a th:replace="fragments::edit(${module}, ${customer.id}, 'customer')"></a>
-                                <a th:replace="fragments::delete(${module}, ${customer.id}, 'customer', true)"></a>
+                                <a th:replace="fragments::status(${customer.id}, 'customer', ${customer.enabled})"></a>
+                                <a th:replace="fragments::detail(${customer.id}, 'customer')"></a>
+                                <a th:replace="fragments::edit(${customer.id}, 'customer')"></a>
+                                <a th:replace="fragments::delete(${customer.id}, 'customer', true)"></a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
+        <th:block th:replace="partial/pagination :: page_pagination(${module})"/>
     </div>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>
     <div th:replace="partial/modal :: modal_detail"></div>

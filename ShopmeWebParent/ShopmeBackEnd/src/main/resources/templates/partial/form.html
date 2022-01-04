@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <body>
-<form th:fragment="form_search(module)" class="m-2 row g-3 align-items-center"
+<form class="m-2 row g-3 align-items-center" th:fragment="form_search"
       th:action="@{'/' + ${module} + '/page/1'}">
     <input name="sortField" th:value="${sortField}" type="hidden">
     <input name="sortType" th:value="${sortType}" type="hidden">

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <body>
-<th:block th:fragment="export(module)">
+<th:block th:fragment="export">
     <a class="fa fa-plus fa-2x text-decoration-none text-success mx-2"
        th:href="@{'/' + ${module} + '/new'}"
        title="Create New"></a>
@@ -15,7 +15,7 @@
        th:href="@{'/' + ${module} + '/export/pdf'}"
        title="Export to PDF"></a>
 </th:block>
-<th th:fragment="column_link(module, fieldName, fieldLabel, hiddenMedium)"
+<th th:fragment="column_link(fieldName, fieldLabel, hiddenMedium)"
     th:class="${hiddenMedium ? 'hideable-column' : ''}">
     <a class="text-white text-decoration-none"
        th:href="@{'/' + ${module} + '/page/' + ${currentPage}
@@ -28,7 +28,7 @@
     <i th:class="${sortType == 'asc' ? 'fa fa-sort-up' : 'fa fa-sort-down'}"
        th:if="${sortField == fieldName}"></i>
 </th>
-<th:block th:fragment="status(module, entityId, entityName, status)">
+<th:block th:fragment="status(entityId, entityName, status)">
     <a class="btn btn-primary text-center" th:href="@{ '/' + ${module} + '/' + ${entityId} + '/enabled/false'}"
        th:if="${status}"
        th:title="'Disable this ' + ${entityName}"
@@ -43,7 +43,7 @@
     </a>
 </th:block>
 <a class="btn btn-success text-center"
-   th:fragment="edit(module, entityId, entityName)"
+   th:fragment="edit(entityId, entityName)"
    th:href="@{ '/' + ${module} + '/edit/' + ${entityId} }"
    th:title="'Edit this ' + ${entityName}"
 >
@@ -52,7 +52,7 @@
 <a class="btn btn-danger text-center link-delete"
    th:data-entity="${entityName}"
    th:data-id="${entityId}"
-   th:fragment="delete(module, entityId, entityName, show)"
+   th:fragment="delete(entityId, entityName, show)"
    th:href="@{ '/' + ${module} + '/delete/' + ${entityId} }"
    th:if="${show}"
    th:title="'Delete this ' + ${entityName}"
@@ -60,7 +60,7 @@
     <i class="fa fa-trash"></i>
 </a>
 <a class="btn btn-info text-center detail-link"
-   th:fragment="detail(module, entityId, entityName)"
+   th:fragment="detail(entityId, entityName)"
    th:href="@{ '/' + ${module} + '/detail/' + ${entityId} }"
    th:title="'See detail ' + ${entityName}"
 >

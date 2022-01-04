@@ -6,15 +6,15 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Category</h2>
-        <th:block th:replace="fragments::export(${module})"/>
+        <th:block th:replace="fragments::export"/>
         <th:block th:replace="partial/messages::messages"/>
-        <th:block th:replace="partial/form::form_search(${module})"/>
+        <th:block th:replace="partial/form::form_search"/>
         <div class="full-details">
             <table class="table table-responsive-xl table-hover table-bordered table-striped">
                 <thead class="table-dark text-center">
                 <th>ID</th>
                 <th>Image</th>
-                <th th:replace="fragments :: column_link(${module}, 'name', 'Name', false) "></th>
+                <th th:replace="fragments :: column_link('name', 'Name', false) "></th>
                 <th class="hideable-column">Alias</th>
                 <th>Enabled</th>
                 <th>Actions</th>
@@ -30,11 +30,11 @@
                     <td>[[${category.name}]]</td>
                     <td class="hideable-column">[[${category.alias}]]</td>
                     <td class="text-center">
-                        <a th:replace="fragments::status(${module}, ${category.id}, 'category', ${category.enabled})"></a>
+                        <a th:replace="fragments::status(${category.id}, 'category', ${category.enabled})"></a>
                     </td>
                     <td class="text-center">
-                        <a th:replace="fragments::edit(${module}, ${category.id}, 'category')"></a>
-                        <a th:replace="fragments::delete(${module}, ${category.id}, 'category', ${!category.hasChildren})"></a>
+                        <a th:replace="fragments::edit(${category.id}, 'category')"></a>
+                        <a th:replace="fragments::delete(${category.id}, 'category', ${!category.hasChildren})"></a>
                     </td>
                 </tr>
                 </tbody>
@@ -55,19 +55,19 @@
                         <i>[[${category.alias}]]</i>
                     </div>
                     <div class="mt-1">
-                        <a th:replace="fragments::status(${module}, ${category.id}, 'category', ${category.enabled})"></a>
-                        <a th:replace="fragments::edit(${module}, ${category.id}, 'category')"></a>
-                        <a th:replace="fragments::delete(${module}, ${category.id}, 'category', ${!category.hasChildren})"></a>
+                        <a th:replace="fragments::status(${category.id}, 'category', ${category.enabled})"></a>
+                        <a th:replace="fragments::edit(${category.id}, 'category')"></a>
+                        <a th:replace="fragments::delete(${category.id}, 'category', ${!category.hasChildren})"></a>
                     </div>
                 </div>
             </div>
         </div>
         <div th:if="${keyword != null}" class="text-center">
             <span>Search categories don't show hierarchical</span>
-            <th:block th:replace="partial/pagination :: page_pagination(${module}, ${module})"/>
+            <th:block th:replace="partial/pagination :: page_pagination(${module})"/>
         </div>
         <th:block th:if="${keyword == null}">
-            <div th:replace="partial/pagination :: page_pagination(${module}, 'top-level categories')"></div>
+            <div th:replace="partial/pagination :: page_pagination('top-level categories')"></div>
         </th:block>
     </div>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>
