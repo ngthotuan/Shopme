@@ -1,12 +1,13 @@
 package com.shopme.admin.user.controller;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.user.UserExporter;
 import com.shopme.admin.user.UserNotFoundException;
 import com.shopme.admin.user.UserService;
 import com.shopme.admin.user.role.RoleService;
 import com.shopme.admin.utils.Exporter;
 import com.shopme.admin.utils.FileUploadUtil;
-import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import static com.shopme.common.utils.Common.setModelListPage;
-
 @Controller
 @RequiredArgsConstructor
 @Transactional
@@ -35,21 +34,15 @@ public class UserController {
     private final RoleService roleService;
 
     @GetMapping({"", "/"})
-    public String listAll(Model model) {
-        return listByPage(model, 1, "firstName", "asc", null);
+    public String listFirstPage() {
+        return "redirect:/users/page/1?sortField=firstName&sortType=asc";
     }
 
     @GetMapping("/page/{pageNum}")
-    public String listByPage(Model model, @PathVariable Integer pageNum,
-                             @RequestParam String sortField, @RequestParam String sortType,
-                             @RequestParam(required = false) String keyword) {
-
-        PageInfo pageInfo = new PageInfo();
-        List<User> users = userService.listByPage(pageInfo, pageNum, sortField, sortType, keyword);
-
-        model.addAttribute("users", users);
-        setModelListPage(model, "users", sortField, sortType, keyword, pageInfo);
-
+    public String listByPage(@PathVariable Integer pageNum,
+                             @PagingAndSortingParam(module = "users", listName = "users")
+                                     PagingAndSortingHelper helper) {
+        userService.listByPage(pageNum, helper);
         return "users/users";
     }
 

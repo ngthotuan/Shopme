@@ -1,23 +1,25 @@
 package com.shopme.admin.customer;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.setting.country.CountryService;
 import com.shopme.admin.utils.Exporter;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Customer;
-import com.shopme.common.entity.PageInfo;
 import com.shopme.common.exception.CustomerNotFoundException;
 import com.shopme.common.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
-import static com.shopme.common.utils.Common.setModelListPage;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,21 +29,15 @@ public class CustomerController {
     private final CountryService countryService;
 
     @GetMapping({"", "/"})
-    public String listAll(Model model) {
-        return listByPage(model, 1, "firstName", "asc", null);
+    public String listFirstPage() {
+        return "redirect:/customers/page/1?sortField=firstName&sortType=asc";
     }
 
     @GetMapping("/page/{pageNum}")
-    public String listByPage(Model model, @PathVariable Integer pageNum,
-                             @RequestParam String sortField, @RequestParam String sortType,
-                             @RequestParam(required = false) String keyword) {
-
-        PageInfo pageInfo = new PageInfo();
-        List<Customer> customers = service.listByPage(pageInfo, pageNum, sortField, sortType, keyword);
-
-        model.addAttribute("customers", customers);
-        setModelListPage(model, "customers", sortField, sortType, keyword, pageInfo);
-
+    public String listByPage(@PathVariable Integer pageNum,
+                             @PagingAndSortingParam(module = "customers", listName = "customers")
+                                     PagingAndSortingHelper helper) {
+        service.listByPage(pageNum, helper);
         return "customer/customers";
     }
 

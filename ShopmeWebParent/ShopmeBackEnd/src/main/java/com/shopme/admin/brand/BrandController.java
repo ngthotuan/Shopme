@@ -1,11 +1,12 @@
 package com.shopme.admin.brand;
 
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.utils.Exporter;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +20,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import static com.shopme.common.utils.Common.setModelListPage;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/brands")
@@ -29,21 +28,15 @@ public class BrandController {
     private final CategoryService categoryService;
 
     @GetMapping({"", "/"})
-    public String listFirstPage(Model model) {
-        return listByPage(model, 1, "name", "asc", null);
+    public String listFirstPage() {
+        return "redirect:/brands/page/1?sortField=name&sortType=asc";
     }
 
     @GetMapping("/page/{pageNum}")
-    public String listByPage(Model model, @PathVariable(name = "pageNum") Integer pageNum,
-                             @RequestParam(name = "sortField", required = false, defaultValue = "name") String sortField,
-                             @RequestParam(name = "sortType", required = false, defaultValue = "asc") String sortType,
-                             @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
-
-        PageInfo pageInfo = new PageInfo();
-        List<Brand> brands = service.listByPage(pageInfo, pageNum, sortField, sortType, keyword);
-
-        model.addAttribute("brands", brands);
-        setModelListPage(model, "brands", sortField, sortType, keyword, pageInfo);
+    public String listByPage(@PathVariable Integer pageNum,
+                             @PagingAndSortingParam(module = "brands", listName = "brands")
+                                     PagingAndSortingHelper helper) {
+        service.listByPage(pageNum, helper);
         return "brand/brands";
     }
 

@@ -1,7 +1,7 @@
 package com.shopme.admin.category;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.PageInfo;
 import com.shopme.common.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static com.shopme.common.utils.Common.createSort;
-import static com.shopme.common.utils.Common.setPageInfo;
 
 @Service
 @RequiredArgsConstructor
@@ -31,29 +30,24 @@ public class CategoryService {
         return listAll("name", "asc");
     }
 
-    public List<Category> listByPage(PageInfo pageInfo, int page,
-                                     String sortField, String sortType,
-                                     String keyword) {
-        Sort sort = createSort(sortField, sortType);
+    public void listByPage(int pageNum, PagingAndSortingHelper helper) {
+        String keyword = helper.getKeyword();
+        Sort sort = helper.getSort();
+        Page<Category> pageModel;
         Pageable pageable;
-        Page<Category> categoryPage;
 
         if (keyword != null && !keyword.isEmpty()) {
             int perPage = 5;
-            pageable = PageRequest.of(page - 1, perPage, sort);
-            categoryPage = categoryRepository.findByKeyword(keyword, pageable);
-
-            setPageInfo(pageInfo, page, categoryPage, perPage);
-
-            return categoryPage.getContent();
+            pageable = PageRequest.of(pageNum - 1, perPage, sort);
+            pageModel = categoryRepository.findByKeyword(keyword, pageable);
+            helper.updateModelAttributes(pageModel, pageNum, perPage);
         } else {
-            pageable = PageRequest.of(page - 1, ROOT_CATEGORY_PER_PAGE, sort);
-            categoryPage = categoryRepository.findAllRootCategories(pageable);
-            List<Category> rootCategories = categoryPage.getContent();
-
-            setPageInfo(pageInfo, page, categoryPage, ROOT_CATEGORY_PER_PAGE);
-
-            return hierarchicalCategories(rootCategories, sortType);
+            pageable = PageRequest.of(pageNum - 1, ROOT_CATEGORY_PER_PAGE, sort);
+            pageModel = categoryRepository.findAllRootCategories(pageable);
+            List<Category> rootCategories = pageModel.getContent();
+            List<Category> categories = hierarchicalCategories(rootCategories, helper.getSortType());
+            helper.updateModelAttributes(categories, pageNum, ROOT_CATEGORY_PER_PAGE,
+                    pageModel.getTotalElements(), pageModel.getTotalPages());
         }
     }
 

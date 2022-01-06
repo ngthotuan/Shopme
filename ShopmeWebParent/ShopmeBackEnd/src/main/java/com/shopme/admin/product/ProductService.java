@@ -1,7 +1,7 @@
 package com.shopme.admin.product;
 
 
-import com.shopme.common.entity.PageInfo;
+import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.common.entity.Product;
 import com.shopme.common.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
-import static com.shopme.common.utils.Common.createSort;
-import static com.shopme.common.utils.Common.setPageInfo;
-
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -26,13 +23,11 @@ public class ProductService {
         return repo.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
-    public List<Product> listByPage(PageInfo pageInfo, int pageNum, String sortField, String sortType,
-                                    String keyword, Long categoryId) {
-        Sort sort = createSort(sortField, sortType);
-
-        PageRequest pageable = PageRequest.of(pageNum - 1, PER_PAGE, sort);
-
+    public void listByPage(int pageNum, PagingAndSortingHelper helper, long categoryId) {
+        String keyword = helper.getKeyword();
+        PageRequest pageable = helper.getPageable(pageNum - 1, PER_PAGE);
         Page<Product> pageModel;
+
         if (keyword != null && !keyword.isEmpty()) {
             if (categoryId != -1) {
                 String categoryMatch = String.format("-%s-", categoryId);
@@ -49,9 +44,7 @@ public class ProductService {
             }
         }
 
-        setPageInfo(pageInfo, pageNum, pageModel, PER_PAGE);
-
-        return pageModel.getContent();
+        helper.updateModelAttributes(pageModel, pageNum, PER_PAGE);
     }
 
     public Product save(Product product) {

@@ -2,10 +2,11 @@ package com.shopme.admin.product;
 
 import com.shopme.admin.brand.BrandService;
 import com.shopme.admin.category.CategoryService;
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.PageInfo;
 import com.shopme.common.entity.Product;
 import com.shopme.common.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,6 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.shopme.admin.product.ProductSaveHelper.*;
-import static com.shopme.common.utils.Common.setModelListPage;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,25 +32,19 @@ public class ProductController {
     private final CategoryService categoryService;
 
     @GetMapping({"", "/"})
-    public String listFirstPage(Model model) {
-        return listByPage(model, 1, "name", "asc", null, -1L);
+    public String listFirstPage() {
+        return "redirect:/products/page/1?sortField=name&sortType=asc";
     }
 
     @GetMapping("/page/{pageNum}")
-    public String listByPage(Model model, @PathVariable(name = "pageNum") Integer pageNum,
-                             @RequestParam(name = "sortField", required = false, defaultValue = "name") String sortField,
-                             @RequestParam(name = "sortType", required = false, defaultValue = "asc") String sortType,
-                             @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
-                             @RequestParam(name = "categoryId", required = false, defaultValue = "-1") Long categoryId
-    ) {
-
-        PageInfo pageInfo = new PageInfo();
-        List<Product> list = service.listByPage(pageInfo, pageNum, sortField, sortType, keyword, categoryId);
+    public String listByPage(@PathVariable Integer pageNum,
+                             @PagingAndSortingParam(module = "products", listName = "products") PagingAndSortingHelper helper,
+                             @RequestParam(name = "categoryId", required = false, defaultValue = "-1") Long categoryId,
+                             Model model) {
+        service.listByPage(pageNum, helper, categoryId);
         List<Category> categories = categoryService.listAll();
-        model.addAttribute("products", list);
-        model.addAttribute("categories", categories);
         model.addAttribute("categoryId", categoryId);
-        setModelListPage(model, "products", sortField, sortType, keyword, pageInfo);
+        model.addAttribute("categories", categories);
         return "product/products";
     }
 

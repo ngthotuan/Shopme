@@ -1,9 +1,10 @@
 package com.shopme.admin.category;
 
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.utils.Exporter;
 import com.shopme.admin.utils.FileUploadUtil;
 import com.shopme.common.entity.Category;
-import com.shopme.common.entity.PageInfo;
 import com.shopme.common.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-import static com.shopme.common.utils.Common.setModelListPage;
-
 @Controller
 @RequestMapping("/categories")
 @RequiredArgsConstructor
@@ -28,21 +27,15 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping({"", "/"})
-    public String listFirstPage(Model model) {
-        return listByPage(model, 1, "name", "asc", null);
+    public String listFirstPage() {
+        return "redirect:/categories/page/1?sortField=name&sortType=asc";
     }
 
     @GetMapping("/page/{pageNum}")
-    public String listByPage(Model model, @PathVariable(name = "pageNum") Integer pageNum,
-                             @RequestParam(name = "sortField", required = false, defaultValue = "name") String sortField,
-                             @RequestParam(name = "sortType", required = false, defaultValue = "asc") String sortType,
-                             @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
-
-        PageInfo pageInfo = new PageInfo();
-        List<Category> categories = categoryService.listByPage(pageInfo, pageNum, sortField, sortType, keyword);
-
-        model.addAttribute("categories", categories);
-        setModelListPage(model, "categories", sortField, sortType, keyword, pageInfo);
+    public String listByPage(@PathVariable Integer pageNum,
+                             @PagingAndSortingParam(module = "categories", listName = "categories")
+                                     PagingAndSortingHelper helper) {
+        categoryService.listByPage(pageNum, helper);
         return "category/categories";
     }
 
