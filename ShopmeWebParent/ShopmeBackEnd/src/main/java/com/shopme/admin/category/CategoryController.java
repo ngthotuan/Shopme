@@ -33,7 +33,7 @@ public class CategoryController {
 
     @GetMapping("/page/{pageNum}")
     public String listByPage(@PathVariable Integer pageNum,
-                             @PagingAndSortingParam(module = "categories", listName = "categories")
+                             @PagingAndSortingParam(moduleURL = "/categories", listName = "categories")
                                      PagingAndSortingHelper helper) {
         categoryService.listByPage(pageNum, helper);
         return "category/categories";

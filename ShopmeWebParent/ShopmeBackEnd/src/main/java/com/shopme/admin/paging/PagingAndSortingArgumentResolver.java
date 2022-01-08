@@ -25,7 +25,7 @@ public class PagingAndSortingArgumentResolver implements HandlerMethodArgumentRe
         model.addAttribute("sortType", sortType);
         model.addAttribute("keyword", keyword);
         model.addAttribute("sortTypeReverse", "asc".equals(sortType) ? "desc" : "asc");
-        model.addAttribute("module", annotation.module());
+        model.addAttribute("moduleURL", annotation.moduleURL());
 
         return new PagingAndSortingHelper(model, annotation.listName(), sortField, sortType, keyword);
     }

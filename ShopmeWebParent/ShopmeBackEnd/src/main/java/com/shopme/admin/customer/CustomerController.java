@@ -35,7 +35,7 @@ public class CustomerController {
 
     @GetMapping("/page/{pageNum}")
     public String listByPage(@PathVariable Integer pageNum,
-                             @PagingAndSortingParam(module = "customers", listName = "customers")
+                             @PagingAndSortingParam(moduleURL = "/customers", listName = "customers")
                                      PagingAndSortingHelper helper) {
         service.listByPage(pageNum, helper);
         return "customer/customers";

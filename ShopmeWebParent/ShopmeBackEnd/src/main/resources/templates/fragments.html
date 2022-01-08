@@ -3,22 +3,22 @@
 <body>
 <th:block th:fragment="export">
     <a class="fa fa-plus fa-2x text-decoration-none text-success mx-2"
-       th:href="@{'/' + ${module} + '/new'}"
+       th:href="@{${moduleURL} + '/new'}"
        title="Create New"></a>
     <a class="fa fa-file-csv fa-2x text-decoration-none text-success mx-2"
-       th:href="@{'/' + ${module} + '/export/csv'}"
+       th:href="@{${moduleURL} + '/export/csv'}"
        title="Export to CSV"></a>
     <a class="fa fa-file-excel fa-2x text-decoration-none text-success mx-2"
-       th:href="@{'/' + ${module} + '/export/excel'}"
+       th:href="@{${moduleURL} + '/export/excel'}"
        title="Export to EXCEL"></a>
     <a class="fa fa-file-pdf fa-2x text-decoration-none text-success mx-2"
-       th:href="@{'/' + ${module} + '/export/pdf'}"
+       th:href="@{${moduleURL} + '/export/pdf'}"
        title="Export to PDF"></a>
 </th:block>
 <th th:fragment="column_link(fieldName, fieldLabel, hiddenMedium)"
     th:class="${hiddenMedium ? 'hideable-column' : ''}">
     <a class="text-white text-decoration-none"
-       th:href="@{'/' + ${module} + '/page/' + ${currentPage}
+       th:href="@{${moduleURL} + '/page/' + ${currentPage}
        + '?sortField=' + ${fieldName}
        + '&sortType=' + ${sortField != fieldName ? sortType : sortTypeReverse}
        + ${categoryId != null ? '&categoryId=' + categoryId : ''}
@@ -29,13 +29,13 @@
        th:if="${sortField == fieldName}"></i>
 </th>
 <th:block th:fragment="status(entityId, entityName, status)">
-    <a class="btn btn-primary text-center" th:href="@{ '/' + ${module} + '/' + ${entityId} + '/enabled/false'}"
+    <a class="btn btn-primary text-center" th:href="@{ ${moduleURL} + '/' + ${entityId} + '/enabled/false'}"
        th:if="${status}"
        th:title="'Disable this ' + ${entityName}"
     >
         <i class="fa fa-check-circle"></i>
     </a>
-    <a class="btn btn-secondary text-center" th:href="@{ '/' + ${module} + '/' + ${entityId} + '/enabled/true'}"
+    <a class="btn btn-secondary text-center" th:href="@{ ${moduleURL} + '/' + ${entityId} + '/enabled/true'}"
        th:title="'Enable this ' + ${entityName}"
        th:unless="${status}"
     >
@@ -44,7 +44,7 @@
 </th:block>
 <a class="btn btn-success text-center"
    th:fragment="edit(entityId, entityName)"
-   th:href="@{ '/' + ${module} + '/edit/' + ${entityId} }"
+   th:href="@{ ${moduleURL} + '/edit/' + ${entityId} }"
    th:title="'Edit this ' + ${entityName}"
 >
     <i class="fa fa-edit"></i>
@@ -53,7 +53,7 @@
    th:data-entity="${entityName}"
    th:data-id="${entityId}"
    th:fragment="delete(entityId, entityName, show)"
-   th:href="@{ '/' + ${module} + '/delete/' + ${entityId} }"
+   th:href="@{ ${moduleURL} + '/delete/' + ${entityId} }"
    th:if="${show}"
    th:title="'Delete this ' + ${entityName}"
 >
@@ -61,7 +61,7 @@
 </a>
 <a class="btn btn-info text-center detail-link"
    th:fragment="detail(entityId, entityName)"
-   th:href="@{ '/' + ${module} + '/detail/' + ${entityId} }"
+   th:href="@{ ${moduleURL} + '/detail/' + ${entityId} }"
    th:title="'See detail ' + ${entityName}"
 >
     <i class="fa fa-file-alt"></i>

@@ -70,8 +70,8 @@
 </div>
 <div th:replace="partial/footer :: script"></div>
 <script>
-    MAX_FILE_SIZE = 1024 * 1024;
-    moduleURL = '[[@{/categories}]]';
+    const MAX_FILE_SIZE = 1024 * 1024;
+    const moduleURL = '[[@{/categories}]]';
     $(function () {
         $("#name").keyup(function () {
             const name = $("#name").val().toLowerCase();

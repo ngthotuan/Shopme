@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <body>
 <form class="m-2 row g-3 align-items-center" th:fragment="form_search"
-      th:action="@{'/' + ${module} + '/page/1'}">
+      th:action="@{${moduleURL} + '/page/1'}">
     <input name="sortField" th:value="${sortField}" type="hidden">
     <input name="sortType" th:value="${sortType}" type="hidden">
     <div class="col-auto">
@@ -17,7 +17,7 @@
         </button>
     </div>
     <div class="col-auto">
-        <a th:href="@{'/' + ${module} }">
+        <a th:href="@{${moduleURL} }">
             <button class="btn btn-secondary" type="button" value="Clear">
                 <i class="fa fa-eraser"></i>
             </button>

@@ -34,7 +34,7 @@ public class BrandController {
 
     @GetMapping("/page/{pageNum}")
     public String listByPage(@PathVariable Integer pageNum,
-                             @PagingAndSortingParam(module = "brands", listName = "brands")
+                             @PagingAndSortingParam(moduleURL = "/brands", listName = "brands")
                                      PagingAndSortingHelper helper) {
         service.listByPage(pageNum, helper);
         return "brand/brands";

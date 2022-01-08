@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static com.shopme.common.utils.Common.createSort;
-
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -21,7 +19,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public List<Category> listAll(String sortField, String sortType) {
-        Sort sort = createSort(sortField, sortType);
+        Sort sort = PagingAndSortingHelper.getSort(sortField, sortType);
         List<Category> rootCategories = categoryRepository.findAllRootCategories(sort);
         return hierarchicalCategories(rootCategories, sortType);
     }

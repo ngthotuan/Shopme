@@ -64,7 +64,7 @@
         </div>
         <div th:if="${keyword != null}" class="text-center">
             <span>Search categories don't show hierarchical</span>
-            <th:block th:replace="partial/pagination :: page_pagination(${module})"/>
+            <th:block th:replace="partial/pagination :: page_pagination('categories')"/>
         </div>
         <th:block th:if="${keyword == null}">
             <div th:replace="partial/pagination :: page_pagination('top-level categories')"></div>

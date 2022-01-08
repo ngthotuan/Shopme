@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping("/page/{pageNum}")
     public String listByPage(@PathVariable Integer pageNum,
-                             @PagingAndSortingParam(module = "users", listName = "users")
+                             @PagingAndSortingParam(moduleURL = "/users", listName = "users")
                                      PagingAndSortingHelper helper) {
         userService.listByPage(pageNum, helper);
         return "users/users";

@@ -10,7 +10,7 @@
         <th:block th:replace="partial/messages::messages"/>
         <!--        <th:block th:replace="partial/form::form_search"/>-->
         <form class="m-2 row g-3 align-items-center" id="formSearch"
-              th:action="@{'/' + ${module} + '/page/1'}">
+              th:action="@{${moduleURL} + '/page/1'}">
             <input name="sortField" th:value="${sortField}" type="hidden">
             <input name="sortType" th:value="${sortType}" type="hidden">
             <div class="col-auto">
@@ -38,7 +38,7 @@
                 </button>
             </div>
             <div class="col-auto">
-                <a th:href="@{'/' + ${module} }">
+                <a th:href="@{${moduleURL} }">
                     <button class="btn btn-secondary" type="button" value="Clear">
                         <i class="fa fa-eraser"></i>
                     </button>
@@ -66,7 +66,7 @@
                     </td>
                     <td width="50%">
                         <a class="detail-link"
-                           th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
+                           th:href="@{ ${moduleURL} + '/detail/' + ${product.id} }"
                            th:title="${product.name}"
                         >
                             [[${product.shortName}]]
@@ -104,7 +104,7 @@
                 <div class="col-8">
                     <div>
                         <h3><a class="detail-link"
-                               th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
+                               th:href="@{ ${moduleURL} + '/detail/' + ${product.id} }"
                                th:title="${product.name}"
                         >
                             [[${product.shortName}]]
@@ -115,7 +115,7 @@
                             <a th:replace="fragments::status(${product.id}, 'product', ${product.enabled})"></a>
                         </th:block>
                         <a class="btn btn-info text-center detail-link"
-                           th:href="@{ '/' + ${module} + '/detail/' + ${product.id} }"
+                           th:href="@{ ${moduleURL} + '/detail/' + ${product.id} }"
                            title="See detail product"
                         >
                             <i class="fa fa-file-alt"></i>
@@ -131,7 +131,7 @@
             </div>
         </div>
     </div>
-    <th:block th:replace="partial/pagination :: page_pagination(${module})"/>
+    <th:block th:replace="partial/pagination :: page_pagination('products')"/>
     <div th:replace="partial/modal :: modal_confirm_delete"></div>
     <div th:replace="partial/modal :: modal_detail"></div>
     <div th:replace="partial/footer :: footer"></div>

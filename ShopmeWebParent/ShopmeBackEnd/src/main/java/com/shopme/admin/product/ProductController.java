@@ -38,7 +38,7 @@ public class ProductController {
 
     @GetMapping("/page/{pageNum}")
     public String listByPage(@PathVariable Integer pageNum,
-                             @PagingAndSortingParam(module = "products", listName = "products") PagingAndSortingHelper helper,
+                             @PagingAndSortingParam(moduleURL = "/products", listName = "products") PagingAndSortingHelper helper,
                              @RequestParam(name = "categoryId", required = false, defaultValue = "-1") Long categoryId,
                              Model model) {
         service.listByPage(pageNum, helper, categoryId);

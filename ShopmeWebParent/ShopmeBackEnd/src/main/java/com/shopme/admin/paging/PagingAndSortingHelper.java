@@ -49,12 +49,16 @@ public class PagingAndSortingHelper {
         model.addAttribute("totalPages", totalPages);
     }
 
-    public Sort getSort() {
+    public static Sort getSort(String sortField, String sortType) {
         Sort sort = Sort.by(sortField).ascending();
         if (Objects.equals(sortType, "desc")) {
             sort = Sort.by(sortField).descending();
         }
         return sort;
+    }
+
+    public Sort getSort() {
+        return getSort(sortField, sortType);
     }
 
     public PageRequest getPageable(int pageNum, int perPage) {
