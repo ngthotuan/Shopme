@@ -24,7 +24,7 @@ import java.util.Objects;
 @RequestMapping("/categories")
 @RequiredArgsConstructor
 public class CategoryController {
-    private final CategoryService categoryService;
+    private final CategoryService service;
 
     @GetMapping({"", "/"})
     public String listFirstPage() {
@@ -35,14 +35,14 @@ public class CategoryController {
     public String listByPage(@PathVariable Integer pageNum,
                              @PagingAndSortingParam(moduleURL = "/categories", listName = "categories")
                                      PagingAndSortingHelper helper) {
-        categoryService.listByPage(pageNum, helper);
+        service.listByPage(pageNum, helper);
         return "category/categories";
     }
 
     @GetMapping("/new")
     public String createCategory(Model model) {
         Category category = new Category();
-        List<Category> categories = categoryService.listAll();
+        List<Category> categories = service.listAll();
         category.setEnabled(true);
         model.addAttribute("pageTitle", "Create New Category");
         model.addAttribute("category", category);
@@ -54,8 +54,8 @@ public class CategoryController {
     public String editCategory(Model model, @PathVariable(name = "id") Long id,
                                RedirectAttributes redirectAttributes) {
         try {
-            Category category = categoryService.findById(id);
-            List<Category> categories = categoryService.listAll();
+            Category category = service.findById(id);
+            List<Category> categories = service.listAll();
             model.addAttribute("pageTitle", "Update Category " + category.getId());
             model.addAttribute("category", category);
             model.addAttribute("categories", categories);
@@ -72,7 +72,7 @@ public class CategoryController {
         if (!image.isEmpty()) {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
             category.setImage(fileName);
-            Category savedCategory = categoryService.save(category);
+            Category savedCategory = service.save(category);
             String uploadDir = "category-images/" + savedCategory.getId();
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, image);
@@ -80,7 +80,7 @@ public class CategoryController {
             if (category.getImage().isEmpty()) {
                 category.setImage(null);
             }
-            categoryService.save(category);
+            service.save(category);
         }
         redirectAttributes.addFlashAttribute("message", "The category has been saved successfully");
 
@@ -93,7 +93,7 @@ public class CategoryController {
                                    @PathVariable boolean enabled,
                                    RedirectAttributes redirectAttributes) {
         String status = enabled ? "enabled" : "disabled";
-        categoryService.updateCategoryEnabledStatus(id, enabled);
+        service.updateCategoryEnabledStatus(id, enabled);
         redirectAttributes.addFlashAttribute("message", String.format("The category with ID %d has been %s", id, status));
         return "redirect:/categories";
     }
@@ -101,7 +101,7 @@ public class CategoryController {
     @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            categoryService.delete(id);
+            service.delete(id);
             redirectAttributes.addFlashAttribute("message", String.format("The category with ID %d has been deleted successfully", id));
             FileUploadUtil.removeDir("category-images/" + id);
         } catch (CategoryNotFoundException ex) {
@@ -113,21 +113,21 @@ public class CategoryController {
 
     @GetMapping("/export/csv")
     public void exportToCSV(HttpServletResponse response) throws IOException {
-        List<Category> list = categoryService.listAll();
+        List<Category> list = service.listAll();
         Exporter<Category> exporter = new CategoryExporter(response);
         exporter.exportCSV(list);
     }
 
     @GetMapping("/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
-        List<Category> list = categoryService.listAll();
+        List<Category> list = service.listAll();
         Exporter<Category> exporter = new CategoryExporter(response);
         exporter.exportExcel(list);
     }
 
     @GetMapping("/export/pdf")
     public void exportToPDF(HttpServletResponse response) throws IOException {
-        List<Category> list = categoryService.listAll();
+        List<Category> list = service.listAll();
         Exporter<Category> exporter = new CategoryExporter(response);
         exporter.exportPDF(list);
     }

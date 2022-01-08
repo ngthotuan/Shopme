@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <body>
-<th:block th:fragment="export">
+<th:block th:fragment="new">
     <a class="fa fa-plus fa-2x text-decoration-none text-success mx-2"
        th:href="@{${moduleURL} + '/new'}"
        title="Create New"></a>
+</th:block>
+<th:block th:fragment="export">
     <a class="fa fa-file-csv fa-2x text-decoration-none text-success mx-2"
        th:href="@{${moduleURL} + '/export/csv'}"
        title="Export to CSV"></a>

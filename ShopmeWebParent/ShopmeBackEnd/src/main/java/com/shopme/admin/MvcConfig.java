@@ -1,4 +1,4 @@
-package com.shopme.admin.config;
+package com.shopme.admin;
 
 import com.shopme.admin.paging.PagingAndSortingArgumentResolver;
 import com.shopme.admin.utils.OperatingSystem;

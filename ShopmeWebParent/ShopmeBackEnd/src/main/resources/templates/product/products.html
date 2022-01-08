@@ -6,6 +6,7 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="content">
         <h2>Manager Product</h2>
+        <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')" th:replace="fragments::new"/>
         <th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')" th:replace="fragments::export"/>
         <th:block th:replace="partial/messages::messages"/>
         <!--        <th:block th:replace="partial/form::form_search"/>-->

@@ -54,15 +54,15 @@ public class BrandController {
     public String edit(Model model, @PathVariable(name = "id") Long id,
                        RedirectAttributes redirectAttributes) {
         try {
-            Brand entity = service.findById(id);
+            Brand brand = service.findById(id);
             List<Category> categories = categoryService.listAll();
-            model.addAttribute("pageTitle", "Update Brand " + entity.getId());
-            model.addAttribute("brand", entity);
+            model.addAttribute("pageTitle", "Update Brand " + brand.getId());
+            model.addAttribute("brand", brand);
             model.addAttribute("categories", categories);
             return "brand/brand_form";
         } catch (BrandNotFoundException ex) {
             redirectAttributes.addFlashAttribute("errMessage", ex.getMessage());
-            return "redirect:/brand";
+            return "redirect:/brands";
         }
     }
 

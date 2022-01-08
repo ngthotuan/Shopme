@@ -54,4 +54,9 @@ public class Brand {
         }
         return String.format("/brand-images/%d/%s", id, logo);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

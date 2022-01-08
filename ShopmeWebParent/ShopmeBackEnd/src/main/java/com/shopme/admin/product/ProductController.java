@@ -5,6 +5,7 @@ import com.shopme.admin.category.CategoryService;
 import com.shopme.admin.paging.PagingAndSortingHelper;
 import com.shopme.admin.paging.PagingAndSortingParam;
 import com.shopme.admin.security.ShopmeUserDetails;
+import com.shopme.admin.utils.Exporter;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Product;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -140,6 +142,27 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("errMessage", ex.getMessage());
             return "redirect:/products";
         }
+    }
+
+    @GetMapping("/export/csv")
+    public void exportToCSV(HttpServletResponse response) throws IOException {
+        List<Product> list = service.listAll();
+        Exporter<Product> exporter = new ProductExporter(response);
+        exporter.exportCSV(list);
+    }
+
+    @GetMapping("/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        List<Product> list = service.listAll();
+        Exporter<Product> exporter = new ProductExporter(response);
+        exporter.exportExcel(list);
+    }
+
+    @GetMapping("/export/pdf")
+    public void exportToPDF(HttpServletResponse response) throws IOException {
+        List<Product> list = service.listAll();
+        Exporter<Product> exporter = new ProductExporter(response);
+        exporter.exportPDF(list);
     }
 
 }

@@ -30,7 +30,7 @@ import java.util.Objects;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserService service;
     private final RoleService roleService;
 
     @GetMapping({"", "/"})
@@ -42,7 +42,7 @@ public class UserController {
     public String listByPage(@PathVariable Integer pageNum,
                              @PagingAndSortingParam(moduleURL = "/users", listName = "users")
                                      PagingAndSortingHelper helper) {
-        userService.listByPage(pageNum, helper);
+        service.listByPage(pageNum, helper);
         return "users/users";
     }
 
@@ -63,7 +63,7 @@ public class UserController {
         if (!image.isEmpty()) {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
             user.setPhotos(fileName);
-            User savedUser = userService.save(user);
+            User savedUser = service.save(user);
             String uploadDir = "user-photos/" + savedUser.getId();
             FileUploadUtil.cleanDir(uploadDir);
             FileUploadUtil.saveFile(uploadDir, fileName, image);
@@ -71,7 +71,7 @@ public class UserController {
             if (user.getPhotos().isEmpty()) {
                 user.setPhotos(null);
             }
-            userService.save(user);
+            service.save(user);
         }
         redirectAttributes.addFlashAttribute("message", "The user has been saved successfully");
 
@@ -81,7 +81,7 @@ public class UserController {
     @GetMapping("/edit/{id}")
     public String updateUser(Model model, @PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            User user = userService.findById(id);
+            User user = service.findById(id);
             List<Role> roles = roleService.getAll();
             model.addAttribute("pageTitle", String.format("Edit User ID (%s)", user.getId()));
             model.addAttribute("user", user);
@@ -97,7 +97,7 @@ public class UserController {
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
-            userService.delete(id);
+            service.delete(id);
             redirectAttributes.addFlashAttribute("message", String.format("The user with ID %d has been delete successfully", id));
         } catch (UserNotFoundException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
@@ -110,28 +110,28 @@ public class UserController {
                                    @PathVariable boolean enabled,
                                    RedirectAttributes redirectAttributes) {
         String status = enabled ? "enabled" : "disabled";
-        userService.updateUserEnabledStatus(id, enabled);
+        service.updateUserEnabledStatus(id, enabled);
         redirectAttributes.addFlashAttribute("message", String.format("The user with ID %d has been %s", id, status));
         return "redirect:/users";
     }
 
     @GetMapping("/export/csv")
     public void exportUserToCSV(HttpServletResponse response) throws IOException {
-        List<User> list = userService.listAll();
+        List<User> list = service.listAll();
         Exporter<User> exporter = new UserExporter(response);
         exporter.exportCSV(list);
     }
 
     @GetMapping("/export/excel")
     public void exportUserToExcel(HttpServletResponse response) throws IOException {
-        List<User> list = userService.listAll();
+        List<User> list = service.listAll();
         Exporter<User> exporter = new UserExporter(response);
         exporter.exportExcel(list);
     }
 
     @GetMapping("/export/pdf")
     public void exportUserToPDF(HttpServletResponse response) throws IOException {
-        List<User> list = userService.listAll();
+        List<User> list = service.listAll();
         Exporter<User> exporter = new UserExporter(response);
         exporter.exportPDF(list);
     }
