@@ -1,5 +1,6 @@
 package com.shopme.customer;
 
+import com.shopme.common.entity.AuthenticationType;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Customer;
 import com.shopme.setting.CountryRepository;
@@ -44,6 +45,12 @@ public class CustomerService {
         customer.setVerificationCode(null);
         repo.save(customer);
         return true;
+    }
+
+    public void updateAuthenticationType(Customer customer, AuthenticationType authenticationType) {
+        if (customer.getAuthenticationType() != authenticationType) {
+            repo.updateAuthenticationType(customer.getId(), authenticationType);
+        }
     }
 
     private void encodePassword(Customer customer) {
