@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -43,13 +44,50 @@ public class CustomerService {
         }
         customer.setEnabled(true);
         customer.setVerificationCode(null);
+        customer.setAuthenticationType(AuthenticationType.DATABASE);
         repo.save(customer);
         return true;
     }
 
+    @Transactional
     public void updateAuthenticationType(Customer customer, AuthenticationType authenticationType) {
         if (customer.getAuthenticationType() != authenticationType) {
             repo.updateAuthenticationType(customer.getId(), authenticationType);
+        }
+    }
+
+    public Customer findByEmail(String email) {
+        return repo.findByEmail(email);
+    }
+
+    public void addNewCustomerUponOAuthLogin(String name, String email) {
+        Customer customer = new Customer();
+        customer.setEmail(email);
+        setName(name, customer);
+
+        customer.setEnabled(true);
+        customer.setCreatedTime(new Date());
+        customer.setAuthenticationType(AuthenticationType.GOOGLE);
+        customer.setPassword("");
+        customer.setAddressLine1("");
+        customer.setCity("");
+        customer.setState("");
+        customer.setPhoneNumber("");
+        customer.setPostalCode("");
+        repo.save(customer);
+    }
+
+    private void setName(String name, Customer customer) {
+        String[] nameArray = name.split(" ");
+        if (nameArray.length < 2) {
+            customer.setFirstName(name);
+            customer.setLastName("");
+        } else {
+            String firstName = nameArray[0];
+            customer.setFirstName(firstName);
+
+            String lastName = name.replaceFirst(firstName, "");
+            customer.setLastName(lastName);
         }
     }
 

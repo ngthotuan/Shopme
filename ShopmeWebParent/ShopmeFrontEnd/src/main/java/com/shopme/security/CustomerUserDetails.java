@@ -1,6 +1,7 @@
 package com.shopme.security;
 
 import com.shopme.common.entity.Customer;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @RequiredArgsConstructor
+@Getter
 public class CustomerUserDetails implements UserDetails {
 
     private final Customer customer;

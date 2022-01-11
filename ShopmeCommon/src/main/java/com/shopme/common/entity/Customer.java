@@ -47,7 +47,7 @@ public class Customer {
     private String state;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_id")
     private Country country;
 
     @Column(length = 10, nullable = false)

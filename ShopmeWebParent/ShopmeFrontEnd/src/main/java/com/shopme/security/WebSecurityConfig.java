@@ -1,5 +1,7 @@
 package com.shopme.security;
 
+import com.shopme.security.oauth.CustomerOAuth2UserService;
+import com.shopme.security.oauth.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -17,10 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomerUserDetailsService();
-    }
+    private final CustomerUserDetailsService userDetailsService;
+    private final CustomerOAuth2UserService oAuth2UserService;
+    private final DatabaseLoginSuccessHandler databaseLoginSuccessHandler;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
@@ -41,14 +42,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/customer/**").authenticated()
+                .antMatchers("/customer").authenticated()
                 .anyRequest().permitAll()
                 .and().formLogin()
-                .loginPage("/login")
-                .usernameParameter("email")
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .successHandler(databaseLoginSuccessHandler)
+                .and().oauth2Login()
+                    .loginPage("/login")
+                    .userInfoEndpoint()
+                    .userService(oAuth2UserService)
+                    .and().successHandler(oAuth2LoginSuccessHandler)
                 .and().rememberMe()
-                .key("remember-me-key")
-                .tokenValiditySeconds(60 * 60 * 24 * 7)
+                    .key("remember-me-key")
+                    .tokenValiditySeconds(60 * 60 * 24 * 7)
         ;
 
     }
