@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://thymeleaf.org">
 <head th:fragment="head(title)" th:remove="${remove}">
     <meta charset="UTF-8">
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
@@ -47,14 +47,36 @@
                     <a class="nav-link" href="">Shipping &amp; Delivery</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/register}">Register</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="">Contact</a>
                 </li>
+                <th:block sec:authorize="!isAuthenticated()">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
+                </th:block>
+                <th:block sec:authorize="isAuthenticated()">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                           th:href="@{/customer}">
+                            <strong sec:authentication="principal.fullName">Name</strong>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-dark">
+                            <a class="dropdown-item" href="">Addresses</a>
+                            <a class="dropdown-item" href="">Questions</a>
+                            <a class="dropdown-item" href="">Reviews</a>
+                            <a class="dropdown-item" href="">Orders</a>
+                            <a class="dropdown-item" href="">Carts</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript: document.forms.formLogout.submit()">Logout</a>
+                    </li>
+                    <form hidden id="formLogout" method="post" th:action="@{/logout}">
+                    </form>
+                </th:block>
             </ul>
             <form class="d-flex" th:action="@{/search}">
                 <input aria-label="Search" class="form-control me-2" name="keyword" placeholder="Search a product"

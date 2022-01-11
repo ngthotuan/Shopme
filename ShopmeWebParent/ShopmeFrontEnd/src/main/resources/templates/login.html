@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="partial/header :: head('Login')"></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="partial/header :: menu"></div>
+    <div class="" style="max-width: 500px; margin: 0 auto">
+        <div class="text-center mt-3">
+            <p class="text-danger" th:if="${param.error}">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+            <p class="text-warning" th:if="${param.logout}">You have been logged out successfully!</p>
+        </div>
+        <form class="m-3 p-3 border border-primary rounded" method="post" th:action="@{/login}">
+            <div class="mb-3">
+                <label class="form-label" for="email">Email address</label>
+                <input class="form-control" id="email" name="email" required type="email">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="password">Password</label>
+                <input class="form-control" id="password" name="password" required type="password">
+            </div>
+            <div class="mb-3 form-check">
+                <input class="form-check-input" id="rememberMe" name="remember-me" type="checkbox">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-lg btn-success" type="submit">Login</button>
+            </div>
+        </form>
+    </div>
+    <div th:replace="partial/modal :: modal_form"></div>
+    <div th:replace="partial/footer :: footer"></div>
+</div>
+<div th:replace="partial/footer :: script"></div>
+<script th:src="@{/js/common_form.js}"></script>
+</body>
+</html>
