@@ -1,10 +1,14 @@
 server:
-    port: 8081
+    port: 443
     servlet:
         context-path: /Shopme
+    ssl:
+        enabled: true
+        keystore: classpath:local-ssl.p12
+        keystore-password: 123456789
 spring:
     datasource:
-        url: jdbc:mysql://localhost:3306/shopme
+        url: jdbc:mysql://locahost:3306/shopme
         password: shopme
         username: shopme
     jpa:
@@ -14,7 +18,7 @@ spring:
             hibernate:
                 dialect: org.hibernate.dialect.MySQL8Dialect
                 format_sql: true
-        show-sql: true
+        show-sql: false
     security:
         oauth2:
             client:
@@ -23,3 +27,7 @@ spring:
                         client-id: 94253779234-hpi81ep6ne1eiqahodqf7qn3m2rcv1qn.apps.googleusercontent.com
                         client-secret: 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
                         scope: email, profile
+                    facebook:
+                        client-id: 677890523214222
+                        client-secret: 134298aaf94de1bc5d13b03fc7cd5da2
+                        scope: email, public_profile

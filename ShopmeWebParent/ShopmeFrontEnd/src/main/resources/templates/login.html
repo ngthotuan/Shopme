@@ -6,9 +6,13 @@
     <div th:replace="partial/header :: menu"></div>
     <div class="" style="max-width: 500px; margin: 0 auto">
         <div class="text-center mt-3">
-            <a class="btn btn-secondary btn-lg" th:href="@{/oauth2/authorization/google}">
+            <a class="btn btn-secondary btn-lg my-2" th:href="@{/oauth2/authorization/google}">
                 <i class="fab fa-google"></i>
                 Continue with Google
+            </a>
+            <a class="btn btn-secondary btn-lg my-2" th:href="@{/oauth2/authorization/facebook}">
+                <i class="fab fa-facebook"></i>
+                Continue with Facebook
             </a>
         </div>
         <div class="text-center mt-3">

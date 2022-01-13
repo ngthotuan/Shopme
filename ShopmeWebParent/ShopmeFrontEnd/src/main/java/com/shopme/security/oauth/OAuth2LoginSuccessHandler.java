@@ -26,19 +26,29 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
                                         Authentication authentication) throws ServletException, IOException {
         CustomerOAuth2User oauth2User = (CustomerOAuth2User) authentication.getPrincipal();
 
+        String clientName = oauth2User.getClientName();
         String name = oauth2User.getName();
         String email = oauth2User.getEmail();
-        String countryCode = request.getLocale().getCountry();
 
         Customer customer = customerService.findByEmail(email);
+        AuthenticationType authenticationType = getAuthenticationType(clientName);
         if (customer == null) {
-            customerService.addNewCustomerUponOAuthLogin(name, email);
+            customerService.addNewCustomerUponOAuthLogin(name, email, authenticationType);
         } else {
-            customerService.updateAuthenticationType(customer, AuthenticationType.GOOGLE);
+            customerService.updateAuthenticationType(customer, authenticationType);
         }
 
-        System.out.println("OAuth2LoginSuccessHandler: " + name + " | " + email + " | " + countryCode);
-
         super.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    private AuthenticationType getAuthenticationType(String clientName) {
+        switch (clientName) {
+            case "Facebook":
+                return AuthenticationType.FACEBOOK;
+            case "Google":
+                return AuthenticationType.GOOGLE;
+            default:
+                return AuthenticationType.DATABASE;
+        }
     }
 }
