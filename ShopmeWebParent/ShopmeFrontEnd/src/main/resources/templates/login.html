@@ -36,6 +36,13 @@
                 <button class="btn btn-lg btn-success" type="submit">Login</button>
             </div>
         </form>
+        <div class="my-3 text-center">
+            <a class="btn btn-link" th:href="@{/forgot_password}">Forgot password?</a>
+            <div>
+                Don't have an account?
+                <a class="text-primary" th:href="@{/register}"><b>Register</b></a>
+            </div>
+        </div>
     </div>
     <div th:replace="partial/modal :: modal_form"></div>
     <div th:replace="partial/footer :: footer"></div>

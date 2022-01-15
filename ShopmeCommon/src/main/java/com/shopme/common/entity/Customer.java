@@ -60,6 +60,9 @@ public class Customer {
     @Column(length = 64)
     private String verificationCode;
 
+    @Column(length = 64)
+    private String resetPasswordCode;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private AuthenticationType authenticationType;

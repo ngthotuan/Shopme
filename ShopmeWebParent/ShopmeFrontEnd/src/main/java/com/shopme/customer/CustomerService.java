@@ -3,6 +3,7 @@ package com.shopme.customer;
 import com.shopme.common.entity.AuthenticationType;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Customer;
+import com.shopme.common.exception.CustomerNotFoundException;
 import com.shopme.setting.country.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
@@ -47,6 +48,26 @@ public class CustomerService {
         customer.setAuthenticationType(AuthenticationType.DATABASE);
         repo.save(customer);
         return true;
+    }
+
+    public Customer updateResetPasswordCode(String email) {
+        Customer customer = repo.findByEmail(email);
+        if (customer == null) {
+            throw new CustomerNotFoundException("Could not find customer with email: " + email);
+        }
+        customer.setResetPasswordCode(RandomString.make(64));
+        return repo.save(customer);
+    }
+
+    public Customer getByResetPasswordCode(String code) {
+        return repo.findByResetPasswordCode(code);
+    }
+
+    public void updatePassword(String token, String password) {
+        Customer customer = repo.findByResetPasswordCode(token);
+        customer.setPassword(passwordEncoder.encode(password));
+        customer.setResetPasswordCode(null);
+        repo.save(customer);
     }
 
     @Transactional
@@ -96,6 +117,7 @@ public class CustomerService {
         customerInForm.setEnabled(customerInDB.isEnabled());
         customerInForm.setCreatedTime(customerInDB.getCreatedTime());
         customerInForm.setVerificationCode(customerInDB.getVerificationCode());
+        customerInForm.setResetPasswordCode(customerInDB.getResetPasswordCode());
 
         repo.save(customerInForm);
     }

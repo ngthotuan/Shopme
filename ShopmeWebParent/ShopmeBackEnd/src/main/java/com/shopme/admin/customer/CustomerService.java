@@ -36,6 +36,8 @@ public class CustomerService {
         }
         customer.setCreatedTime(existingCustomer.getCreatedTime());
         customer.setVerificationCode(existingCustomer.getVerificationCode());
+        customer.setAuthenticationType(existingCustomer.getAuthenticationType());
+        customer.setResetPasswordCode(existingCustomer.getResetPasswordCode());
         return repo.save(customer);
     }
 

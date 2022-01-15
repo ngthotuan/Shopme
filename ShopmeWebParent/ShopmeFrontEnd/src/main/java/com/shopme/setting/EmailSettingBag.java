@@ -51,4 +51,12 @@ public class EmailSettingBag extends SettingBag {
         return super.getValue("CUSTOMER_VERIFY_CONTENT");
     }
 
+    public String getCustomerForgotPasswordSubject() {
+        return super.getValue("CUSTOMER_FORGOT_PASSWORD_SUBJECT");
+    }
+
+    public String getCustomerForgotPasswordContent() {
+        return super.getValue("CUSTOMER_FORGOT_PASSWORD_CONTENT");
+    }
+
 }
