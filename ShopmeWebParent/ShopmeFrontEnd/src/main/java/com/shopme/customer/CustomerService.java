@@ -3,7 +3,7 @@ package com.shopme.customer;
 import com.shopme.common.entity.AuthenticationType;
 import com.shopme.common.entity.Country;
 import com.shopme.common.entity.Customer;
-import com.shopme.setting.CountryRepository;
+import com.shopme.setting.country.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -77,6 +77,29 @@ public class CustomerService {
         repo.save(customer);
     }
 
+    public void update(Customer customerInForm) {
+        Customer customerInDB = repo.findById(customerInForm.getId()).get();
+
+        if (customerInDB.getAuthenticationType().equals(AuthenticationType.DATABASE)) {
+            if (!customerInForm.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(customerInForm.getPassword());
+                customerInForm.setPassword(encodedPassword);
+            } else {
+                customerInForm.setPassword(customerInDB.getPassword());
+            }
+        } else {
+            customerInForm.setPassword(customerInDB.getPassword());
+        }
+
+        customerInForm.setEmail(customerInDB.getEmail());
+        customerInForm.setAuthenticationType(customerInDB.getAuthenticationType());
+        customerInForm.setEnabled(customerInDB.isEnabled());
+        customerInForm.setCreatedTime(customerInDB.getCreatedTime());
+        customerInForm.setVerificationCode(customerInDB.getVerificationCode());
+
+        repo.save(customerInForm);
+    }
+
     private void setName(String name, Customer customer) {
         String[] nameArray = name.split(" ");
         if (nameArray.length < 2) {
@@ -86,7 +109,7 @@ public class CustomerService {
             String firstName = nameArray[0];
             customer.setFirstName(firstName);
 
-            String lastName = name.replaceFirst(firstName, "");
+            String lastName = name.replaceFirst(firstName + " ", "");
             customer.setLastName(lastName);
         }
     }

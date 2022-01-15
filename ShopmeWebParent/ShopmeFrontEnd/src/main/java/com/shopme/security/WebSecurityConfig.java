@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/customer").authenticated()
+                .antMatchers("/account_details").authenticated()
                 .anyRequest().permitAll()
                 .and().formLogin()
                     .loginPage("/login")
@@ -54,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userService(oAuth2UserService)
                     .and().successHandler(oAuth2LoginSuccessHandler)
                 .and().rememberMe()
+                    .userDetailsService(userDetailsService)
                     .key("remember-me-key")
                     .tokenValiditySeconds(60 * 60 * 24 * 7)
         ;

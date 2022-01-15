@@ -60,11 +60,11 @@
                 </th:block>
                 <th:block sec:authorize="isAuthenticated()">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
-                           th:href="@{/customer}">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button">
                             <strong sec:authentication="principal.fullName">Name</strong>
                         </a>
                         <div class="dropdown-menu dropdown-menu-dark">
+                            <a class="dropdown-item" th:href="@{/account_details}">Details</a>
                             <a class="dropdown-item" href="">Addresses</a>
                             <a class="dropdown-item" href="">Questions</a>
                             <a class="dropdown-item" href="">Reviews</a>
