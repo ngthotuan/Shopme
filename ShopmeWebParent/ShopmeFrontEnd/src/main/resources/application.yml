@@ -8,9 +8,9 @@ server:
         keystore-password: 123456789
 spring:
     datasource:
-        url: jdbc:mysql://vtsign.tech:3306/shopme
-        password: shopme
-        username: shopme
+        url: jdbc:mysql://localhost:3306/shopme
+        username: root
+        password:
     jpa:
         hibernate:
             ddl-auto: update
